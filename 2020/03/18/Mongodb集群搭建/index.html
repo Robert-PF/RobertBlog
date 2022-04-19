@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>MongoDB | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="副本集群搭建：标准副本集一般会部署三个成员，即一个 Primary 和两个 Secondary，实现数据的冗余和容错。  注：一个副本集最多有50个成员节点，7个投票节点。 1、准备环境：CentOS Linux release 7.5 mongodb 4.4.13 2、配置文件：1234567891011121314151617181920systemLog:   destination: fi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="副本集群搭建：标准副本集一般会部署三个成员，即一个 Primary 和两个 Secondary，实现数据的冗余和容错。  注：一个副本集最多有50个成员节点，7个投票节点。 1、准备环境：CentOS Linux release 7.5 mongodb 4.4.13 2、配置文件：1234567891011121314151617181920systemLog:   destination: fi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/868522-20160105162337293-1637878872.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220331185210828.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329140429690.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329182724143.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329182845054.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329183417635.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329183910486.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329184611038.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329184727869.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220329184847547.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328144116292.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328144310682.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328145555491.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328145832842.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328214143562.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220328151832240.png">
+<meta property="article:published_time" content="2020-03-18T15:30:35.000Z">
+<meta property="article:modified_time" content="2022-03-31T13:57:35.956Z">
+<meta property="article:author" content="Robert Pang">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/868522-20160105162337293-1637878872.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Mongodb集群搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2020-03-18T15:30:35.000Z" itemprop="datePublished">2020-03-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MongoDB
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="副本集群搭建："><a href="#副本集群搭建：" class="headerlink" title="副本集群搭建："></a>副本集群搭建：</h4><p>标准副本集一般会部署三个成员，即一个 Primary 和两个 Secondary，实现数据的冗余和容错。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\868522-20160105162337293-1637878872.png" alt="img"></p>
+<p>注：一个副本集最多有50个成员节点，7个投票节点。</p>
+<h5 id="1、准备环境："><a href="#1、准备环境：" class="headerlink" title="1、准备环境："></a>1、准备环境：</h5><p>CentOS Linux release 7.5</p>
+<p>mongodb 4.4.13</p>
+<h5 id="2、配置文件："><a href="#2、配置文件：" class="headerlink" title="2、配置文件："></a>2、配置文件：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   destination: file</span><br><span class="line">   <span class="comment">#path: &quot;/mongodb/log/mongod.log&quot;	#备份需要日志路径是绝对路径</span></span><br><span class="line">   logAppend: <span class="literal">true</span></span><br><span class="line">storage:</span><br><span class="line">   <span class="comment">#dbPath: &quot;/mongodb/data&quot;	#路径是绝对路径</span></span><br><span class="line">   journal:</span><br><span class="line">      enabled: <span class="literal">true</span></span><br><span class="line">processManagement:</span><br><span class="line">   fork: <span class="literal">true</span></span><br><span class="line">net:</span><br><span class="line">   bindIp: 0.0.0.0</span><br><span class="line">   port: 27017</span><br><span class="line">setParameter:</span><br><span class="line">   enableLocalhostAuthBypass: <span class="literal">false</span> </span><br><span class="line"><span class="comment">#以下参数在没有创建用户之前，不要添加，可以等待用户创建完成之后再创建。</span></span><br><span class="line">security:</span><br><span class="line">  keyFile: <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  clusterAuthMode: <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  authorization: <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220331185210828.png" alt="image-20220331185210828"></p>
+<h5 id="3、生成Key-File，并修改权限。"><a href="#3、生成Key-File，并修改权限。" class="headerlink" title="3、生成Key-File，并修改权限。"></a>3、生成Key-File，并修改权限。</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br><span class="line"><span class="built_in">chmod</span> 600 /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
+
+<h5 id="4、启动数据库进程："><a href="#4、启动数据库进程：" class="headerlink" title="4、启动数据库进程："></a>4、启动数据库进程：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data1 --port 37001 --logpath /mongodb/log/repSet1mongo1.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data2 --port 37002 --logpath /mongodb/log/repSet1mongo2.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data3 --port 37003 --logpath /mongodb/log/repSet1mongo3.<span class="built_in">log</span> --fork</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329140429690.png" alt="image-20220329140429690"></p>
+<h5 id="5、可以将此操作写成一个服务，然后保存到系统中自启动。"><a href="#5、可以将此操作写成一个服务，然后保存到系统中自启动。" class="headerlink" title="5、可以将此操作写成一个服务，然后保存到系统中自启动。"></a>5、可以将此操作写成一个服务，然后保存到系统中自启动。</h5><h5 id="6、新建的集群需要进行初始化操作："><a href="#6、新建的集群需要进行初始化操作：" class="headerlink" title="6、新建的集群需要进行初始化操作："></a>6、新建的集群需要进行初始化操作：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mongos --host ip --port 37001</span><br><span class="line">rs.inintiate() <span class="comment">#初始化集群，并设置当前的secondary节点为主节点</span></span><br><span class="line">rs.status()  <span class="comment">#查询集群的状态。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182724143.png" alt="image-20220329182724143"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182845054.png" alt="image-20220329182845054"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183417635.png" alt="image-20220329183417635"></p>
+<h5 id="7、创建用户：方便开启集群认证。"><a href="#7、创建用户：方便开启集群认证。" class="headerlink" title="7、创建用户：方便开启集群认证。"></a>7、创建用户：方便开启集群认证。</h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183910486.png" alt="image-20220329183910486"></p>
+<h5 id="8、将其他的节点加入集群："><a href="#8、将其他的节点加入集群：" class="headerlink" title="8、将其他的节点加入集群："></a>8、将其他的节点加入集群：</h5><p>主节点执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37002&quot;</span>)</span><br><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37003&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184611038.png" alt="image-20220329184611038"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184727869.png" alt="image-20220329184727869"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184847547.png" alt="image-20220329184847547"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.updateUser(</span><br><span class="line"> &quot;admin&quot;,</span><br><span class="line">        &#123;</span><br><span class="line">            roles : </span><br><span class="line">            [</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;dbOwner&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;clusterAdmin&quot;, &quot;db&quot;: &quot;admin&quot;&#125;</span><br><span class="line">             ]</span><br><span class="line">        &#125;</span><br><span class="line">)                        </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h5 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h5><p>1、启动报错:</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144116292.png" alt="image-20220328144116292"></p>
+<p>启动参数中已经写了 –fork 参数。</p>
+<p>查看mongod的日志：</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144310682.png" alt="image-20220328144310682"></p>
+<p>查看/var/lib/mongo/文件夹下确实没有key-file文件。</p>
+<p>手动生成文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
+
+<p>2、启动报错：permission on key-file are too open</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145555491.png" alt="image-20220328145555491"></p>
+<p>修改keyfile的权限：chmod 600 key-file。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145832842.png" alt="image-20220328145832842"></p>
+<p>3、启动mongd报错：Cannot assign requested address</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328214143562.png" alt="image-20220328214143562"></p>
+<p>要设置bindIP和现有的ip一致。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328151832240.png" alt="image-20220328151832240"></p>
+<p>3、</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" data-id="cl26a2mu9000630uvd19l3fce" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2020/03/18/Mongodb%E5%A4%87%E4%BB%BD/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MongoDB
+        
+      </div>
+    </a>
+  
+  
+    <a href="/RobertBlog/2020/03/18/Mongodb%E6%90%AD%E5%BB%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MongoDB</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/04/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/23/Lvm%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/20/Mongdb%E6%90%AD%E5%BB%BA/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">Web开发</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

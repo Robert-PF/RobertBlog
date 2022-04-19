@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>MongoDB | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数据模型：​    层次模型：是以“上下级”的层次关系来组织数据的一种方式，层次模型的数据结构看起来就像一颗树：  ​    网状模型把每个数据节点和其他很多节点都连接起来，它的数据结构看起来就像很多城市之间的路网：  关系模型把数据看作是一个二维表格，任何数据都可以通过行号+列号来唯一确定，它的数据模型看起来就是一个Excel表：  关系型数据库：典型的关系型数据库代表： Oracle、SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2020/03/18/Mongodb%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="数据模型：​    层次模型：是以“上下级”的层次关系来组织数据的一种方式，层次模型的数据结构看起来就像一颗树：  ​    网状模型把每个数据节点和其他很多节点都连接起来，它的数据结构看起来就像很多城市之间的路网：  关系模型把数据看作是一个二维表格，任何数据都可以通过行号+列号来唯一确定，它的数据模型看起来就是一个Excel表：  关系型数据库：典型的关系型数据库代表： Oracle、SQL">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220319143334792.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220319143419264.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220319143501502.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220322211821380.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220318092129146.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220318151448048.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/Figure-1-Mapping-Table-to-Collection-1.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220320170311683.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220320184725547.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Mongdb搭建/image-20220320182457888.png">
+<meta property="article:published_time" content="2020-03-18T15:30:35.000Z">
+<meta property="article:modified_time" content="2022-03-24T12:10:05.021Z">
+<meta property="article:author" content="Robert Pang">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/Robert/AppData/Roaming/Typora/typora-user-images/image-20220319143334792.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Mongodb搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2020/03/18/Mongodb%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2020-03-18T15:30:35.000Z" itemprop="datePublished">2020-03-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MongoDB
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="数据模型："><a href="#数据模型：" class="headerlink" title="数据模型："></a>数据模型：</h4><p>​    层次模型：是以“上下级”的层次关系来组织数据的一种方式，层次模型的数据结构看起来就像一颗树：</p>
+<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220319143334792.png" alt="image-20220319143334792"></p>
+<p>​    网状模型把每个数据节点和其他很多节点都连接起来，它的数据结构看起来就像很多城市之间的路网：</p>
+<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220319143419264.png" alt="image-20220319143419264"></p>
+<p>关系模型把数据看作是一个二维表格，任何数据都可以通过行号+列号来唯一确定，它的数据模型看起来就是一个Excel表：</p>
+<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220319143501502.png" alt="image-20220319143501502"></p>
+<h4 id="关系型数据库："><a href="#关系型数据库：" class="headerlink" title="关系型数据库："></a>关系型数据库：</h4><p>典型的关系型数据库代表：</p>
+<p>Oracle、SQL Server、MySQL、PostgreSQL、DB2、SAP</p>
+<p>优点：使用简单，便于维护</p>
+<p>缺点：</p>
+<ul>
+<li>1.网站的用户并发性非常高，往往达到每秒上万次读写请求，对于传统关系型数据库来说，硬盘I/O是一个很大的瓶颈</li>
+<li>2.网站每天产生的数据量是巨大的，对于关系型数据库来说，在一张包含海量数据的表中查询，效率是非常低的</li>
+<li>3.在基于web的结构当中，数据库是最难进行横向扩展的，当一个应用系统的用户量和访问量与日俱增的时候，数据库却没有办法像web server和app server那样简单的通过添加更多的硬件和服务节点来扩展性能和负载能力。当需要对数据库系统进行升级和扩展时，往往需要停机维护和数据迁移。</li>
+<li>4.性能欠佳：在关系型数据库中，导致性能欠佳的最主要原因是多表的关联查询，以及复杂的数据分析类型的复杂SQL报表查询。为了保证数据库的ACID特性，必须尽量按照其要求的范式进行设计，关系型数据库中的表都是存储一个格式化的数据结构。</li>
+</ul>
+<p>数据库事务必须具备ACID特性，</p>
+<ul>
+<li>Atomic原子性，</li>
+<li>Consistency一致性，</li>
+<li>Isolation隔离性，</li>
+<li>Durability持久性。</li>
+</ul>
+<h4 id="非关系型数据库："><a href="#非关系型数据库：" class="headerlink" title="非关系型数据库："></a>非关系型数据库：</h4><p>非关系型数据库以键值对存储，且结构不固定，每一个元组可以有不一样的字段，每个元组可以根据需要增加一些自己的键值对，不局限于固定的结构，可以减少一些时间和空间的开销。用户可以根据需要去添加自己需要的字段</p>
+<p>优点</p>
+<ul>
+<li>用户可以根据需要去添加自己需要的字段，为了获取用户的不同信息，不像关系型数据库中，要对多表进行关联查询。仅需要根据id取出相应的value就可以完成查询。</li>
+<li>适用于SNS(Social Networking Services)中，例如facebook，微博。系统的升级，功能的增加，往往意味着数据结构巨大变动，这一点关系型数据库难以应付，需要新的结构化数据存储。由于不可能用一种数据结构化存储应付所有的新的需求，因此，非关系型数据库严格上不是一种数据库，应该是一种数据结构化存储方法的集合。</li>
+</ul>
+<p>不足：</p>
+<ul>
+<li>只适合存储一些较为简单的数据，对于需要进行较复杂查询的数据，关系型数据库显的更为合适。不适合持久存储海量数据</li>
+</ul>
+<p>非关系型数据库分类：</p>
+<ul>
+<li>高性能并发读写的key-value数据库：Redis</li>
+<li>面向海量数据访问的面向文档数据库：MongoDB</li>
+<li>面向搜索数据内容的搜索引擎：Elasticsearch，Splunk</li>
+<li>面向可扩展性的分布式数据库：Cassandra，HBase，</li>
+</ul>
+<h4 id="MongoDB-简介"><a href="#MongoDB-简介" class="headerlink" title="MongoDB  简介"></a>MongoDB  简介</h4><p>MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案，是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。它支持的数据结构非常松散，是类似json的bson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是它支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。</p>
+<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220322211821380.png"></p>
+<h5 id="1、下载镜像："><a href="#1、下载镜像：" class="headerlink" title="1、下载镜像："></a>1、下载镜像：</h5><p>地址：<a target="_blank" rel="noopener" href="https://www.mongodb.com/download-center/community">https://www.mongodb.com/download-center/community</a></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220318092129146.png" alt="image-20220318092129146"></p>
+<p>根据操作系统的类别和版本来选择。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220318151448048.png" alt="image-20220318151448048"></p>
+<p>server仅包含mongodb server，</p>
+<p>shell仅包含mongo客户端命令mongo，rpm可以用<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=yum&spm=1001.2101.3001.7020">yum</a>或者rpm安装，tgz直接解压并配置path就可以使用</p>
+<p>最后的tgz包包含了所有组件（mongos，shell和server），直接解压就可以使用。</p>
+<h5 id="2、配置环境变量"><a href="#2、配置环境变量" class="headerlink" title="2、配置环境变量"></a>2、配置环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>将数据库的安装目录加入环境变量中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> MONGODB_HOME=/mongodb</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$MONGODB_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>使环境变量配置生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="3、创建数据库目录"><a href="#3、创建数据库目录" class="headerlink" title="3、创建数据库目录"></a>3、创建数据库目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mongodb/</span><br><span class="line"><span class="built_in">mkdir</span> data		<span class="comment">#必须有这步，这个使存放数据文件的路径，并且启动mongod进程是必须用此参数</span></span><br><span class="line"><span class="built_in">mkdir</span> <span class="built_in">log</span>		<span class="comment">#同上</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="4、启动MongoDB服务"><a href="#4、启动MongoDB服务" class="headerlink" title="4、启动MongoDB服务"></a>4、启动MongoDB服务</h5><ul>
+<li>启动方式一：指定命令行启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongod --dbpath /mongodb/data  --logpath /mongodb/log		--fork</span><br><span class="line"><span class="comment">#mongod --dbpath 数据文件存放路径  --logpath 日志文件存放路径	--fork 指定进程后台运行，也可以用Linux的&amp;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动方式二：使用配置文件启动，此配置文件需要提前编辑好</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -f [ --config] arg	Configuration file specifying</span></span><br><span class="line">mongod -f /mongodb/mongodb.conf</span><br></pre></td></tr></table></figure>
+
+<p>​    配置文件内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   destination: file</span><br><span class="line">   path: <span class="string">&quot;/mongodb/log/mongod.log&quot;</span>	<span class="comment">#备份需要日志路径是绝对路径</span></span><br><span class="line">   logAppend: <span class="literal">true</span></span><br><span class="line">storage:</span><br><span class="line">   dbPath: <span class="string">&quot;/mongodb/data&quot;</span>	<span class="comment">#路径是绝对路径</span></span><br><span class="line">   journal:</span><br><span class="line">      enabled: <span class="literal">true</span></span><br><span class="line">processManagement:</span><br><span class="line">   fork: <span class="literal">true</span></span><br><span class="line">net:</span><br><span class="line">   bindIp: 0.0.0.0</span><br><span class="line">   port: 27017</span><br><span class="line">setParameter:</span><br><span class="line">   enableLocalhostAuthBypass: <span class="literal">false</span> </span><br><span class="line">security:</span><br><span class="line">　　authorization: enabled</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>配置详解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   verbosity: &lt;int&gt; 	<span class="comment">#级别1-5，数字越大级别越高</span></span><br><span class="line">   quiet: &lt;boolean&gt;	<span class="comment">#限制输出信息：数据库命令输出，副本集活动，连接接受事件，连接关闭事件。</span></span><br><span class="line">   traceAllExceptions: &lt;boolean&gt;	<span class="comment">#为调试打印详细信息，用于支持相关的故障排除。</span></span><br><span class="line">   syslogFacility: &lt;string&gt;	<span class="comment">#将mongodb使用日志记录到系统日志中，如果要使用这个选项，必须开启--sysylog选项</span></span><br><span class="line">   path: &lt;string&gt;			<span class="comment">#指定日志文件的目录</span></span><br><span class="line">   logAppend: &lt;boolean&gt;	<span class="comment">#当mongod或mongos重启时，如果为true，将日志追加到原来日志文件内容末尾；如果为false，将创建一个新的日志文件</span></span><br><span class="line">   logRotate: &lt;string&gt;	<span class="comment">#值：rename、reopen，rename重命名日志文件；reopen关闭和重新打开日志文件，如果使用reopen你必须设置sysLog.logAppend为true</span></span><br><span class="line">   destination: &lt;string&gt;	<span class="comment">#值：file、syslog；指定为file必须指定path</span></span><br><span class="line">   timeStampFormat: &lt;string&gt;	<span class="comment">#为日志添加时间戳。</span></span><br><span class="line">storage:</span><br><span class="line">   dbPath: &lt;string&gt; <span class="comment">#指定数据文件的路径。</span></span><br><span class="line">   journal：</span><br><span class="line">     enabled: &lt;boolean&gt;	<span class="comment">#记录操作日志，防止数据丢失。默认64bit为true，32bit为false。</span></span><br><span class="line">net:</span><br><span class="line">   port: &lt;int&gt;	<span class="comment">#指定运行端口，默认值为27017，MongoDB实例监听客户端连接的端口号。</span></span><br><span class="line">   bindIp: &lt;string&gt;	<span class="comment">#指定mongodb实例绑定的ip，为了绑定多个ip，可以使用逗号分隔。</span></span><br><span class="line">   maxIncomingConnections: &lt;int&gt;	<span class="comment">#接受的最多连接数，如果高于操作系统接受的最大线程数，设置无效。默认值：1000000</span></span><br><span class="line">   wireObjectCheck: &lt;boolean&gt;	<span class="comment">#检查文档的有效性。会稍微影响性能。默认值：true</span></span><br><span class="line">   ipv6: &lt;boolean&gt;		<span class="comment">#默认为false 打开IPV6功能，默认为关闭的。</span></span><br><span class="line">   unixDomainSocket:	</span><br><span class="line">      enabled: &lt;boolean&gt;</span><br><span class="line">      pathPrefix: &lt;string&gt;</span><br><span class="line">      filePermissions: &lt;int&gt;</span><br><span class="line">   http:</span><br><span class="line">      enabled: &lt;boolean&gt;	<span class="comment">#默认为false，打开http端口，会导致更多的不安全因素。</span></span><br><span class="line">      JSONPEnabled: &lt;boolean&gt;	<span class="comment">#默认为false 运行json访问http端口，打开会导致更多的不安全因素。</span></span><br><span class="line">      RESTInterfaceEnabled: &lt;boolean&gt;	<span class="comment">#默认为false 即使http接口选项关闭，打开也会暴露http接口，会导致更多的不安全因素。</span></span><br><span class="line"><span class="comment"># ssl:</span></span><br><span class="line"><span class="comment">#  mode: &quot;requireSSL&quot;</span></span><br><span class="line"><span class="comment">#  PEMKeyFile: &quot;/etc/ssl/mongodb.pem&quot;</span></span><br><span class="line">security:</span><br><span class="line">  keyFile: <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  clusterAuthMode: <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  authorization: <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。</span></span><br><span class="line">replication:</span><br><span class="line">  oplogSizeMB: 50 <span class="comment">#默认为磁盘的5%。指定oplog的最大尺寸。</span></span><br><span class="line">  replSetName: <span class="string">&quot;repl_test&quot;</span>	<span class="comment">#指定副本集的名称。</span></span><br><span class="line">  secondaryIndexPrefetch: <span class="string">&quot;all&quot;</span> <span class="comment">#值：none、all、_id_only。指定副本集成员在接受oplog之前是否加载索引到内存。默认none。</span></span><br><span class="line">sharding</span><br><span class="line">   clusterRole：<span class="comment">#configsvr，shardsvr。shardsvr</span></span><br><span class="line">setParameter:</span><br><span class="line">   enableLocalhostAuthBypass: <span class="literal">false</span> <span class="comment">#此参数只能在配置文件中设置。值：0，false,true；默认是开启的。 </span></span><br><span class="line">processManagement:</span><br><span class="line">   fork: <span class="literal">true</span>	<span class="comment">#作用：后台Daemon方式启动mongodb实例，此参数必须配个--logpath参数使用。</span></span><br></pre></td></tr></table></figure>
+
+<p>手动数据库中设置方法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.adminCommand( &#123; setParameter: <span class="number">1</span>, <span class="operator">&lt;</span><span class="keyword">parameter</span><span class="operator">&gt;</span>: <span class="operator">&lt;</span><span class="keyword">value</span><span class="operator">&gt;</span>  &#125; )</span><br></pre></td></tr></table></figure>
+
+<h5 id="5、向Linux系统中添加Mongodb服务"><a href="#5、向Linux系统中添加Mongodb服务" class="headerlink" title="5、向Linux系统中添加Mongodb服务"></a>5、向Linux系统中添加Mongodb服务</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/init.d/mongodb</span><br></pre></td></tr></table></figure>
+
+<p>添加内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#chkconfig: 2345 80 90</span></span><br><span class="line"><span class="comment">#description:auto_run</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ### BEGIN INIT INFO</span></span><br><span class="line"><span class="comment"># Short-Description: mongodb   </span></span><br><span class="line"><span class="comment"># Description: mongo db server   </span></span><br><span class="line"><span class="comment">### END INIT INFO   </span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">PROGRAM=/mongodb/bin/mongod	<span class="comment">#设置mongod的路径</span></span><br><span class="line">MONGOPID=`ps -ef | grep <span class="string">&#x27;mongod&#x27;</span> | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line"> </span><br><span class="line"><span class="built_in">test</span> -x <span class="variable">$PROGRAM</span> || <span class="built_in">exit</span> 0</span><br><span class="line"> </span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line">  start)</span><br><span class="line">     <span class="built_in">ulimit</span> -n 3000</span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;Starting MongoDB server&quot;</span></span><br><span class="line">     <span class="variable">$PROGRAM</span> --fork --quiet -f /mongodb/mongodb.config <span class="comment">#用命令启动书库服务</span></span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;Started MongoDB server&quot;</span></span><br><span class="line">     ;;</span><br><span class="line">  stop)</span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;Stopping MongoDB server&quot;</span></span><br><span class="line">     <span class="keyword">if</span> [ ! -z <span class="string">&quot;<span class="variable">$MONGOPID</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">kill</span> -15 <span class="variable">$MONGOPID</span></span><br><span class="line">     <span class="keyword">fi</span></span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;Stopped MongoDB server&quot;</span></span><br><span class="line">     ;;</span><br><span class="line">  status)</span><br><span class="line">     ;;</span><br><span class="line">  *)</span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;Usage: mongodb &#123;start|stop|status&#125;&quot;</span></span><br><span class="line">     <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<h5 id="6、设置Mongodb服务自启动"><a href="#6、设置Mongodb服务自启动" class="headerlink" title="6、设置Mongodb服务自启动"></a>6、设置Mongodb服务自启动</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/init.d/mongodb</span><br><span class="line">chkconfig --add mongodb</span><br><span class="line">chkconfig mongodb on</span><br></pre></td></tr></table></figure>
+
+<h5 id="7、关闭数据库"><a href="#7、关闭数据库" class="headerlink" title="7、关闭数据库"></a>7、关闭数据库</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongo </span><br><span class="line">db.shutdownServer()</span><br></pre></td></tr></table></figure>
+
+<h5 id="8、连接数据库"><a href="#8、连接数据库" class="headerlink" title="8、连接数据库"></a>8、连接数据库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]</span></span><br><span class="line">mongodb </span><br></pre></td></tr></table></figure>
+
+<h5 id="9、在mongodb中基本的概念是文档、集合、数据库，"><a href="#9、在mongodb中基本的概念是文档、集合、数据库，" class="headerlink" title="9、在mongodb中基本的概念是文档、集合、数据库，"></a>9、在mongodb中基本的概念是文档、集合、数据库，</h5><table>
+<thead>
+<tr>
+<th align="left">SQL术语/概念</th>
+<th align="center">MongoDB术语/概念</th>
+<th align="center">解释/说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">database</td>
+<td align="center">database</td>
+<td align="center">数据库</td>
+</tr>
+<tr>
+<td align="left">table</td>
+<td align="center">collection</td>
+<td align="center">数据库表/集合</td>
+</tr>
+<tr>
+<td align="left">row</td>
+<td align="center">document</td>
+<td align="center">数据记录行/文档</td>
+</tr>
+<tr>
+<td align="left">column</td>
+<td align="center">field</td>
+<td align="center">数据字段/域</td>
+</tr>
+<tr>
+<td align="left">index</td>
+<td align="center">index</td>
+<td align="center">索引</td>
+</tr>
+<tr>
+<td align="left">table joins</td>
+<td align="center"></td>
+<td align="center">表连接,MongoDB不支持</td>
+</tr>
+<tr>
+<td align="left">primary key</td>
+<td align="center">primary key</td>
+<td align="center">主键,MongoDB自动将_id字段设置为主键</td>
+</tr>
+</tbody></table>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\Figure-1-Mapping-Table-to-Collection-1.png" alt="img"></p>
+<p>一个mongodb中可以建立多个数据库。</p>
+<p>MongoDB的默认数据库为”db”，该数据库存储在data目录中。</p>
+<p>MongoDB的单个实例可以容纳多个独立的数据库，每一个都有自己的集合和权限，不同的数据库也放置在不同的文件中。</p>
+<h5 id="10、数据库的使用–数据库、集合"><a href="#10、数据库的使用–数据库、集合" class="headerlink" title="10、数据库的使用–数据库、集合"></a>10、数据库的使用–数据库、集合</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db #默认显示是test</span><br><span class="line"><span class="keyword">show</span> dbs #命令可以显示所有数据的列表。</span><br><span class="line">use dbName	#切换数据，如果没有这个数据库，在进行实际的插入数据时会自动创建一个新的数据库。</span><br><span class="line">db.dropDatabase()	#删除当前数据库</span><br><span class="line">db.createCollection(name, options)	#name: 要创建的集合名称、options: 可选参数, 指定有关内存大小及索引的选项</span><br></pre></td></tr></table></figure>
+
+<p> options 可以是如下参数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">capped</td>
+<td align="left">布尔</td>
+<td align="left">（可选）如果为 true，则创建固定集合。固定集合是指有着固定大小的集合，当达到最大值时，它会自动覆盖最早的文档。 <strong>当该值为 true 时，必须指定 size 参数。</strong></td>
+</tr>
+<tr>
+<td align="left">size</td>
+<td align="left">数值</td>
+<td align="left">（可选）为固定集合指定一个最大值，即字节数。 <strong>如果 capped 为 true，也需要指定该字段。</strong></td>
+</tr>
+<tr>
+<td align="left">max</td>
+<td align="left">数值</td>
+<td align="left">（可选）指定固定集合中包含文档的最大数量。</td>
+</tr>
+</tbody></table>
+<p>在插入文档时，MongoDB 首先检查固定集合的 size 字段，然后检查 max 字段。</p>
+<p>在 MongoDB 中，你不需要创建集合。当你插入一些文档时，MongoDB 会自动创建集合。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> collections #<span class="keyword">show</span> tables 也可。</span><br><span class="line">db.collectionName.drop() #删除集合，先切换到对应得数据库中执行</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220320170311683.png" alt="image-20220320170311683"></p>
+<h5 id="11、数据库的使用–文档"><a href="#11、数据库的使用–文档" class="headerlink" title="11、数据库的使用–文档"></a>11、数据库的使用–文档</h5><p>文档的数据结构和 JSON 基本一样。所有存储在集合中的数据都是 BSON 格式。BSON 是一种类似 JSON 的二进制形式的存储格式，是 Binary JSON 的简称。</p>
+<p>插入</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.COLLECTION_NAME.insert()</span><br><span class="line">db.collection.insertOne()</span><br><span class="line">db.collection.insertMany()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220320184725547.png" alt="image-20220320184725547"></p>
+<p>更新</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">db.collection.update(</span><br><span class="line">   <span class="operator">&lt;</span>query<span class="operator">&gt;</span>,</span><br><span class="line">   <span class="operator">&lt;</span><span class="keyword">update</span><span class="operator">&gt;</span>,</span><br><span class="line">   &#123;</span><br><span class="line">     upsert: <span class="operator">&lt;</span><span class="type">boolean</span><span class="operator">&gt;</span>,</span><br><span class="line">     multi: <span class="operator">&lt;</span><span class="type">boolean</span><span class="operator">&gt;</span>,</span><br><span class="line">     writeConcern: <span class="operator">&lt;</span>document<span class="operator">&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">)</span><br><span class="line">#query : <span class="keyword">update</span>的查询条件，类似<span class="keyword">sql</span> <span class="keyword">update</span>查询内<span class="keyword">where</span>后面的。</span><br><span class="line">#<span class="keyword">update</span> : <span class="keyword">update</span>的对象和一些更新的操作符（如$,$inc...）等，也可以理解为<span class="keyword">sql</span> <span class="keyword">update</span>查询内<span class="keyword">set</span>后面的</span><br><span class="line">#upsert : 可选，这个参数的意思是，如果不存在<span class="keyword">update</span>的记录，是否插入objNew,<span class="literal">true</span>为插入，默认是<span class="literal">false</span>，不插入。</span><br><span class="line">#multi : 可选，mongodb 默认是<span class="literal">false</span>,只更新找到的第一条记录，如果这个参数为<span class="literal">true</span>,就把按条件查出来多条记录全部更新。</span><br><span class="line">#writeConcern :可选，抛出异常的级别</span><br></pre></td></tr></table></figure>
+
+
+
+<p>删除</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.collection.remove(</span><br><span class="line">   <span class="operator">&lt;</span>query<span class="operator">&gt;</span>,</span><br><span class="line">   &#123;</span><br><span class="line">     justOne: <span class="operator">&lt;</span><span class="type">boolean</span><span class="operator">&gt;</span>,	</span><br><span class="line">     writeConcern: <span class="operator">&lt;</span>document<span class="operator">&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">)</span><br><span class="line">#query :（可选）删除的文档的条件。</span><br><span class="line">#justOne : （可选）如果设为 <span class="literal">true</span> 或 <span class="number">1</span>，则只删除一个文档，如果不设置该参数，或使用默认值 <span class="literal">false</span>，则删除所有匹配条件的文档。</span><br><span class="line">#writeConcern :（可选）抛出异常的级别。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220320182457888.png" alt="image-20220320182457888"></p>
+<h5 id="12、数据库的使用–用户篇"><a href="#12、数据库的使用–用户篇" class="headerlink" title="12、数据库的使用–用户篇"></a>12、数据库的使用–用户篇</h5><ul>
+<li>​    设置管理员账户</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(&#123; <span class="keyword">user</span>: &quot;admin&quot;, pwd: &quot;password&quot;, roles: [&#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125;] &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>mongodb中的用户是基于身份role的，该管理员账户的 role是 userAdminAnyDatabase。 ‘userAdmin’代表用户管理身份，’AnyDatabase’ 代表可以管理任何数据库。</p>
+<p>开启用户认证需要在配置文件中添加参数：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">security:</span><br><span class="line">　　<span class="keyword">authorization</span>: enabled</span><br></pre></td></tr></table></figure>
+
+<p>登陆验证：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;admin&quot;, &quot;password&quot;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>创建普通用户</p>
+<p>进入mongodb,用第3步的 管理员账户登录，用该账户创建其他数据库管理员账号:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;admin&quot;, &quot;password&quot;)	#先认证管理员</span><br><span class="line">use databaseName</span><br><span class="line">db.createUser(&#123; <span class="keyword">user</span>: &quot;youruser&quot;, pwd: &quot;yourpassword&quot;, roles: [&#123; role: &quot;dbOwner&quot;, db: &quot;databaseName&quot; &#125;] &#125;)	#设置其他库的账号密码及权限</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>rote:dbOwner 代表数据库所有者角色，拥有最高该数据库最高权限。比如新建索引等</p>
+</li>
+<li><p>Read：允许用户读取指定数据库</p>
+</li>
+<li><p>readWrite：允许用户读写指定数据库</p>
+</li>
+<li><p>dbAdmin：允许用户在指定数据库中执行管理函数，如索引创建、删除，查看统计或访问system.profile</p>
+</li>
+<li><p>userAdmin：允许用户向system.users集合写入，可以找指定数据库里创建、删除和管理用户</p>
+</li>
+<li><p>clusterAdmin：只在admin数据库中可用，赋予用户所有分片和复制集相关函数的管理权限。</p>
+</li>
+<li><p>readAnyDatabase：只在admin数据库中可用，赋予用户所有数据库的读权限</p>
+</li>
+<li><p>readWriteAnyDatabase：只在admin数据库中可用，赋予用户所有数据库的读写权限</p>
+</li>
+<li><p>userAdminAnyDatabase：只在admin数据库中可用，赋予用户所有数据库的userAdmin权限</p>
+</li>
+<li><p>dbAdminAnyDatabase：只在admin数据库中可用，赋予用户所有数据库的dbAdmin权限。</p>
+</li>
+<li><p>root：只在admin数据库中可用。超级账号，超级权限</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2020/03/18/Mongodb%E6%90%AD%E5%BB%BA/" data-id="cl26a2mub000930uv9f7134xb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MongoDB
+        
+      </div>
+    </a>
+  
+  
+    <a href="/RobertBlog/2020/02/25/Spring/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Spring</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/04/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/23/Lvm%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/20/Mongdb%E6%90%AD%E5%BB%BA/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">Web开发</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
