@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Redis | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NoSqlNoSQL最常见的解释是“non-relational”， “Not Only SQL”也被很多人接受。NoSQL仅仅是一个概念，泛指非关系型的数据库，区别于关系数据库，它们不保证关系数据的ACID特性。NoSQL是一项全新的数据库革命性运动，其拥护者们提倡运用非关系型的数据存储，相对于铺天盖地的关系型数据库运用，这一概念无疑是一种全新的思维的注入。NoSQL有如下优点：易扩展，NoSQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2020/04/24/Redis/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="NoSqlNoSQL最常见的解释是“non-relational”， “Not Only SQL”也被很多人接受。NoSQL仅仅是一个概念，泛指非关系型的数据库，区别于关系数据库，它们不保证关系数据的ACID特性。NoSQL是一项全新的数据库革命性运动，其拥护者们提倡运用非关系型的数据存储，相对于铺天盖地的关系型数据库运用，这一概念无疑是一种全新的思维的注入。NoSQL有如下优点：易扩展，NoSQ">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/image-20220424230634275.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-3036a75a8358d30a8433786839a497e9_r.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-05967df1adcf64a26f0edfe54d879b5f_r.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-08377a93ce41e92d3b694260bfca03af_r.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-1d6ff449f5cdc0441f0a4759157df862_r.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-4958e6ede3af9e5bc91c48a3a7064a61_r.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/v2-aea493971eb7bd69608d9995e9302070_720w.jpg">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/285763-20220214202335680-1625341776.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/285763-20220214202426777-229548134.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBARG91YmxlLVY=,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/12312.pang">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBARG91YmxlLVY=,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/rqwr.pang">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/fdasasgas.pang">
+<meta property="article:published_time" content="2020-04-24T14:03:35.000Z">
+<meta property="article:modified_time" content="2022-05-10T14:38:54.557Z">
+<meta property="article:author" content="Robert Pang">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Redis/image-20220424230634275.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Redis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2020/04/24/Redis/" class="article-date">
+  <time datetime="2020-04-24T14:03:35.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="NoSql"><a href="#NoSql" class="headerlink" title="NoSql"></a>NoSql</h2><p>NoSQL最常见的解释是“non-relational”， “Not Only SQL”也被很多人接受。NoSQL仅仅是一个概念，泛指非关系型的数据库，区别于关系数据库，它们不保证关系数据的ACID特性。NoSQL是一项全新的数据库革命性运动，其拥护者们提倡运用非关系型的数据存储，相对于铺天盖地的关系型数据库运用，这一概念无疑是一种全新的思维的注入。<br>NoSQL有如下优点：易扩展，NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样就非常容易扩展。无形之间也在架构的层面上带来了可扩展的能力。大数据量，高性能，NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。这得益于它的无关系性，数据库的结构简单</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p><strong>键值(Key-Value)存储数据库</strong></p>
+<p>这一类数据库主要会使用到一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E8%A1%A8">哈希表</a>，这个表中有一个特定的键和一个指针指向特定的数据。Key/value模型对于IT系统来说的优势在于简单、易部署。但是如果<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E5%91%98/1216449">数据库管理员</a>(<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/DBA/3349">DBA</a>)只对部分值进行查询或更新的时候，Key/value就显得效率低下了。举例如：Tokyo Cabinet/Tyrant， Redis， Voldemort， Oracle BDB。</p>
+<ul>
+<li>新浪：Redis</li>
+<li>美团：Redis + Tair</li>
+<li>阿里、百度：Redis + Memecache</li>
+</ul>
+<p><strong>列存储数据库</strong></p>
+<p>这部分数据库通常是用来应对分布式存储的海量数据。键仍然存在，但是它们的特点是指向了多个列。这些列是由列家族来安排的。如：Cassandra， HBase， Riak。分布式文件系统</p>
+<p><strong>文档型数据库</strong></p>
+<p>文档型数据库的灵感是来自于Lotus Notes办公软件的，而且它同第一种键值存储相类似。该类型的数据模型是版本化的文档，半结构化的文档以特定的格式存储，比如JSON。文档型数据库可以看作是键值数据库的升级版，允许之间嵌套键值，在处理网页等复杂数据时，文档型数据库比传统键值数据库的查询效率更高。如：CouchDB， MongoDb. 国内也有文档型数据库SequoiaDB，已经开源。</p>
+<ul>
+<li>MongoDB<ul>
+<li>是一个基于分布式文件存储的数据库，C++ 编写，主要是用来处理大量的文档</li>
+<li>是一个介于关系型和非关系型数据中间的产品；是非关系型数据库中功能最丰富，最像关系型数据库的。</li>
+</ul>
+</li>
+<li>ConthDB</li>
+</ul>
+<p><strong>图形(Graph)数据库</strong></p>
+<p>图形结构的数据库同其他行列以及刚性结构的SQL数据库不同，它是使用灵活的图形模型，并且能够扩展到多个服务器上。NoSQL数据库没有标准的查询语言(SQL)，因此进行数据库查询需要制定数据模型。许多NoSQL数据库都有REST式的数据接口或者查询API。如：Neo4J， InfoGrid， Infinite Graph。<br>特点：主要存储的数据关系的。</p>
+<p><strong>不同分类特点对比</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>Examples举例</strong></th>
+<th>典型应用场景</th>
+<th>数据模型</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>键值（key-value）</strong></td>
+<td>Tokyo Cabinet/Tyrant， Redis， Voldemort， Oracle BDB</td>
+<td>内容缓存，主要用于处理大量数据的高访问负载，也用于一些日志系统等等。</td>
+<td>Key 指向 Value 的键值对，通常用hash table来实现</td>
+<td>查找速度快</td>
+<td>数据无结构化，通常只被当作字符串或者二进制数据</td>
+</tr>
+<tr>
+<td><strong>列存储数据库</strong></td>
+<td>Cassandra， HBase， Riak</td>
+<td>分布式的文件系统</td>
+<td>以列簇式存储，将同一列数据存在一起</td>
+<td>查找速度快，可扩展性强，更容易进行分布式扩展</td>
+<td>功能相对局限</td>
+</tr>
+<tr>
+<td><strong>文档型数据库</strong></td>
+<td>CouchDB， MongoDb</td>
+<td>Web应用（与Key-Value类似，Value是结构化的，不同的是数据库能够了解Value的内容）</td>
+<td>Key-Value对应的键值对，Value为结构化数据</td>
+<td>数据结构要求不严格，表结构可变，不需要像关系型数据库一样需要预先定义表结构</td>
+<td>查询性能不高，而且缺乏统一的查询语法。</td>
+</tr>
+<tr>
+<td><strong>图形(Graph)数据库</strong></td>
+<td>Neo4J， InfoGrid， Infinite Graph</td>
+<td>社交网络，推荐系统等。专注于构建关系图谱</td>
+<td>图结构</td>
+<td>利用图结构相关算法。比如最短路径寻址，N度关系查找等</td>
+<td>很多时候需要对整个图做计算才能得出需要的信息，而且这种结构不太好做分布式的集群方案。</td>
+</tr>
+</tbody></table>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><h4 id="易扩展"><a href="#易扩展" class="headerlink" title="易扩展"></a><strong>易扩展</strong></h4><p>NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样就非常容易扩展。无形之间，在架构的层面上带来了可扩展的能力。</p>
+<h4 id="大数据量，高性能"><a href="#大数据量，高性能" class="headerlink" title="大数据量，高性能"></a><strong>大数据量，高性能</strong></h4><p>NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。这得益于它的无关系性，数据库的结构简单。一般MySQL使用Query Cache。NoSQL的Cache是记录级的，是一种细粒度的Cache，所以NoSQL在这个层面上来说性能就要高很多。</p>
+<h4 id="灵活的数据模型"><a href="#灵活的数据模型" class="headerlink" title="灵活的数据模型"></a><strong>灵活的数据模型</strong></h4><p>NoSQL无须事先为要存储的数据建立字段，随时可以存储自定义的数据格式。而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是——个噩梦。这点在大数据量的Web 2.0时代尤其明显。</p>
+<h4 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a><strong>高可用</strong></h4><p>NoSQL在不太影响性能的情况，就可以方便地实现高可用的架构。比如Cassandra、HBase模型，通过复制模型也能实现高可用。</p>
+<h4 id="传统的RDBMS和NoSQL对比："><a href="#传统的RDBMS和NoSQL对比：" class="headerlink" title="传统的RDBMS和NoSQL对比："></a>传统的RDBMS和NoSQL对比：</h4><p>传统的RDBMS：</p>
+<ul>
+<li>结构化组织</li>
+<li>SQL</li>
+<li>数据和关系都存在单独的表中</li>
+<li>严格的一致性</li>
+<li>基础的事务</li>
+</ul>
+<p>NoSQL</p>
+<ul>
+<li>不仅仅是数据</li>
+<li>没有固定的查询语言</li>
+<li>键值对存储，列存储，文档存储，图形数据库</li>
+<li>CAP定理和BASE</li>
+<li>高性能，高可用，高可扩。</li>
+</ul>
+<blockquote>
+<p>大数据的3V+3高</p>
+</blockquote>
+<p>大数据库的3V：主要是描述问题的</p>
+<ol>
+<li>海量Volume</li>
+<li>多样Variaty</li>
+<li>实时Velocity</li>
+</ol>
+<p>大数据时代的3高：主要是对程序的要求</p>
+<ol>
+<li>高并发</li>
+<li>高可拓（机器不够可以随时扩展服务器）</li>
+<li>高性能</li>
+</ol>
+<h2 id="Redis-概念"><a href="#Redis-概念" class="headerlink" title="Redis 概念"></a>Redis 概念</h2><blockquote>
+<p>是什么</p>
+</blockquote>
+<p> Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/C%E8%AF%AD%E8%A8%80">C语言</a>编写、支持网络、可基于内存亦可持久化的日志型、Key-Value<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%BA%93/103728">数据库</a>，并提供多种语言的API。和memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步。</p>
+<blockquote>
+<p>能做什么</p>
+</blockquote>
+<ol>
+<li>内存存储、持久化。持久化机制（rdb，oaf）</li>
+<li>效率高，可以用于高速缓存。</li>
+<li>发布订阅系统</li>
+<li>地图信息分析</li>
+<li>计时器，计数器（浏览量）</li>
+</ol>
+<blockquote>
+<p>特性</p>
+</blockquote>
+<ol>
+<li>多样的数据类型</li>
+<li>持久化</li>
+<li>集群</li>
+<li>事务</li>
+</ol>
+<p>安装办法：</p>
+<p>Windos</p>
+<p>解压zip文件即可使用。</p>
+<blockquote>
+<h1 id="redis-server-exe-服务端运行程序"><a href="#redis-server-exe-服务端运行程序" class="headerlink" title="redis-server.exe 服务端运行程序"></a>redis-server.exe 服务端运行程序</h1></blockquote>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\image-20220424230634275.png" alt="image-20220424230634275"></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Redis 的配置文件位于 Redis 安装目录下，文件名为 <strong>redis.conf</strong>(Windows 名为 redis.windows.conf)。</p>
+<h4 id="查看配置"><a href="#查看配置" class="headerlink" title="查看配置"></a>查看配置</h4><p>你可以通过 <strong>CONFIG</strong> 命令查看或设置配置项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#查看loglevel的配置</span></span><br><span class="line">CONFIG GET loglevel</span><br><span class="line"><span class="comment">#使用 * 号获取所有配置项：</span></span><br><span class="line">CONFIG GET *</span><br></pre></td></tr></table></figure>
+
+<h4 id="编辑配置"><a href="#编辑配置" class="headerlink" title="编辑配置"></a>编辑配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#CONFIG SET 命令基本语法：</span></span><br><span class="line">CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE</span><br></pre></td></tr></table></figure>
+
+<p>具体配置见连接：<a target="_blank" rel="noopener" href="https://www.runoob.com/redis/redis-conf.html">https://www.runoob.com/redis/redis-conf.html</a></p>
+<p>测试性能：</p>
+<p><code>redis-bencheckmark</code> 是一个压力测试工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@测试： 100个并发连接，</span><br><span class="line">redis-benchmark </span><br></pre></td></tr></table></figure>
+
+<h2 id="基础知识："><a href="#基础知识：" class="headerlink" title="基础知识："></a>基础知识：</h2><p>默认有16个数据库，可以通过<code>select dbid</code>可以切换数据库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Set the number of databases. The default database is DB 0, you can select</span></span><br><span class="line"><span class="comment"># a different one on a per-connection basis using SELECT &lt;dbid&gt; where</span></span><br><span class="line"><span class="comment"># dbid is a number between 0 and &#x27;databases&#x27;-1</span></span><br><span class="line">databases 16</span><br></pre></td></tr></table></figure>
+
+<p>基本使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#连接数据库：</span></span><br><span class="line">redis-cli -h host -p port -a password</span><br><span class="line"><span class="comment">#查看数据大小</span></span><br><span class="line">127.0.0.1:6379[1]&gt; DBSIZE</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line"><span class="comment">#查看当前数据库的所有key</span></span><br><span class="line">127.0.0.1:6379[1]&gt; keys *</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line"><span class="comment">#清空当前数据库</span></span><br><span class="line">127.0.0.1:6379[1]&gt; FLUSHDB</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[1]&gt; keys *</span><br><span class="line">(empty list or <span class="built_in">set</span>)</span><br><span class="line"><span class="comment">#清空全部数据库内容</span></span><br><span class="line">127.0.0.1:6379&gt; flushall</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Redis 是单线程的</p>
+</blockquote>
+<p>Redis是基于内存操作，CPU不是Redis性能的凭借，Redis的瓶颈是机器的内存和带宽。既然可以使用单线程，就是用了单线程。</p>
+<p>Redis是C语言写的，官方提供的数据为 100000+ 的QPS ，完全不必同样是使用key-value的Memecache差。</p>
+<p>Redis 是单线程的还快？</p>
+<p>误区：高性能的服务器一定是多线程的，多线程一定比单线程效率高。因为CPU的上下文切换需要时间。</p>
+<p>核心：redis是将所有的数据放置在内存中，所以说使用单线程操作效率是最高的。多线程（CPU上下文切换是耗时的），对于内存系统来说，如果没有上下文切换效率是最高的。多次读写都在一个CPU中操作，是最高效率的方案。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zset(sorted set：有序集合)。</p>
+<p>string 是 redis 最基本的类型，你可以理解成与 Memcached 一模一样的类型，一个 key 对应一个 value。</p>
+<p>string 类型是二进制安全的。意思是 redis 的 string 可以包含任何数据。比如jpg图片或者序列化的对象。</p>
+<p>string 类型是 Redis 最基本的数据类型，string 类型的值最大能存储 512MB。</p>
+<h4 id="Redis-keys-命令"><a href="#Redis-keys-命令" class="headerlink" title="Redis keys 命令"></a>Redis keys 命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys * <span class="comment">#查看所有keys</span></span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; exists name <span class="comment">#是否存在key</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; expire name 10 <span class="comment">#设置key的过期时间</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; ttl name <span class="comment">#查看key当前的有效时间</span></span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line">127.0.0.1:6379&gt; TYPE name <span class="comment">#查看key的类型</span></span><br><span class="line">string</span><br></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-del.html">DEL key</a> 该命令用于在 key 存在时删除 key。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-dump.html">DUMP key</a> 序列化给定 key ，并返回被序列化的值。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-exists.html">EXISTS key</a> 检查给定 key 是否存在。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-expire.html">EXPIRE key</a> seconds 为给定 key 设置过期时间，以秒计。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-expireat.html">EXPIREAT key timestamp</a> EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-pexpire.html">PEXPIRE key milliseconds</a> 设置 key 的过期时间以毫秒计。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-pexpireat.html">PEXPIREAT key milliseconds-timestamp</a> 设置 key 过期时间的时间戳(unix timestamp) 以毫秒计</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-keys.html">KEYS pattern</a> 查找所有符合给定模式( pattern)的 key 。</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-move.html">MOVE key db</a> 将当前数据库的 key 移动到给定的数据库 db 当中。</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-persist.html">PERSIST key</a> 移除 key 的过期时间，key 将持久保持。</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-pttl.html">PTTL key</a> 以毫秒为单位返回 key 的剩余的过期时间。</td>
+</tr>
+<tr>
+<td>12</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-ttl.html">TTL key</a> 以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)。</td>
+</tr>
+<tr>
+<td>13</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-randomkey.html">RANDOMKEY</a> 从当前数据库中随机返回一个 key 。</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-rename.html">RENAME key newkey</a> 修改 key 的名称</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-renamenx.html">RENAMENX key newkey</a> 仅当 newkey 不存在时，将 key 改名为 newkey 。</td>
+</tr>
+<tr>
+<td>16</td>
+<td>[SCAN cursor <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-scan.html">MATCH pattern] [COUNT count]</a> 迭代数据库中的数据库键。</td>
+</tr>
+<tr>
+<td>17</td>
+<td><a target="_blank" rel="noopener" href="https://www.runoob.com/redis/keys-type.html">TYPE key</a> 返回 key 所储存的值的类型。</td>
+</tr>
+</tbody></table>
+<h4 id="Redis-字符串-String"><a href="#Redis-字符串-String" class="headerlink" title="Redis 字符串(String)"></a>Redis 字符串(String)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get name</span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> name Robert  </span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; append name Daisy <span class="comment">#追加字符串，如果不存在此key，会自动创建。</span></span><br><span class="line">(<span class="built_in">integer</span>) 11</span><br><span class="line">127.0.0.1:6379&gt; get name</span><br><span class="line"><span class="string">&quot;RobertDaisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line"><span class="comment">#GETRANGE key start end #返回 key 中字符串值的子字符</span></span><br><span class="line"><span class="comment">#GETSET key value #将给定 key 的值设为 value ，并返回 key 的旧值(old value)</span></span><br><span class="line">127.0.0.1:6379&gt; getrange name 2 4</span><br><span class="line"><span class="string">&quot;ber&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; getset name Robert</span><br><span class="line"><span class="string">&quot;RobertDaisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; getrange name 2 -1  <span class="comment">#获取从2开始，到末尾的开始的所有字符串</span></span><br><span class="line"><span class="string">&quot;bert&quot;</span></span><br><span class="line"><span class="comment">#SETEX key seconds value #将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。</span></span><br><span class="line"><span class="comment">#SETNX key value  #只有在 key 不存在时设置 key 的值。</span></span><br><span class="line"><span class="comment">#SETRANGE key offset value #用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始。</span></span><br><span class="line"><span class="comment">#STRLEN key 返回 key 所储存的字符串值的长度。</span></span><br><span class="line"><span class="comment">##################################################</span></span><br><span class="line"><span class="comment">###自增自减</span></span><br><span class="line"><span class="comment">#INCR key #将 key 中储存的数字值增一</span></span><br><span class="line"><span class="comment">#INCRBY key increment #将 key 所储存的值加上给定的增量值（increment） 。</span></span><br><span class="line"><span class="comment">#INCRBYFLOAT key increment #将 key 所储存的值加上给定的浮点增量值（increment） </span></span><br><span class="line"><span class="comment">#DECR key #将 key 中储存的数字值减一。</span></span><br><span class="line"><span class="comment">#DECRBY key decrement #key 所储存的值减去给定的减量值（decrement） 。</span></span><br><span class="line"><span class="comment">#############################################</span></span><br><span class="line">mset 	<span class="comment">#MSET key value [key value ...]同时设置一个或多个 key-value 对。</span></span><br><span class="line">msetnx 	<span class="comment">#	MSETNX key value [key value ...]同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。mset 是一个原子性的操作，如果有一个设置的key不能成功，那么整体的设置都会失败。</span></span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; mset k1 v1 k2 v2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; msetnx k3 v3 k1 v4  <span class="comment">#因为原子性，此步的k3并未设置成功。</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">1) <span class="string">&quot;k2&quot;</span></span><br><span class="line">2) <span class="string">&quot;k1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>String的应用场景：value可以是字符串可以是数组、</p>
+<ol>
+<li>计数器</li>
+<li>统计多单位的数量</li>
+<li>粉丝数</li>
+<li>对象缓存存储</li>
+</ol>
+<h4 id="List（列表）"><a href="#List（列表）" class="headerlink" title="List（列表）"></a>List（列表）</h4><p>Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
+<p>一个列表最多可以包含 232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
+<p>可以当成栈，队列，阻塞队列使用。</p>
+<p>所有的list命令都是list开头的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">LPUSH key value1 [value2] <span class="comment">#将一个或多个值插入到列表头部</span></span><br><span class="line">127.0.0.1:6379&gt; lpush name Robert Daisy</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"><span class="comment"># lindex 通过索引获取列表中的元素，以下例子说明index是从0开始的。</span></span><br><span class="line">127.0.0.1:6379&gt; lindex name 2</span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; lindex name 1</span><br><span class="line"><span class="string">&quot;Robert&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lindex name 0</span><br><span class="line"><span class="string">&quot;Daisy&quot;</span></span><br><span class="line"><span class="comment">#LLEN key 获取列表长度</span></span><br><span class="line">127.0.0.1:6379&gt; llen name</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; Lpush name Robert Daisy</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line"><span class="comment">#rpush 将值插入列表的尾部。</span></span><br><span class="line"><span class="comment">#LPUSHX key value 将一个值插入到已存在的列表头部</span></span><br><span class="line"><span class="comment">#RPUSHX key value 为已存在的列表的列表尾部添加值</span></span><br><span class="line">127.0.0.1:6379&gt; rpush name kkk </span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line"><span class="comment">#根据区间回去具体的值</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1 </span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;kkk&quot;</span></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"><span class="comment">#LPOP</span></span><br><span class="line"><span class="comment">#lpop 移除列表中的第一个值</span></span><br><span class="line">127.0.0.1:6379&gt; lpop name</span><br><span class="line"><span class="string">&quot;Daisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">2) <span class="string">&quot;kkk&quot;</span></span><br><span class="line"><span class="comment">#rpop 移除列表中的最后一个值。</span></span><br><span class="line">127.0.0.1:6379&gt; rpop name</span><br><span class="line"><span class="string">&quot;kkk&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line"><span class="comment">#BLPOP</span></span><br><span class="line"><span class="comment">#BRPOP</span></span><br><span class="line"><span class="comment">#BRPOPLPUSH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#BLPOP key1 [key2 ] timeout</span></span><br><span class="line"><span class="comment">#移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</span></span><br><span class="line">127.0.0.1:6379&gt; BLPOP name  2 </span><br><span class="line">1) <span class="string">&quot;name&quot;</span>					<span class="comment">#输出的意思是移除了name list中的Daisy值</span></span><br><span class="line">2) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; BLPOP name  2</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; BLPOP name  2</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; BLPOP name  2 <span class="comment">#因为name中没有值了，所以会一直等待两秒以后再结束BLPOP命令</span></span><br><span class="line">(nil)</span><br><span class="line">(2.04s)</span><br><span class="line"><span class="comment">#BRPOP key1 [key2 ] timeout   </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#从soource中弹出列表的最后一个值 放到destination中，等待时间是2秒。</span></span><br><span class="line"><span class="comment">#BRPOPLPUSH source destination timeout</span></span><br><span class="line"><span class="comment">#从soource中弹出列表的最后一个值 放到destination中</span></span><br><span class="line"><span class="comment">#RPOPLPUSH source destination</span></span><br><span class="line">127.0.0.1:6379&gt; Lpush name Robert Daisy</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; brpoplpush Rober name2 2</span><br><span class="line">(nil)</span><br><span class="line">(2.09s)</span><br><span class="line">127.0.0.1:6379&gt; brpoplpush name name2 2</span><br><span class="line"><span class="string">&quot;Robert&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#########################################################################</span></span><br><span class="line"><span class="comment">#LREM</span></span><br><span class="line"><span class="comment">#LSET </span></span><br><span class="line"><span class="comment">#LTRIM</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#LREM key count value   移除指定个数的元素值</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">4) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">5) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrem name 3 Daisy</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"><span class="comment">#LSET key index value 设置指定索引元素的值。</span></span><br><span class="line">127.0.0.1:6379&gt; lset name 1 Daisy</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">2) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line"><span class="comment">#LTRIM key start stop  通过index截取list中的内容，只保留start和stop区间内的。</span></span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">4) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; ltrim name 1 2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; lrange name 0 -1</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>总结：</p>
+</blockquote>
+<ul>
+<li>list实际是一个链表，before node after ，left， right 都可以插入值</li>
+<li>如果key不存在，创建新的链表</li>
+<li>如果key存在，新增内容</li>
+<li>如果移除了所有值，空链表，也代表不存在</li>
+<li>在两边改动值效率高！中间元素，相对来说效率会低一点。</li>
+</ul>
+<p>消息排队：</p>
+<ol>
+<li>消息队列（Lpush Rpop）</li>
+<li>栈 （Lpush Lpop）</li>
+</ol>
+<h4 id="Set（集合）"><a href="#Set（集合）" class="headerlink" title="Set（集合）"></a>Set（集合）</h4><p>Redis 的 Set 是 String 类型的无序集合。集合成员是唯一的，这就意味着集合中不能出现重复的数据。<br>集合对象的编码可以是 intset 或者 hashtable。<br>Redis 中集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是 O(1)。集合中最大的成员数为 232 - 1 (4294967295, 每个集合可存储40多亿个成员)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line"><span class="comment">#SADD</span></span><br><span class="line"><span class="comment">#smembers</span></span><br><span class="line"><span class="comment">#sismember</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SADD key member1 [member2]	向集合添加一个或多个成员</span></span><br><span class="line">127.0.0.1:6379&gt; sadd myset Robert Daisy <span class="comment">#添加成员</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line"><span class="comment">#SMEMBERS key  返回集合中的所有成员</span></span><br><span class="line">127.0.0.1:6379&gt; smembers myset</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">2) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line"><span class="comment">#判断元素是否在集合中，在返回1，不在返回0</span></span><br><span class="line">127.0.0.1:6379&gt; sismember myset Robert</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; sismember myset Roberts</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line"></span><br><span class="line"><span class="comment">################################################################</span></span><br><span class="line"><span class="comment">#scard</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#scard key 获取set集合中的元素个数</span></span><br><span class="line">127.0.0.1:6379&gt; scard myset</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line"><span class="comment">################################################################</span></span><br><span class="line"><span class="comment">#SPOP key移除并返回集合中的一个随机元素</span></span><br><span class="line"><span class="comment">#SRANDMEMBER key [count] 返回集合中一个或多个随机数</span></span><br><span class="line"><span class="comment">#SREM key member1 [member2] 移除集合中一个或多个成员</span></span><br><span class="line"><span class="comment">#SMOVE source destination member 将 member 元素从 source 集合移动到 destination 集合</span></span><br><span class="line"><span class="comment">################################################################</span></span><br><span class="line"><span class="comment">#微博，B站 共同关注（并集）</span></span><br><span class="line"><span class="comment">#数据的集合</span></span><br><span class="line">- 差集 SDIFF key1 kye2</span><br><span class="line">- 交集 SINTER key1 kye2</span><br><span class="line">- 并集 SUNION key1 kye2</span><br><span class="line"></span><br><span class="line"><span class="comment">#SDIFFSTORE destination key1 [key2] 返回给定所有集合的差集并存储在 destination 中</span></span><br><span class="line"><span class="comment">#SINTERSTORE destination key1 [key2] 返回给定所有集合的交集并存储在 destination 中</span></span><br><span class="line"><span class="comment">#SUNIONSTORE destination key1 [key2] 所有给定集合的并集存储在 destination 集合中</span></span><br><span class="line"><span class="comment">#SMOVE source destination member 将 member 元素从 source 集合移动到 destination 集合</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Hash-哈希"><a href="#Hash-哈希" class="headerlink" title="Hash(哈希)"></a>Hash(哈希)</h4><p>Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。<br>Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#HMSET key field1 value1 [field2 value2 ] 同时将多个 field-value (域-值)对设置到哈希表 key 中。</span></span><br><span class="line">127.0.0.1:6379&gt; hset Robert name Robert <span class="comment">#给Robert hash添加name属性值未Robert</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; hget Robert name <span class="comment">#获取属性值</span></span><br><span class="line"><span class="string">&quot;Robert&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#HSETNX key field value	只有在字段 field 不存在时，设置哈希表字段的值。</span></span><br><span class="line">127.0.0.1:6379&gt; hsetnx Robert name daisy <span class="comment">#当对应的key不存在的时候，才新建key 并设置key的filed的value为xxx</span></span><br><span class="line">(<span class="built_in">integer</span>) 0		<span class="comment">#如果新建成功，返回1；新建是失败返回0。</span></span><br><span class="line">127.0.0.1:6379&gt; hsetnx Daisy name daisy</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line"></span><br><span class="line"><span class="comment">##HVALS key	获取哈希表中所有值。</span></span><br><span class="line">127.0.0.1:6379&gt; hvals Robert</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hvals Dasiy</span><br><span class="line">(empty list or <span class="built_in">set</span>)</span><br><span class="line"><span class="comment">##HGETALL key	获取在哈希表中指定 key 的所有字段和值</span></span><br><span class="line">127.0.0.1:6379&gt; hgetall Robert</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#HGET key field	获取存储在哈希表中指定字段的值。</span></span><br><span class="line"><span class="comment">#HMGET key field1 [field2]	获取所有给定字段的值</span></span><br><span class="line">127.0.0.1:6379&gt; hmget Robert name</span><br><span class="line">1) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#HLEN key	获取哈希表中字段的数量</span></span><br><span class="line">127.0.0.1:6379&gt; hlen Robert</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line"></span><br><span class="line"><span class="comment">#HKEYS key	获取所有哈希表中的字段</span></span><br><span class="line">127.0.0.1:6379&gt; hkeys Robert</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#HDEL key field1 [field2] 删除一个或多个哈希表字段</span></span><br><span class="line">127.0.0.1:6379&gt; hdel Robert name</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#HINCRBY key field increment	为哈希表 key 中的指定字段的整数值加上增量 increment 。</span></span><br><span class="line">127.0.0.1:6379&gt; hgetall Robert</span><br><span class="line">1) <span class="string">&quot;age&quot;</span></span><br><span class="line">2) <span class="string">&quot;18&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hincrby Robert age 1</span><br><span class="line">(<span class="built_in">integer</span>) 19</span><br></pre></td></tr></table></figure>
+
+<h4 id="Redis-有序集合-sorted-set"><a href="#Redis-有序集合-sorted-set" class="headerlink" title="Redis 有序集合(sorted set)"></a>Redis 有序集合(sorted set)</h4><p>Redis 有序集合和集合一样也是 string 类型元素的集合,且不允许重复的成员。<br>不同的是每个元素都会关联一个 double 类型的分数。redis 正是通过分数来为集合中的成员进行从小到大的排序。<br>有序集合的成员是唯一的,但分数(score)却可以重复。<br>集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是 O(1)。 集合中最大的成员数为 232 - 1 (4294967295, 每个集合可存储40多亿个成员)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#添加</span></span><br><span class="line"><span class="comment">#ZADD key score1 member1 [score2 member2]	向有序集合添加一个或多个成员，或者更新已存在成员的分数</span></span><br><span class="line">127.0.0.1:6379&gt; zadd  score 90 Robert 80 Daisy</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; zadd score 100 xiaoming 99 xiaohong</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line"><span class="comment">#ZCARD key	获取有序集合的成员数</span></span><br><span class="line">127.0.0.1:6379&gt; zcard score</span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line"><span class="comment">#ZRANGE key start stop [WITHSCORES]	通过索引区间返回有序集合指定区间内的成员</span></span><br><span class="line">127.0.0.1:6379&gt; zrange score 0 2</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;xiaohong&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrange score 0 1</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#排序</span></span><br><span class="line"><span class="comment">#ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT]	通过分数返回有序集合指定区间内的成员</span></span><br><span class="line">127.0.0.1:6379&gt; zrangebyscore score -inf  90  withscores</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;80&quot;</span></span><br><span class="line">3) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">4) <span class="string">&quot;90&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#移除</span></span><br><span class="line"><span class="comment">#ZREM key member [member ...]	移除有序集合中的一个或多个成员</span></span><br><span class="line">127.0.0.1:6379&gt; zrange score 0 4</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;xiaohong&quot;</span></span><br><span class="line">4) <span class="string">&quot;xiaoming&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrem score Robert</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; zrange score 0 4</span><br><span class="line">1) <span class="string">&quot;Daisy&quot;</span></span><br><span class="line">2) <span class="string">&quot;xiaohong&quot;</span></span><br><span class="line">3) <span class="string">&quot;xiaoming&quot;</span></span><br><span class="line"><span class="comment">#ZREMRANGEBYLEX key min max	移除有序集合中给定的字典区间的所有成员</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#ZREMRANGEBYRANK key start stop	移除有序集合中给定的排名区间的所有成员</span></span><br><span class="line"><span class="comment">#ZREMRANGEBYSCORE key min max	移除有序集合中给定的分数区间的所有成员</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="特殊数据类型"><a href="#特殊数据类型" class="headerlink" title="特殊数据类型"></a>特殊数据类型</h4><h5 id="Redis-GEO"><a href="#Redis-GEO" class="headerlink" title="Redis GEO"></a>Redis GEO</h5><p>Redis GEO 主要用于存储地理位置信息，并对存储的信息进行操作，该功能在 Redis 3.2 版本新增。<br>Redis GEO 操作方法有：</p>
+<ul>
+<li>geoadd：添加地理位置的坐标。</li>
+<li>geopos：获取地理位置的坐标。</li>
+<li>geodist：计算两个位置之间的距离。</li>
+<li>georadius：根据用户给定的经纬度坐标来获取指定范围内的地理位置集合。</li>
+<li>georadiusbymember：根据储存在位置集合里面的某个地点获取指定范围内的地理位置集合。</li>
+<li>geohash：返回一个或多个位置对象的 geohash 值。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#geoadd 用于存储指定的地理空间位置，可以将一个或多个经度(longitude)、纬度(latitude)、位置名称(member)添加到指定的 key 中。</span></span><br><span class="line"><span class="comment">#GEOADD key longitude latitude member [longitude latitude member ...]</span></span><br><span class="line">127.0.0.1:6379&gt; geoadd china  116.397128  39.916527  beijing  102.82147  24.88554  kuming</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#获取城市的经纬度geopos用于从给定的 key 里返回所有指定名称(member)的位置（经度和纬度），不存在的返回 nil。</span></span><br><span class="line"><span class="comment">#GEOPOS key member [member ...]</span></span><br><span class="line">127.0.0.1:6379&gt; geopos china beijing</span><br><span class="line">1) 1) <span class="string">&quot;116.39712899923324585&quot;</span></span><br><span class="line">   2) <span class="string">&quot;39.91652647362980844&quot;</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">#geodist	用于返回两个给定位置之间的距离。 默认是m，可以指定单位。</span></span><br><span class="line"><span class="comment">#GEODIST key member1 member2 [m|km|ft|mi]</span></span><br><span class="line">127.0.0.1:6379&gt; geodist china beijing kuming</span><br><span class="line"><span class="string">&quot;2097031.9964&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; geodist china beijing kuming km</span><br><span class="line"><span class="string">&quot;2097.0320&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#georadius、georadiusbymember</span></span><br><span class="line"><span class="comment">#georadius 以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素。</span></span><br><span class="line"><span class="comment">#georadiusbymember 和 GEORADIUS 命令一样， 都可以找出位于指定范围内的元素， 但是 georadiusbymember 的中心点是由给定的位置元素决定的， 而不是使用经度和纬度来决定中心点。</span></span><br><span class="line"><span class="comment">#georadius 与 georadiusbymember 语法格式如下：</span></span><br><span class="line"><span class="comment">#GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]</span></span><br><span class="line"><span class="comment">#GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]</span></span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember china xian 1000  km</span><br><span class="line">1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">2) <span class="string">&quot;beijing&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember china xian 1500  km</span><br><span class="line">1) <span class="string">&quot;kuming&quot;</span></span><br><span class="line">2) <span class="string">&quot;xian&quot;</span></span><br><span class="line">3) <span class="string">&quot;beijing&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadiusbymember china xian 1500  km withcoord  withdist <span class="comment">#返回经纬度和局member的距离。</span></span><br><span class="line">1) 1) <span class="string">&quot;kuming&quot;</span></span><br><span class="line">   2) <span class="string">&quot;1195.2149&quot;</span></span><br><span class="line">   3) 1) <span class="string">&quot;102.82147139310836792&quot;</span></span><br><span class="line">      2) <span class="string">&quot;24.88553874878809324&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">   2) <span class="string">&quot;0.0000&quot;</span></span><br><span class="line">   3) 1) <span class="string">&quot;108.93425256013870239&quot;</span></span><br><span class="line">      2) <span class="string">&quot;34.23053097599082406&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;beijing&quot;</span></span><br><span class="line">   2) <span class="string">&quot;915.0863&quot;</span></span><br><span class="line">   3) 1) <span class="string">&quot;116.39712899923324585&quot;</span></span><br><span class="line">      2) <span class="string">&quot;39.91652647362980844&quot;</span></span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line"><span class="comment">#geohash 使用 geohash 来保存地理位置的坐标。如果返回两个字符串越接近的话，距离越近。</span></span><br><span class="line"><span class="comment">#geohash 用于获取一个或多个位置元素的 geohash 值。</span></span><br><span class="line"><span class="comment">#GEOHASH key member [member ...]</span></span><br><span class="line">127.0.0.1:6379&gt; geohash china beijing kuming xian</span><br><span class="line">1) <span class="string">&quot;wx4g0dtf9e0&quot;</span></span><br><span class="line">2) <span class="string">&quot;wk3jef22cb0&quot;</span></span><br><span class="line">3) <span class="string">&quot;wqj6wz7x210&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>GEO 底层的原理是ZSET</p>
+<h5 id="HyperLoglog"><a href="#HyperLoglog" class="headerlink" title="HyperLoglog"></a>HyperLoglog</h5><p>Redis 在 2.8.9 版本添加了 HyperLogLog 结构。</p>
+<p>Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。<br>在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基 数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。但是，因为 HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素</p>
+<p>[ PFADD key element <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/hyperloglog-pfadd.html">element …]</a> 添加指定元素到 HyperLogLog 中。<br>[PFCOUNT key <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/hyperloglog-pfcount.html">key …]</a> 返回给定 HyperLogLog 的基数估算值。<br>[PFMERGE destkey sourcekey <a target="_blank" rel="noopener" href="https://www.runoob.com/redis/hyperloglog-pfmerge.html">sourcekey …]</a> 将多个 HyperLogLog 合并为一个 HyperLogLog |</p>
+<h5 id="Bitmaps"><a href="#Bitmaps" class="headerlink" title="Bitmaps"></a>Bitmaps</h5><blockquote>
+<p>位存储，是一种数据结构。</p>
+</blockquote>
+<p>只有两个状态的，可以直接用 0 1 代表状态的数据， 可以直接操作二进制结构数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">setbit key offset value  <span class="comment">#添加key和对应的值。 offset 位偏移量，value 位上的值，只能是0或者1</span></span><br><span class="line">127.0.0.1:6379&gt; setbit sign 0 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 1 0</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 2 2</span><br><span class="line">(error) ERR bit is not an <span class="built_in">integer</span> or out of range</span><br><span class="line">127.0.0.1:6379&gt; getbit sign 0 <span class="comment">#查询位图上0位的值。</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; bitcount sign <span class="comment">#查询key中的值为1的有多少个。</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>Redis事务的本质：一组命令的集合。</p>
+<p><strong>Redis 单条命令是保证原子性的，但是事务不保证原子性。</strong></p>
+<p>一个事务从开始到执行会经历以下三个阶段：</p>
+<ul>
+<li>开始事务。</li>
+<li>命令入队。</li>
+<li>执行事务。</li>
+</ul>
+<p>所有的命令在事务中，并没有被直接执行，只有发起执行命令的时候才会被执行Exec</p>
+<blockquote>
+<p>正常执行事务。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi <span class="comment">#开始标记事务</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span> <span class="comment">#执行事务</span></span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">3) <span class="string">&quot;v1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; flushdb</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; discard  <span class="comment">#放弃事务</span></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译型异常（代码有问题，命令有错），事务中所有的命令都不会执行。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; getset k2 <span class="comment">#因为命令输入参数错误，所以命令无法执行,导致整个事务无法正确执行</span></span><br><span class="line">(error) ERR wrong number of arguments <span class="keyword">for</span> <span class="string">&#x27;getset&#x27;</span> <span class="built_in">command</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k3 v3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span></span><br><span class="line">(error) EXECABORT Transaction discarded because of previous errors.</span><br><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">(empty list or <span class="built_in">set</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行时异常，如果事务队列中语法正确，但是逻辑错误，那么执行命令的时候，其他的命令是可以正常执行的，错误命令抛错。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; flushdb</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 <span class="string">&quot;v1&quot;</span></span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; incr k1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span></span><br><span class="line">1) OK</span><br><span class="line">2) (error) ERR value is not an <span class="built_in">integer</span> or out of range</span><br><span class="line">3) OK</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><p>悲观锁：</p>
+<ul>
+<li>很悲观，无论什么时候都会出问题，无论做什么都加锁</li>
+</ul>
+<p>乐观锁</p>
+<ul>
+<li>很乐观，认为什么时候都不不会出现问题，所以不会上锁！更新数据的时候去判断一下，在此期间是否有人修改过这个数据。</li>
+</ul>
+<h5 id="redis-监视测试"><a href="#redis-监视测试" class="headerlink" title="redis 监视测试"></a>redis 监视测试</h5><p>正常执行成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">1) <span class="string">&quot;out&quot;</span></span><br><span class="line">2) <span class="string">&quot;money&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; watch money</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; decrby money 20</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; incrby out 20</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 80</span><br><span class="line">2) (<span class="built_in">integer</span>) 20</span><br></pre></td></tr></table></figure>
+
+<p>执行失败</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; decrby money 10</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; incrby out 10</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">####在上述事务未提交之前，另外一个线程修改了money的值</span></span><br><span class="line">127.0.0.1:6379&gt; get money</span><br><span class="line"><span class="string">&quot;80&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> money 10000</span><br><span class="line">OK</span><br><span class="line"><span class="comment">####再次提交事务就会失败</span></span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; incrby out 10</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span> <span class="comment">###执行返回值是nil 执行失败</span></span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; mget money out</span><br><span class="line">1) <span class="string">&quot;10000&quot;</span></span><br><span class="line">2) <span class="string">&quot;0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="取消watch机制"><a href="#取消watch机制" class="headerlink" title="取消watch机制#"></a>取消watch机制#</h5><p>①WATCH 命令可以被调用多次。对键的监视从 WATCH 执行之后开始生效，直到调用 EXEC 为止。不管事务是否成功执行，对所有键的监视都会被取消。<br>②当客户端断开连接时，该客户端对键的监视也会被取消。<br>③UNWATCH 命令可以手动取消对所有键的监视</p>
+<h2 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h2><blockquote>
+<p>Jedis 是Redis官方推荐的java连接开发工具！使用java操作Redis的中间件！如果要使用java操作redis，那么需要对jedis熟悉。</p>
+</blockquote>
+<p>配置依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.example<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>Redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.2.graal<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>8<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>8<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>事务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.Robert.jedis;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Transaction;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Robert</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span> 2022-05-07 0:05</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JavaTestTX</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Jedis</span> <span class="variable">jedis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Jedis</span>(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">6379</span>);</span><br><span class="line">        jedis.flushDB();</span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        <span class="comment">//开启事务</span></span><br><span class="line">        <span class="type">Transaction</span> <span class="variable">multi</span> <span class="operator">=</span> jedis.multi();</span><br><span class="line">        jsonObject.put(<span class="string">&quot;user1&quot;</span>,<span class="string">&quot;Robert&quot;</span>);</span><br><span class="line">        jsonObject.put(<span class="string">&quot;user2&quot;</span>,<span class="string">&quot;Daisy&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">string</span> <span class="operator">=</span> jsonObject.toJSONString();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            multi.set(<span class="string">&quot;user1&quot;</span>,string);</span><br><span class="line">            multi.set(<span class="string">&quot;user2&quot;</span>,string);</span><br><span class="line">            <span class="type">int</span> i=<span class="number">1</span>/<span class="number">0</span>;</span><br><span class="line">            multi.exec();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            multi.discard();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(jedis.get(<span class="string">&quot;user1&quot;</span>));</span><br><span class="line">            System.out.println(jedis.keys(<span class="string">&quot;*&quot;</span>));</span><br><span class="line"><span class="comment">//            System.out.println(jedis.get(&quot;user2&quot;));</span></span><br><span class="line">            jedis.close();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Springt-boot-redis"><a href="#Springt-boot-redis" class="headerlink" title="Springt-boot-redis"></a>Springt-boot-redis</h2><p>问题</p>
+<h2 id="Redis-conf-详解"><a href="#Redis-conf-详解" class="headerlink" title="Redis.conf 详解"></a>Redis.conf 详解</h2><p>1、配置文件unit单位对大小写不敏感</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Note on units: when memory size is needed, it is possible to specify</span></span><br><span class="line"><span class="comment"># it in the usual form of 1k 5GB 4M and so forth:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 1k =&gt; 1000 bytes</span></span><br><span class="line"><span class="comment"># 1kb =&gt; 1024 bytes</span></span><br><span class="line"><span class="comment"># 1m =&gt; 1000000 bytes</span></span><br><span class="line"><span class="comment"># 1mb =&gt; 1024*1024 bytes</span></span><br><span class="line"><span class="comment"># 1g =&gt; 1000000000 bytes</span></span><br><span class="line"><span class="comment"># 1gb =&gt; 1024*1024*1024 bytes</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># units are case insensitive so 1GB 1Gb 1gB are all the same.</span></span><br></pre></td></tr></table></figure>
+
+<p>2、包含，可以包含多个配置文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################################## INCLUDES ###################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include one or more other config files here.  This is useful if you</span></span><br><span class="line"><span class="comment"># have a standard template that goes to all Redis servers but also need</span></span><br><span class="line"><span class="comment"># to customize a few per-server settings.  Include files can include</span></span><br><span class="line"><span class="comment"># other files, so use this wisely.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Notice option &quot;include&quot; won&#x27;t be rewritten by command &quot;CONFIG REWRITE&quot;</span></span><br><span class="line"><span class="comment"># from admin or Redis Sentinel. Since Redis always uses the last processed</span></span><br><span class="line"><span class="comment"># line as value of a configuration directive, you&#x27;d better put includes</span></span><br><span class="line"><span class="comment"># at the beginning of this file to avoid overwriting config change at runtime.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># If instead you are interested in using includes to override configuration</span></span><br><span class="line"><span class="comment"># options, it is better to use include as the last line.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># include .\path\to\local.conf</span></span><br><span class="line"><span class="comment"># include c:\path\to\other.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>3、网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bind</span> 127.0.0.1 <span class="comment">#绑定ip</span></span><br><span class="line">protected-mode <span class="built_in">yes</span> <span class="comment">#保护模式</span></span><br><span class="line">port 6379	<span class="comment">#端口</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4、通用配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">daemonize <span class="built_in">yes</span>	<span class="comment">#是否以守护进程启动，windows上不能以守护进程启动</span></span><br><span class="line">pidfile <span class="string">&quot;/var/run/redis.pid&quot;</span> <span class="comment">#指定pid文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#日志</span></span><br><span class="line"><span class="comment"># Specify the server verbosity level.</span></span><br><span class="line"><span class="comment"># This can be one of:</span></span><br><span class="line"><span class="comment"># debug (a lot of information, useful for development/testing)</span></span><br><span class="line"><span class="comment"># verbose (many rarely useful info, but not a mess like the debug level)</span></span><br><span class="line"><span class="comment"># notice (moderately verbose, what you want in production probably) 生产环境</span></span><br><span class="line"><span class="comment"># warning (only very important / critical messages are logged)</span></span><br><span class="line">loglevel notice</span><br><span class="line"></span><br><span class="line"><span class="comment">#日志的文件位置</span></span><br><span class="line"><span class="comment"># Specify the log file name. Also &#x27;stdout&#x27; can be used to force</span></span><br><span class="line"><span class="comment"># Redis to log on the standard output.</span></span><br><span class="line">logfile <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#设置数据库的数量，默认是16个</span></span><br><span class="line"><span class="comment"># Set the number of databases. The default database is DB 0, you can select</span></span><br><span class="line"><span class="comment"># a different one on a per-connection basis using SELECT &lt;dbid&gt; where</span></span><br><span class="line"><span class="comment"># dbid is a number between 0 and &#x27;databases&#x27;-1</span></span><br><span class="line">databases 16</span><br><span class="line"></span><br><span class="line"><span class="comment">#是否显示logo</span></span><br><span class="line"><span class="comment"># By default Redis shows an ASCII art logo only when started to log to the</span></span><br><span class="line"><span class="comment"># standard output and if the standard output is a TTY. Basically this means</span></span><br><span class="line"><span class="comment"># that normally a logo is displayed only in interactive sessions.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># However it is possible to force the pre-4.0 behavior and always show a</span></span><br><span class="line"><span class="comment"># ASCII art logo in startup logs by setting the following option to yes.</span></span><br><span class="line">always-show-logo <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>4、快照配置</p>
+<p>在规定的时间内，执行了多少次操作，则会持久化到文件中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Save the DB on disk:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   save &lt;seconds&gt; &lt;changes&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   Will save the DB if both the given number of seconds and the given</span></span><br><span class="line"><span class="comment">#   number of write operations against the DB occurred.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   In the example below the behaviour will be to save:</span></span><br><span class="line"><span class="comment">#   after 900 sec (15 min) if at least 1 key changed</span></span><br><span class="line"><span class="comment">#   after 300 sec (5 min) if at least 10 keys changed</span></span><br><span class="line"><span class="comment">#   after 60 sec if at least 10000 keys changed</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   Note: you can disable saving completely by commenting out all &quot;save&quot; lines.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   It is also possible to remove all the previously configured save</span></span><br><span class="line"><span class="comment">#   points by adding a save directive with a single empty string argument</span></span><br><span class="line"><span class="comment">#   like in the following example:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   save &quot;&quot;</span></span><br><span class="line"></span><br><span class="line">save 900 1</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br><span class="line"></span><br><span class="line"><span class="comment">#持续化如果出错，是否继续工作</span></span><br><span class="line">stop-writes-on-bgsave-error <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#是否压缩，压缩rdb文件的时候，会消耗cpu资源</span></span><br><span class="line">rdbcompression <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#保存rdb文件的时候，是否进行错误的校验检查</span></span><br><span class="line">rdbchecksum <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#备份文件的名字</span></span><br><span class="line"><span class="comment"># The filename where to dump the DB</span></span><br><span class="line">dbfilename dump.rdb</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据文件的放置路径</span></span><br><span class="line"><span class="comment"># The working directory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The DB will be written inside this directory, with the filename specified</span></span><br><span class="line"><span class="comment"># above using the &#x27;dbfilename&#x27; configuration directive.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The Append Only File will also be created inside this directory.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Note that you must specify a directory here, not a file name.</span></span><br><span class="line"><span class="built_in">dir</span> ./</span><br></pre></td></tr></table></figure>
+
+<p>5、REPLICATION 复制，主从复制</p>
+<p>6、SECURITY</p>
+<p>7、CLIENTS </p>
+<p>maxclients 10000 #设置连接的最大的客户算数量</p>
+<p>maxmemory <bytes> #redis配置最大的内存</bytes></p>
+<p>maxmemory-policy noeviction #内存到达上线后，的处理策略</p>
+<p>当 Redis 内存使用达到 <code>maxmemory </code>时，需要选择设置好的 <code>maxmemory-policy </code>进行对数据进行淘汰机制。</p>
+<p>​    1. volatile-lru(least recently used):最近最少使用算法，从设置了过期时间的键key中选择空转时间最长的键值对清除掉；</p>
+<p>​    2. volatile-lfu(least frequently used):最近最不经常使用算法，从设置了过期时间的键中选择某段时间之内使用频次最小的键值对清除掉；</p>
+<p>​    3. volatile-ttl:从设置了过期时间的键中选择过期时间最早的键值对清除；</p>
+<p>​    4. volatile-random:从设置了过期时间的键中，随机选择键进行清除；</p>
+<p>​    5. allkeys-lru:最近最少使用算法，从所有的键中选择空转时间最长的键值对清除；</p>
+<p>​    6. allkeys-lfu:最近最不经常使用算法，从所有的键中选择某段时间之内使用频次最少的键值对清除；</p>
+<p>​    7.allkeys-random:所有的键中，随机选择键进行删除；</p>
+<p>​    8. noeviction:不做任何的清理工作，在redis的内存超过限制之后，所有的写入操作都会返回错误；但是读操作都能正常的进行;</p>
+<p>8、 APPEND ONLY MODE</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">appendonly no <span class="comment">#默认是不开启aof模式的，默认是使用rdb方式持久化，开启的话参数改成yes</span></span><br><span class="line"><span class="comment"># The name of the append only file (default: &quot;appendonly.aof&quot;)</span></span><br><span class="line">appendfilename <span class="string">&quot;appendonly.aof&quot;</span>	<span class="comment">#持久化文件的名字</span></span><br><span class="line"><span class="comment"># appendfsync always  #每次修改都会sync，消耗性能</span></span><br><span class="line">appendfsync everysec	<span class="comment">#每秒执行一次</span></span><br><span class="line"><span class="comment"># appendfsync no	#不执行sync，需要操作系统自动同步数据，速度最快。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Redis-持久化"><a href="#Redis-持久化" class="headerlink" title="Redis 持久化"></a>Redis 持久化</h2><p>Redis支持两种方式的持久化，一种是RDB方式、另一种是AOF（append-only-file）方式，两种持久化方式可以单独使用其中一种，也可以将这两种方式结合使用。</p>
+<p>RDB：根据指定的规则“定时”将内存中的数据存储在硬盘上，生成的快照<br>AOF：每次执行命令后将命令本身记录下来，每次执行命令都会将命令写入到aof文件中</p>
+<h3 id="RDB模式"><a href="#RDB模式" class="headerlink" title="RDB模式"></a>RDB模式</h3><p>RDB的持久化方式是通过快照（snapshotting）完成的，它是Redis默认的持久化方式，</p>
+<p>Redis允许用户自定义快照条件，当符合快照条件时，Redis会自动执行快照操作。快照的条件可以由用户在配置文件中配置。配置格式如下</p>
+<h4 id="根据配置文件中设置的策略，自动触发。"><a href="#根据配置文件中设置的策略，自动触发。" class="headerlink" title="根据配置文件中设置的策略，自动触发。"></a>根据配置文件中设置的策略，自动触发。</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">save m n //m 代表秒数，n 代表次数，表示 m 秒内发生 n 次变化时，会触发 bgsave。</span><br><span class="line">//redis.conf 中的三个默认配置项</span><br><span class="line">//设置多个 save m n 命令时，满足任何一个条件都会触发持久化。</span><br><span class="line">save 900 1 //表示的是时间900秒内，如果 Redis 中数据至少发生一次变化，就会执行bgsave</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br></pre></td></tr></table></figure>
+
+<h4 id="手动操作触发持久化："><a href="#手动操作触发持久化：" class="headerlink" title="手动操作触发持久化："></a>手动操作触发持久化：</h4><h5 id="save-命令"><a href="#save-命令" class="headerlink" title="save 命令"></a><strong>save 命令</strong></h5><p>Redis 处理命令的方式是以单线程形式来进行的，客户端的请求都会放入一个队列里。当执行 save 命令时，如果执行时间很长的话，后面的请求就会被阻塞，客户端发送的所有命令都会被拒绝。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-3036a75a8358d30a8433786839a497e9_r.jpg" alt="preview"></p>
+<h5 id="bgsave-命令"><a href="#bgsave-命令" class="headerlink" title="bgsave 命令"></a><strong>bgsave 命令</strong></h5><p>与 save 不同的是，执行过程中它并不会阻塞客户端的请求。而是将持久化工作交给子进程来执行，主进程仍负责客户端请求的处理工作。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-05967df1adcf64a26f0edfe54d879b5f_r.jpg" alt="preview"></p>
+<p>Redis会单独创建(fork)一个子进程来进行持久化，会先将数据写入到一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件。整个过程中，主进程是不进行任何IO操作的，这就确保了极高的性能。如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感，那RDB方式要比AOF方式更加的高效。RDB的缺点是最后一次持久化后的数据可能丢失。</p>
+<p>优点：</p>
+<ul>
+<li>对数据的完整性不高</li>
+<li>生成RDB文件的时候，redis主进程会fork()一个子进程来处理所有保存工作，，主进程不需要进行任何磁盘IO操作。</li>
+<li>RDB 在恢复大数据集时的速度比AOF的恢复速度要快，适合大规模的数据恢复</li>
+</ul>
+<p>缺点：</p>
+<p>1、需要一定的实践间隔进行操作，如果意外宕机，可能会丢失一定的数据</p>
+<p>2、RDB方式数据没办法做到实时持久化/秒级持久化。因为bgsave每次运行都要执行fork操作创建子进程，频繁执行成本过高</p>
+<ul>
+<li>问题</li>
+</ul>
+<blockquote>
+<p><strong>关于fork</strong></p>
+</blockquote>
+<p>在Linux程序中，fork()会产生一个和父进程完全相同的子进程，出于效率考虑，Linux中引入了“写时复制技术”，一般情况父进程和子进程会共用同一段物理内存，只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。</p>
+<blockquote>
+<p><strong>RDB 做快照的时候数据能修改吗？</strong></p>
+</blockquote>
+<p>save是同步的会阻塞客户端命令，bgsave的时候是可以修改的。</p>
+<blockquote>
+<p><strong>Redis怎么解决在bgsave做快照的时候允许数据修改呢？</strong></p>
+</blockquote>
+<p>这里主要是利用<code>bgsave</code>的子线程实现的，具体操作如下：</p>
+<ul>
+<li>如果主线程执行读操作，则主线程和 <code>bgsave</code> 子进程互相不影响；</li>
+<li>如果主线程执行写操作，则被修改的数据会复制一份副本，然后 <code>bgsave</code>子进程会把该副本数据写入 RDB 文件，在这个过程中，主线程仍然可以直接修改原来的数据。</li>
+</ul>
+<h3 id="AOF持久化方式"><a href="#AOF持久化方式" class="headerlink" title="AOF持久化方式"></a>AOF持久化方式</h3><p>AOF(Append Only File)：Redis 默认不开启。AOF采用日志的形式来记录每个写操作，并追加到文件中。开启后，执行更改Redis数据的命令时，就会把命令写入到AOF文件中。</p>
+<p>Redis 重启时会根据日志文件的内容把写指令从前到后执行一次以完成数据的恢复工作。</p>
+<blockquote>
+<p>写后日志的方式，Redis先执行命令把数据写入内存，然后再记录日志到文件中。<br>主要是由于Redis在写入日志之前，不对命令进行语法检查，所以只记录执行成功的命令，避免出现记录错误命令的情况，而且在命令执行后再写日志不会阻塞当前的写操作。<br>后写日志主要有两个风险可能会发生：</p>
+<ol>
+<li>数据可能会丢失：如果 Redis 刚执行完命令，此时发生故障宕机，会导致这条命令存在丢失的风险。</li>
+<li>可能阻塞其他操作：AOF 日志其实也是在主线程中执行，所以当 Redis 把日志文件写入磁盘的时候，还是会阻塞后续的操作无法执行。</li>
+</ol>
+</blockquote>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-08377a93ce41e92d3b694260bfca03af_r.jpg" alt="preview"></p>
+<p><strong>AOF 实现方式</strong></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-1d6ff449f5cdc0441f0a4759157df862_r.jpg" alt="preview"></p>
+<p>想要使用 AOF 持久化方式，需要启用配置文件中的 appendonly 参数。默认情况下，Redis 是不开启的。</p>
+<p>开启 AOF 持久化后每执行一条修改数据的命令，Redis 就会将该命令写入 aof_buf 缓冲区。后续还需要设置同步选项，从而确保写命令同步到磁盘文件上的时机。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appendfsync always //每个写命令都同步</span><br><span class="line">appendfsync everysec //每秒同步一次</span><br><span class="line">appendfsync no //让操作系统来决定何时同步</span><br></pre></td></tr></table></figure>
+
+<p><strong>AOF 重写机制</strong></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-4958e6ede3af9e5bc91c48a3a7064a61_r.jpg" alt="preview"></p>
+<p>redis 配置文件中有两个对应的参数是来决定重写机制的触发时机的。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 100 //AOF文件距离上次文件增长超过多少百分比</span><br><span class="line">auto-aof-rewrite-min-size 64mb //AOF文件体积最小多大以上触发</span><br></pre></td></tr></table></figure>
+
+<p>满足所设置的条件时，会自动触发 AOF 重写，此时 Redis 会扫描整个实例的数据，重新生成一个 AOF 文件来达到瘦身的效果。</p>
+<p>所以AOF重写机制，其实是重新生成一个AOF日志文件，只将当前有效并存在的数据转义成符合AOF日志格式的记录，然后依次写入该日志文件，最后刷入硬盘。这些操作都是在子进程中进行的，应该不会阻塞主进程，而导致无法处理新的请求。</p>
+<p>子进程还带来了一个问题，就是在子进程在生成AOF重写日志的时候，主进程还在处理新的请求，那么这段区间的写命令是没有记录下来的。Linux的进程之间的通信可以<a href="https://link.zhihu.com/?target=https://linux.die.net/man/2/pipe">pipe</a>机制进行，Redis通过该机制，主进程将该段区间执行的命令传递给子进程，然后子进程将这些命令追加到AOF重写日志的末尾，因而解决了这个问题。</p>
+<p><strong>AOF 文件恢复</strong></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\v2-aea493971eb7bd69608d9995e9302070_720w.jpg" alt="img"></p>
+<p>和 RBD 不同的是，Redis 中是通过创建一个不带网络连接的伪客户端来进行实现的。为什么要创建伪客户端呢？AOF 文件中的数据格式，都是由命令组成的。通过客户端直接执行每条命令就可以将数据进行恢复。</p>
+<p>在这里需要注意的是，如果服务器开启了 AOF 持久化功能，会优先使用 AOF 文件来进行恢复。只有在 AOF 关闭状态下，服务器才会使用 RDB 文件来进行还原。</p>
+<p><strong>（1）优点</strong></p>
+<ul>
+<li>数据更完整：AOF 中是及时写入的方式，数据保存更完整。恢复时降低数据的损失。</li>
+<li>易读性强：AOF 中保存的数据格式是客户端的写入命令，可读性性强。</li>
+</ul>
+<p><strong>（2）缺点</strong></p>
+<ul>
+<li>文件体积大：AOF 中存储客户端所有的写命令，未经压缩，随着命令的写入，文件会越来越大。</li>
+<li>增加磁盘IO：AOF 文件刷盘如果采用每秒刷一次的方式会导致磁盘IO升高，影响性能</li>
+</ul>
+<h3 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a><strong>混合持久化</strong></h3><p><strong>混合持久化</strong>其实就是 RDB 与 AOF 的混合模式，这是 Redis4.0 之后新增的。</p>
+<p><strong>4.1、持久化方式</strong></p>
+<p>混合持久化是通过 aof-use-rdb-preamble 参数来开启的。它的操作方式是这样的，在写入的时候先把数据以 RDB 的形式写入文件的开头，再将后续的写命令以 AOF 的格式追加到文件中。这样既能保证数据恢复时的速度，同时又能减少数据丢失的风险。</p>
+<p><strong>文件恢复</strong></p>
+<p>在 Redis 重启时，先加载 RDB 的内容，然后再重放增量 AOF 格式命令。这样就避免了 AOF 持久化时的全量加载，从而使加载速率得到大幅提升。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p><strong>RDB持久化</strong></p>
+<ul>
+<li>将某一时刻的数据以二进制形式写入到磁盘里，服务重启时检测到对应文件自动加载进行数据恢复。</li>
+<li>有手动触发和自动触发两种机制。</li>
+</ul>
+<p><strong>AOF持久化</strong></p>
+<ul>
+<li>以文件追加的方式写入客户端执行的写命令。</li>
+<li>数据恢复时，通过创建伪客户端的方式执行命令，直到恢复完成。</li>
+</ul>
+<p><strong>混合持久化</strong></p>
+<ul>
+<li>在写入的时候先把数据以 RDB 的形式写入文件的开头，再将后续的写命令以 AOF 的格式追加到文件中。</li>
+</ul>
+<p>redis持久化分为两种方式，一种是rdb持久化，一种是aof持久化。其中rdb持久化是快照持久化，用二进制的方式存储内存中某一时刻的数据，优点就是文件体积小，缺点就是突然发生宕机，最后一次快照之后的数据会丢失。而aof持久化是文件追加持久化，它会把redis所有的写命令全部记录在日志中，优点就是数据完整性好，缺点就是随着命令的写入，日志文件的体积会越来越大，而且aof恢复的速度也会比rdb持久化慢许多。</p>
+<p>rdb会通过fork一个子进程来进行持久化，会先将数据写入到一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件。如果期间主线程执行写操作，则被修改的数据会复制一份副本，然后子进程会把该副本数据写入 RDB 文件。</p>
+<p>随着命令的不断写入，AOF 文件会变得越来越大，Redis 中提供了瘦身功能，也就是重写机制。Redis 配置文件中有两个对应的参数是来决定重写机制的触发时机的。AOF文件距离上次文件增长超过多少百分比/AOF文件体积最小多大以上触发。满足所设置的条件时，会自动触发 AOF 重写，此时 Redis 会扫描整个实例的数据，重新生成一个 AOF 文件来达到瘦身的效果。这里其实是只将当前有效并存在的数据转义成符合AOF日志格式的记录，然后依次写入该日志文件，最后刷入硬盘。同理，这些操作也是在子进程中进行的，不会阻塞主进程，而导致无法处理新的请求。且还带来了一个问题，就是在子进程在生成AOF重写日志的时候，主进程还在处理新的请求，那么这段区间的写命令是没有记录下来的。Linux的进程之间的通信可以<a href="https://link.zhihu.com/?target=https://linux.die.net/man/2/pipe">pipe</a>机制进行，Redis通过该机制，主进程将该段区间执行的命令传递给子进程，然后子进程将这些命令追加到AOF重写日志的末尾，因而解决了这个问题。</p>
+<h2 id="Redis发布订阅"><a href="#Redis发布订阅" class="headerlink" title="Redis发布订阅"></a>Redis发布订阅</h2><p>Redis 发布订阅 (pub/sub) 是一种消息通信模式：发送者 (pub) 发送消息，订阅者 (sub) 接收消息。</p>
+<p>Redis 客户端可以订阅任意数量的频道。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#命令及描述 </span></span><br><span class="line">PSUBSCRIBE pattern [pattern ...]	<span class="comment">#订阅一个或多个符合给定模式的频道。 </span></span><br><span class="line">PUBSUB subcommand [argument ...]	<span class="comment">#查看订阅与发布系统状态。 </span></span><br><span class="line">PUBLISH channel message 			<span class="comment">#将信息发送到指定的频道。 </span></span><br><span class="line">PUNSUBSCRIBE [pattern [pattern ...\]]	<span class="comment">#退订所有给定模式的频道。 </span></span><br><span class="line">SUBSCRIBE channel [channel ...\] 	<span class="comment">#订阅给定的一个或多个频道的信息。 </span></span><br><span class="line">UNSUBSCRIBE [channel [channel ...\]] 	<span class="comment">#指退订给定的频道。 </span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试</p>
+</blockquote>
+<p>客户端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; subscribe Robert  <span class="comment">#订阅Robert频道</span></span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line">1) <span class="string">&quot;subscribe&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) (<span class="built_in">integer</span>) 1</span><br><span class="line">1) <span class="string">&quot;message&quot;</span></span><br><span class="line">2) <span class="string">&quot;Robert&quot;</span></span><br><span class="line">3) <span class="string">&quot;hello,Robert&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>发送端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; publish Robert <span class="string">&quot;hello,Robert&quot;</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Redis-主从复制"><a href="#Redis-主从复制" class="headerlink" title="Redis 主从复制"></a>Redis 主从复制</h2><p>主从复制，读写分离。减缓服务器的压力。<br>主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave),数据的复制是单向的，只能由主节点到从节点。默认情况下，每台Redis服务器都是主节点；且一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\285763-20220214202335680-1625341776.png" alt="img"></p>
+<h3 id="主从复制的作用"><a href="#主从复制的作用" class="headerlink" title="主从复制的作用"></a><strong>主从复制的作用</strong></h3><ol>
+<li>数据冗余：主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。</li>
+<li>故障恢复：当主节点出现问题时，可以由从节点提供服务，实现快速的故障恢复；实际上是一种服务的冗余。</li>
+<li>负载均衡：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节点分担读负载，可以大大提高Redis服务器的并发量。</li>
+<li>读写分离：可以用于实现读写分离，主库写、从库读，读写分离不仅可以提高服务器的负载能力，同时可根据需求的变化，改变从库的数量；</li>
+<li>高可用基石：除了上述作用以外，主从复制还是哨兵和集群能够实施的基础，因此说主从复制是Redis高可用的基础。</li>
+</ol>
+<h3 id="集群搭建："><a href="#集群搭建：" class="headerlink" title="集群搭建："></a>集群搭建：</h3><p>复制配置文件</p>
+<ul>
+<li>修改配置文件中端口</li>
+<li>dump文件</li>
+<li>log文件</li>
+</ul>
+<p>指定配置文件启动redis服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\redis-server.exe  .\redis.windows-service.conf</span><br></pre></td></tr></table></figure>
+
+<p>将主节点调成从节点并连接两外一个主节点</p>
+<h5 id="主从复制的相关操作"><a href="#主从复制的相关操作" class="headerlink" title="主从复制的相关操作"></a>主从复制的相关操作</h5><p>**(1)配置文件:**在从服务器的配置文件中加入 slaveof<masterip><masterport>。例如，新增redis6360.conf, 打开redis6360.conf并加入 slaveof 192.168.152.128 6359, 在6359启动完后再启6360，完成配置；</masterport></masterip></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># replicaof &lt;masterip&gt; &lt;masterport&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>(2)启动命令：</strong>redis-server启动命令后加入 –slaveof<masterip><masterport>。例如，redis-server –slaveof 192.168.152.128 6359 临时生效，也可以启动后在命令行进行，都是临时的。</masterport></masterip></p>
+<p><strong>(3)查看状态：</strong>通过 info replication 命令可以看到复制的一些信息。</p>
+<p><strong>(4)断开主从复制：</strong>在slave节点，执行6380:&gt;slaveof no one</p>
+<p><strong>(5)断开后再变成主从复制：</strong>6360:&gt; slaveof 192.168.152.128 6359</p>
+<p><strong>(6)数据较重要的节点，主从复制时使用密码验证：</strong> requirepass</p>
+<p>主节点能进行读写，从节点只能进行读操作。</p>
+<p><strong>当主节点宕机时，只能手动的将从节点调成主节点</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof no one</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="主从复制的方式"><a href="#主从复制的方式" class="headerlink" title="主从复制的方式"></a>主从复制的方式</h4><p><strong>4.1 全量同步</strong><br>Redis全量复制一般发生在Slave初始化阶段，这时Slave需要将Master上的所有数据都复制一份。具体步骤如下：<br>- 从服务器连接主服务器，发送SYNC命令；<br>- 主服务器接收到SYNC命名后，开始执行BGSAVE命令生成RDB文件并使用缓冲区记录此后执行的所有写命令；<br>- 主服务器BGSAVE执行完后，向所有从服务器发送快照文件，并在发送期间继续记录被执行的写命令；<br>- 从服务器收到快照文件后丢弃所有旧数据，载入收到的快照；<br>- 主服务器快照发送完毕后开始向从服务器发送缓冲区中的写命令；<br>- 从服务器完成对快照的载入，开始接收命令请求，并执行来自主服务器缓冲区的写命令；</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\285763-20220214202426777-229548134.png" alt="img"></p>
+<p>完成上面几个步骤后就完成了从服务器数据初始化的所有操作，从服务器此时可以接收来自用户的读请求。</p>
+<p><strong>4.2 增量同步</strong><br>Redis增量复制是指Slave初始化后开始正常工作时主服务器发生的写操作同步到从服务器的过程。<br>增量复制的过程主要是主服务器每执行一个写命令就会向从服务器发送相同的写命令，从服务器接收并执行收到的写命令。</p>
+<p><strong>Redis主从同步策略</strong><br>主从刚刚连接的时候，进行全量同步；全同步结束后，进行增量同步。当然，如果有需要，slave 在任何时候都可以发起全量同步。redis 策略是，无论如何，首先会尝试进行增量同步，如不成功，要求从机进行全量同步。</p>
+<h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><p>哨兵模式是一种特殊的模式，首先Redis提供了哨兵的命令，哨兵是一个独立的进程，作为进程，它独立运行。其原理是哨兵通过发送命令，等待Redis服务器响应，从而监控运行的多个Redis实例。</p>
+<p>配置哨兵配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sentinel   monitor  myredis  127.0.0.1   6379   1</span><br><span class="line">解释 ： sentinel  monitor （被监控的名称）  host  port    1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBARG91YmxlLVY=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="img"></p>
+<p>这里哨兵模式有两个作用：<br>通过发送命令，让Redis服务器返回监控其运行状态，包括主服务器和从服务器<br>当哨兵监测到Redis主机宕机，会自动将slave切换成master，然后通过发布订阅模式通知其他服务器，修改配置文件，让他们换主机<br>当一个哨兵进程对Redis服务器进行监控，可能会出现问题，为此可以使用哨兵进行监控， 各个哨兵之间还会进行监控，这就形成了多哨兵模式。</p>
+<p>以上过程：假设主服务器宕机，哨兵1先检测到结果，但是系统并不会马上进行failover过程，仅仅是哨兵1主观认为主服务器不可以用，这个现象称为主观下线，当后面的哨兵也检测到主服务器不可用，并且数量达到一定时，那么哨兵之间就会进行一次投票，投票的结果由一个哨兵发起，进行failover故障转移操作。<br>操作转移成功后。就会发布订阅模式，让各个哨兵把自己监控的从服务器实现切换主机，这一过程称为  客观下线<br>此时6379即使修复，也只能变成从机</p>
+<p><strong>优点：</strong><br>1.哨兵集群。基于主从复制模式，所有的主从配置优点，它都有<br>2.主从可以切换，故障可以转移，系统可用性就更好<br>3.哨兵模式是主从模式的升级，手动到自动，更完善<br><strong>缺点：</strong><br>1.Redis不好在线扩容，集群容量一旦达到上限，扩容麻烦<br>2.实现配置麻烦<br>哨兵模式的全部配置：</p>
+<h2 id="Redis缓存穿透、击穿和雪崩"><a href="#Redis缓存穿透、击穿和雪崩" class="headerlink" title="Redis缓存穿透、击穿和雪崩"></a>Redis缓存穿透、击穿和雪崩</h2><p><strong>缓存穿透</strong>（查不到数据）：用户想要查询一个数据，发现Redis内存数据库里没有，也就是缓存没有命中，于是向 持久层的数据库查询，发现也没有，于是本次查询失败，当用户很多的时候，缓存都没有命中，于是都去请求了持久层数据库，这会给持久层数据库造成很大的压力，出现缓存穿透。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\12312.pang" alt="img"></p>
+<p>解决方案：布隆过滤器<br>布隆过滤器是一种数据结构，对所有可能查询的参数以hash形式存储，在控制层先进行校验，不符合则丢弃，从而避免了对底层存储系统的压力</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBARG91YmxlLVY=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="img"></p>
+<p>但是：<br>1、如果空值能被缓存起来，这就意味着缓存需要更多的空间存储更多的键<br>2、即使对空值设置了过期时间，还是会存在缓存层和存储层的数据会有一段时间的窗口不一致</p>
+<p><strong>缓存击穿</strong>（访问量过大）：是指某一个key 非常热点，在不停的扛着大的并发，大并发集中对这个点进行访问，当这个key在失效的瞬间，持续的大并发就穿破缓存，直接请求数据库。<br>当某个key过期的瞬间，就会有大量的请求并发访问，这类数据一般是热点数据，由于缓存过期，会同时访问数据库来查询最新数据，并且回写缓存，会导致数据库瞬间压力过大。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\rqwr.pang" alt="img">解决：</p>
+<p>1、设置热点数据永不过期<br>2、加互斥锁<br>使用分布式锁，保证每一个key同时只有一个线程去查询后端服务，其他线程没有获得分布式锁的权限，只需等待（对分布锁要求高）<br><strong>缓存雪崩</strong>：指在某一个时间段，缓存集中过期失效，Redis宕机</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Redis\fdasasgas.pang" alt="img">比如 ：双十一零点，抢购，这波商品应该放在缓存区，假设缓存一小时，到了凌晨一点，商品缓存过期，而对于这批商品的访问，都跑到数据库中，对于数据库，产生压力峰。所有请求都会到达存储层，存储层的调用量增加，存储层狗带（缓存服务节点的宕机，对数据库服务器造成的压力不可预知)</p>
+<p>解决：<br>1、redis高可用（多增加redis）<br>2、限流降级（通过加锁来控制数据库写缓存的线程数量）<br>3、数据预热（在正式部署之前，把可能的数据先访问一遍）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2020/04/24/Redis/" data-id="cl309djv50000fkig7bqk2l0l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2021/08/10/Mybatis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MyBatis
+        
+      </div>
+    </a>
+  
+  
+    <a href="/RobertBlog/2020/03/18/Lvm%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LVM快照备份与恢复</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 10px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/04/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/23/Lvm%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/20/Mongdb%E6%90%AD%E5%BB%BA/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">MyBatis和事务</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
