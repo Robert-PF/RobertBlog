@@ -14,13 +14,13 @@
 <meta property="og:site_name" content="Robert Blog">
 <meta property="og:description" content="Spring容器：为某种特定组件的运行提供必要支持的一个软件环境。 ​        Docker：提供了一个Linux进程运行所必要的Linux环境。 ​        Tomcat：给Servlet的运行提供运行环境。 核心：为IoC容器提供了一个容器环境。可以管理所有轻量级的JavaBean组件。 ​            IoC： Inversion of Control，控制反转。传统的">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/P命名使用.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/P命名使用.png">
 <meta property="article:published_time" content="2020-02-25T15:30:35.000Z">
-<meta property="article:modified_time" content="2022-05-10T14:38:09.223Z">
+<meta property="article:modified_time" content="2022-05-10T14:58:07.278Z">
 <meta property="article:author" content="Robert Pang">
 <meta property="article:tag" content="Java Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/P命名使用.png">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/P命名使用.png">
   
     <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
   
@@ -129,7 +129,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span><br><span class="line">       xmlns:xsi=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="line">       xsi:schemaLocation=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span><br><span class="line">    &lt;bean id=<span class="string">&quot;address&quot;</span> class=<span class="string">&quot;com.Spring.Study.Address&quot;</span> &gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;add&quot;</span> value=<span class="string">&quot;人才公寓&quot;</span>/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=<span class="string">&quot;Student&quot;</span> class=<span class="string">&quot;com.Spring.Study.Student&quot;</span>&gt;</span><br><span class="line">&lt;!--        注入数值--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;name&quot;</span> value=<span class="string">&quot;Robert&quot;</span>/&gt;</span><br><span class="line">&lt;!--        bean 注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;address&quot;</span> ref=<span class="string">&quot;address&quot;</span>/&gt;</span><br><span class="line">&lt;!--        数组注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;books&quot;</span>&gt;</span><br><span class="line">            &lt;array&gt;</span><br><span class="line">                &lt;value&gt;红楼梦&lt;/value&gt;</span><br><span class="line">                &lt;value&gt;水浒传&lt;/value&gt;</span><br><span class="line">                &lt;value&gt;西游记&lt;/value&gt;</span><br><span class="line">            &lt;/array&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;!--        set注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;games&quot;</span>&gt;</span><br><span class="line">            &lt;set&gt;</span><br><span class="line">                &lt;value&gt;王者荣耀&lt;/value&gt;</span><br><span class="line">                &lt;value&gt;穿越火线&lt;/value&gt;</span><br><span class="line">            &lt;/set&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;!--        map注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;map&quot;</span>&gt;</span><br><span class="line">            &lt;map&gt;</span><br><span class="line">                &lt;entry key=<span class="string">&quot;card&quot;</span> value=<span class="string">&quot;242345524&quot;</span>/&gt;</span><br><span class="line">            &lt;/map&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;!--        list注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;list&quot;</span> &gt;</span><br><span class="line">            &lt;value&gt;听歌&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;!--        Properties注入--&gt;</span><br><span class="line">        &lt;property name=<span class="string">&quot;info&quot;</span>&gt;</span><br><span class="line">            &lt;props&gt;</span><br><span class="line">                &lt;prop key=<span class="string">&quot;学号&quot;</span>&gt;<span class="number">0203160321</span>&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=<span class="string">&quot;性别&quot;</span>&gt;男&lt;/prop&gt;</span><br><span class="line">            &lt;/props&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
 
 <h5 id="2、p命名注入"><a href="#2、p命名注入" class="headerlink" title="2、p命名注入"></a>2、p命名注入</h5><p>在xml的文件中必须添加图中标出的那行xml配置约束，在配置bean的过程中输入p会自动显示出能进行配置的属性。</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\P命名使用.png" alt="image-20220405204725909"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\P命名使用.png" alt="image-20220405204725909"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span><br><span class="line">       xmlns:xsi=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="line">       xmlns:p=<span class="string">&quot;http://www.springframework.org/schema/p&quot;</span></span><br><span class="line">       xsi:schemaLocation=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span><br><span class="line">    &lt;bean id=<span class="string">&quot;user&quot;</span> class=<span class="string">&quot;com.Spring.Study.User&quot;</span> p:name=<span class="string">&quot;Robert&quot;</span> p:age=<span class="string">&quot;18&quot;</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
 
 <p>图中对应的p：name 对应的就是User的属性name</p>
@@ -376,11 +376,11 @@
     
 <nav id="article-nav">
   
-    <a href="/RobertBlog/2020/03/18/Mongodb%E6%90%AD%E5%BB%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/RobertBlog/2020/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          MongoDB
+          设计模式
         
       </div>
     </a>
@@ -407,7 +407,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -417,7 +417,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 10px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a>
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 10px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -426,7 +426,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
     </div>
   </div>
 
@@ -439,23 +439,23 @@
       <ul>
         
           <li>
-            <a href="/RobertBlog/2022/04/07/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
           </li>
         
           <li>
-            <a href="/RobertBlog/2022/03/23/Lvm%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/RobertBlog/2022/03/20/Mongdb%E6%90%AD%E5%BB%BA/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">MyBatis和事务</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/08/10/Mybatis/">MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2020/04/24/Redis/">Redis</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2020/03/20/Mongodb%E5%A4%87%E4%BB%BD/">MongoDB</a>
           </li>
         
       </ul>
