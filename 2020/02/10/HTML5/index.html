@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTML | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="表单  &lt;form&gt;1234567891011121314151617181920212223&lt;!DOCTYPE html&gt;&lt;html lang&#x3D;&quot;en&quot;&gt;&lt;head&gt;    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;    &lt;title&gt;form.example&lt;&#x2F;title&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2020/02/10/HTML5/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="表单  &lt;form&gt;1234567891011121314151617181920212223&lt;!DOCTYPE html&gt;&lt;html lang&#x3D;&quot;en&quot;&gt;&lt;head&gt;    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;    &lt;title&gt;form.example&lt;&#x2F;title&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Web开发/image-20220510233342525.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Web开发/image-20220510233620846.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Web开发/image-20220510234140302.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Web开发/image-20220511000054453.png">
+<meta property="article:published_time" content="2020-02-10T14:03:35.000Z">
+<meta property="article:modified_time" content="2022-05-10T16:01:38.792Z">
+<meta property="article:author" content="Robert Pang">
+<meta property="article:tag" content="Web网页">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Web开发/image-20220510233342525.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTML5" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2020/02/10/HTML5/" class="article-date">
+  <time datetime="2020-02-10T14:03:35.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTML
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="表单-lt-form-gt"><a href="#表单-lt-form-gt" class="headerlink" title="表单  &lt;form&gt;"></a>表单  &lt;form&gt;</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>form.example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--使用表单录入数据，用get方法会在浏览器地址中直接暴露密码</span></span><br><span class="line"><span class="comment">    用post方法，可以在网址中看不到提交的信息，但是通过F12还是能看到的--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span> 名字：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;UserName&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span> 密码：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;Password&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--添加标签 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;reset&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--添加标签 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>get方法直接暴露密码</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Web开发\image-20220510233342525.png" alt="image-20220510233342525"></p>
+<p>post不直接暴露密码，但是密码仍然是暴露出来的。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Web开发\image-20220510233620846.png" alt="image-20220510233620846"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Web开发\image-20220510234140302.png" alt="image-20220510234140302"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Web开发\image-20220511000054453.png" alt="image-20220511000054453"></p>
+<h2 id="标签-lt-input-gt"><a href="#标签-lt-input-gt" class="headerlink" title="标签 &lt;input&gt;"></a>标签 &lt;input&gt;</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;demo_form.asp&quot;&gt;</span><br><span class="line">  First name: &lt;input type=&quot;text&quot; name=&quot;fname&quot;&gt;&lt;br&gt;</span><br><span class="line">  Last name: &lt;input type=&quot;text&quot; name=&quot;lname&quot;&gt;&lt;br&gt;</span><br><span class="line">  &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt; </span><br></pre></td></tr></table></figure>
+
+<p><input> 标签规定了用户可以在其中输入数据的输入字段。</p>
+<p><input> 元素在 <a target="_blank" rel="noopener" href="https://www.w3cschool.cn/html5/html5-form.html"> 元素</a>中使用，用来声明允许用户输入数据的 input 控件。</p>
+<p>输入字段可通过多种方式改变，取决于 type 属性。</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-accept.html">accept</a></td>
+<td align="left">audio/*video/*image/*<em>MIME_type</em></td>
+<td align="left">规定通过文件上传来提交的文件的类型。(只针对type=”file”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-align.html">align</a></td>
+<td align="left">leftrighttopmiddlebottom</td>
+<td align="left">HTML5已废弃，不赞成使用。规定图像输入的对齐方式。 (只针对type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-alt.html">alt</a></td>
+<td align="left"><em>text</em></td>
+<td align="left">定义图像输入的替代文本。 (只针对type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-autocomplete.html">autocomplete</a>New</td>
+<td align="left">onoff</td>
+<td align="left">autocomplete 属性规定 <input> 元素输入字段是否应该启用自动完成功能。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-autofocus.html">autofocus</a>New</td>
+<td align="left">autofocus</td>
+<td align="left">属性规定当页面加载时 <input> 元素应该自动获得焦点。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-checked.html">checked</a></td>
+<td align="left">checked</td>
+<td align="left">checked 属性规定在页面加载时应该被预先选定的 <input> 元素。 (只针对 type=”checkbox” 或者 type=”radio”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-disabled.html">disabled</a></td>
+<td align="left">disabled</td>
+<td align="left">disabled 属性规定应该禁用的 <input> 元素。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-form.html">form</a>New</td>
+<td align="left"><em>form_id</em></td>
+<td align="left">form 属性规定 <input> 元素所属的一个或多个表单。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-formaction.html">formaction</a>New</td>
+<td align="left"><em>URL</em></td>
+<td align="left">属性规定当表单提交时处理输入控件的文件的 URL。(只针对 type=”submit” 和 type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-formenctype.html">formenctype</a>New</td>
+<td align="left">application/x-www-form-urlencodedmultipart/form-datatext/plain</td>
+<td align="left">属性规定当表单数据提交到服务器时如何编码(只适合 type=”submit” 和 type=”image”)。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-formmethod.html">formmethod</a>New</td>
+<td align="left">getpost</td>
+<td align="left">定义发送表单数据到 action URL 的 HTTP 方法。 (只适合 type=”submit” 和 type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-formnovalidate.html">formnovalidate</a>New</td>
+<td align="left">formnovalidate</td>
+<td align="left">formnovalidate 属性覆盖 <form> 元素的 novalidate 属性。</form></td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-formtarget.html">formtarget</a>New</td>
+<td align="left">_blank_self_parent_top<em>framename</em></td>
+<td align="left">规定表示提交表单后在哪里显示接收到响应的名称或关键词。(只适合 type=”submit” 和 type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-height.html">height</a>New</td>
+<td align="left"><em>pixels</em></td>
+<td align="left">规定 <input>元素的高度。(只针对type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-list.html">list</a>New</td>
+<td align="left"><em>datalist_id</em></td>
+<td align="left">属性引用 <datalist> 元素，其中包含 </datalist><input> 元素的预定义选项。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-max.html">max</a>New</td>
+<td align="left"><em>numberdate</em></td>
+<td align="left">属性规定 <input> 元素的最大值。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-maxlength.html">maxlength</a></td>
+<td align="left"><em>number</em></td>
+<td align="left">属性规定 <input> 元素中允许的最大字符数。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-min.html">min</a>New</td>
+<td align="left"><em>numberdate</em></td>
+<td align="left">属性规定 <input>元素的最小值。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-multiple.html">multiple</a>New</td>
+<td align="left">multiple</td>
+<td align="left">属性规定允许用户输入到 <input> 元素的多个值。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-name.html">name</a></td>
+<td align="left"><em>text</em></td>
+<td align="left">name 属性规定 <input> 元素的名称。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-pattern.html">pattern</a>New</td>
+<td align="left"><em>regexp</em></td>
+<td align="left">pattern 属性规定用于验证 <input> 元素的值的正则表达式。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-placeholder.html">placeholder</a>New</td>
+<td align="left"><em>text</em></td>
+<td align="left">placeholder 属性规定可描述输入 <input> 字段预期值的简短的提示信息。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-readonly.html">readonly</a></td>
+<td align="left">readonly</td>
+<td align="left">readonly 属性规定输入字段是只读的。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-required.html">required</a>New</td>
+<td align="left">required</td>
+<td align="left">属性规定必需在提交表单之前填写输入字段。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-size.html">size</a></td>
+<td align="left"><em>number</em></td>
+<td align="left">size 属性规定以字符数计的 <input> 元素的可见宽度。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-src.html">src</a></td>
+<td align="left"><em>URL</em></td>
+<td align="left">src 属性规定显示为提交按钮的图像的 URL。 (只针对type=”image”)</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-step.html">step</a>New</td>
+<td align="left"><em>number</em></td>
+<td align="left">step 属性规定 <input> 元素的合法数字间隔。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-type.html">type</a></td>
+<td align="left">button checkbox color date datetime datetime-local email file hidden image month number password radio range reset search submit tel text time url week</td>
+<td align="left">type 属性规定要显示的 <input> 元素的类型。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-value.html">value</a></td>
+<td align="left"><em>text</em></td>
+<td align="left">指定 <input> 元素 value 的值。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/htmltags/att-input-width.html">width</a>New</td>
+<td align="left"><em>pixels</em></td>
+<td align="left">width 属性规定 <input> 元素的宽度。 (只针对type=”image”)</td>
+</tr>
+</tbody></table>
+<h3 id="lt-input-gt-type-属性"><a href="#lt-input-gt-type-属性" class="headerlink" title="&lt;input&gt; type 属性"></a>&lt;input&gt; type 属性</h3><p>带有两种不同输入类型的 HTML 表单，text 和 submit：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;demo-form.php&quot;</span>&gt;</span></span><br><span class="line">Username: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;usrname&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<form action="demo-form.php">
+Username: <input type="text" name="usrname"><br>
+<input type="submit" value="提交">
+</form>
+
+<table>
+<thead>
+<tr>
+<th align="left">值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">button</td>
+<td align="left">定义可点击的按钮（通常与 JavaScript 一起使用来启动脚本）。</td>
+</tr>
+<tr>
+<td align="left">checkbox</td>
+<td align="left">定义复选框。</td>
+</tr>
+<tr>
+<td align="left">colorNew</td>
+<td align="left">定义拾色器。</td>
+</tr>
+<tr>
+<td align="left">dateNew</td>
+<td align="left">定义 date 控件（包括年、月、日，不包括时间）。</td>
+</tr>
+<tr>
+<td align="left">datetimeNew</td>
+<td align="left">定义 date 和 time 控件（包括年、月、日、时、分、秒、几分之一秒，基于 UTC 时区）。</td>
+</tr>
+<tr>
+<td align="left">datetime-localNew</td>
+<td align="left">定义 date 和 time 控件（包括年、月、日、时、分、秒、几分之一秒，不带时区）。</td>
+</tr>
+<tr>
+<td align="left">emailNew</td>
+<td align="left">定义用于 e-mail 地址的字段。</td>
+</tr>
+<tr>
+<td align="left">file</td>
+<td align="left">定义文件选择字段和 “浏览…” 按钮，供文件上传。</td>
+</tr>
+<tr>
+<td align="left">hidden</td>
+<td align="left">定义隐藏输入字段。</td>
+</tr>
+<tr>
+<td align="left">image</td>
+<td align="left">定义图像作为提交按钮。</td>
+</tr>
+<tr>
+<td align="left">monthNew</td>
+<td align="left">定义 month 和 year 控件（不带时区）。</td>
+</tr>
+<tr>
+<td align="left">numberNew</td>
+<td align="left">定义用于输入数字的字段。</td>
+</tr>
+<tr>
+<td align="left">password</td>
+<td align="left">定义密码字段（字段中的字符会被遮蔽）。</td>
+</tr>
+<tr>
+<td align="left">radio</td>
+<td align="left">定义单选按钮。</td>
+</tr>
+<tr>
+<td align="left">rangeNew</td>
+<td align="left">定义用于精确值不重要的输入数字的控件（比如 slider 控件）。</td>
+</tr>
+<tr>
+<td align="left">reset</td>
+<td align="left">定义重置按钮（重置所有的表单值为默认值）。</td>
+</tr>
+<tr>
+<td align="left">searchNew</td>
+<td align="left">定义用于输入搜索字符串的文本字段。</td>
+</tr>
+<tr>
+<td align="left">submit</td>
+<td align="left">定义提交按钮。</td>
+</tr>
+<tr>
+<td align="left">telNew</td>
+<td align="left">定义用于输入电话号码的字段。</td>
+</tr>
+<tr>
+<td align="left">text</td>
+<td align="left">默认。定义一个单行的文本字段（默认宽度为 20 个字符）。</td>
+</tr>
+<tr>
+<td align="left">timeNew</td>
+<td align="left">定义用于输入时间的控件（不带时区）。</td>
+</tr>
+<tr>
+<td align="left">urlNew</td>
+<td align="left">定义用于输入 URL 的字段。</td>
+</tr>
+<tr>
+<td align="left">weekNew</td>
+<td align="left">定义 week 和 year 控件（不带时区）。</td>
+</tr>
+</tbody></table>
+<h2 id="lt-textarea-gt"><a href="#lt-textarea-gt" class="headerlink" title="&lt;textarea&gt;"></a>&lt;textarea&gt;</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea rows=<span class="string">&quot;10&quot;</span> cols=<span class="string">&quot;30&quot;</span>&gt;</span><br><span class="line">我是一个文本框。 </span><br><span class="line">&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<textarea rows="10" cols="30"> 我是一个文本框。  </textarea>
+
+<textarea> 标签定义一个多行的文本输入控件。
+
+文本区域中可容纳无限数量的文本，其中的文本的默认字体是等宽字体（通常是 Courier）。
+
+可以通过 cols 和 rows 属性来规定 textarea 的尺寸大小，不过更好的办法是使用 CSS 的 [height](https://www.w3cschool.cn/cssref/pr-dim-height.html) 和 [width](https://www.w3cschool.cn/cssref/pr-dim-width.html) 属性。
+
+| 属性                                                         | 值        | 描述                                           |
+| ------------------------------------------------------------ | --------- | ---------------------------------------------- |
+| [autofocus](https://www.w3cschool.cn/htmltags/att-textarea-autofocus.html)New | autofocus | 规定当页面加载时，文本区域自动获得焦点。       |
+| [cols](https://www.w3cschool.cn/htmltags/att-textarea-cols.html) | *number*  | 规定文本区域内可见的列数。                     |
+| [disabled](https://www.w3cschool.cn/htmltags/att-textarea-disabled.html) | disabled  | 规定禁用文本区域。                             |
+| [form](https://www.w3cschool.cn/htmltags/att-textarea-form.html)New | *form_id* | 定义文本区域所属的一个或多个表单。             |
+| [maxlength](https://www.w3cschool.cn/htmltags/att-textarea-maxlength.html)New | *number*  | 规定文本区域允许的最大字符数。                 |
+| [name](https://www.w3cschool.cn/htmltags/att-textarea-name.html) | *text*    | 规定文本区域的名称。                           |
+| [placeholder](https://www.w3cschool.cn/htmltags/att-textarea-placeholder.html)New | *text*    | 规定一个简短的提示，描述文本区域期望的输入值。 |
+| [readonly](https://www.w3cschool.cn/htmltags/att-textarea-readonly.html) | readonly  | 规定文本区域为只读。                           |
+| [required](https://www.w3cschool.cn/htmltags/att-textarea-required.html)New | required  | 规定文本区域是必需的/必填的。                  |
+| [rows](https://www.w3cschool.cn/htmltags/att-textarea-rows.html) | *number*  | 规定文本区域内可见的行数。                     |
+| [wrap](https://www.w3cschool.cn/htmltags/att-textarea-wrap.html)New | hard soft | 规定当                                         |
+
+## </textarea>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2020/02/10/HTML5/" data-id="cl338czw80000rcig58cngo19" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2020/02/10/Web%E5%BC%80%E5%8F%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web开发
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 15px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/05/12/idea%E4%BD%BF%E7%94%A8%E4%B9%8B%E8%B0%9C/">idea</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">MyBatis和事务</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/08/10/Mybatis/">MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/05/25/SpringBoot/">Spring</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Spring | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="微服务是一种架构 ​    MVC三层架构 ​    MVVM微服务架构。 是一种云原生架构方法，其中单个应用程序由许多松散耦合且可独立部署的较小组件或服务组成。这些服务通常  有自己的堆栈，包括数据库和数据模型； 通过REST API，事件流和消息代理的组合相互通信； 它们是按业务能力组织的，分隔服务的线通常称为有界上下文。  总结一下就是，将服务独立出来，可以部署到不同的位置，从而来更加合理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2021/05/25/SpringBoot/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="微服务是一种架构 ​    MVC三层架构 ​    MVVM微服务架构。 是一种云原生架构方法，其中单个应用程序由许多松散耦合且可独立部署的较小组件或服务组成。这些服务通常  有自己的堆栈，包括数据库和数据模型； 通过REST API，事件流和消息代理的组合相互通信； 它们是按业务能力组织的，分隔服务的线通常称为有界上下文。  总结一下就是，将服务独立出来，可以部署到不同的位置，从而来更加合理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/11153/AppData/Roaming/Typora/typora-user-images/image-20220511204133215.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/image-20220512235826780.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/image-20220512235911307.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/image-20220513001711407.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/image-20220513001913448.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//JavaStudyLocal/RobertBlog/source_posts/Spring/image-20220513003037697.png">
+<meta property="article:published_time" content="2021-05-25T15:30:35.000Z">
+<meta property="article:modified_time" content="2022-05-12T16:31:27.820Z">
+<meta property="article:author" content="Robert Pang">
+<meta property="article:tag" content="Java Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//Users/11153/AppData/Roaming/Typora/typora-user-images/image-20220511204133215.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SpringBoot" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2021/05/25/SpringBoot/" class="article-date">
+  <time datetime="2021-05-25T15:30:35.000Z" itemprop="datePublished">2021-05-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/RobertBlog/.io//Users\11153\AppData\Roaming\Typora\typora-user-images\image-20220511204133215.png" alt="image-20220511204133215"></p>
+<p>微服务是一种架构</p>
+<p>​    MVC三层架构</p>
+<p>​    MVVM微服务架构。</p>
+<p>是一种云原生架构方法，其中单个应用程序由许多松散耦合且可独立部署的较小组件或服务组成。这些服务通常</p>
+<ul>
+<li>有自己的堆栈，包括数据库和数据模型；</li>
+<li>通过REST API，事件流和消息代理的组合相互通信；</li>
+<li>它们是按业务能力组织的，分隔服务的线通常称为有界上下文。</li>
+</ul>
+<p>总结一下就是，将服务独立出来，可以部署到不同的位置，从而来更加合理的分配至资源。</p>
+<h2 id="创建第一个SpringBoot程序："><a href="#创建第一个SpringBoot程序：" class="headerlink" title="创建第一个SpringBoot程序："></a>创建第一个SpringBoot程序：</h2><h5 id="1、New-Module-or-New-Project"><a href="#1、New-Module-or-New-Project" class="headerlink" title="1、New Module  or New Project"></a>1、<code>New Module</code>  or <code>New Project</code></h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\image-20220512235826780.png" alt="image-20220512235826780"></p>
+<p><strong>注意：</strong>这一步的 Server URL 地址如果用默认的start.spring.io可能在网速不好条件下，连不上，建议大家都换成：<a target="_blank" rel="noopener" href="https://start.aliyun.com/">https://start.aliyun.com</a></p>
+<h5 id="2、下一步，选择好spring-Boot的版本即可，其他的看项目需求选择。"><a href="#2、下一步，选择好spring-Boot的版本即可，其他的看项目需求选择。" class="headerlink" title="2、下一步，选择好spring Boot的版本即可，其他的看项目需求选择。"></a>2、下一步，选择好spring Boot的版本即可，其他的看项目需求选择。</h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\image-20220512235911307.png" alt="image-20220512235911307"></p>
+<p><code>Create</code></p>
+<h5 id="3、在新的项目的pom-xml中添加依赖："><a href="#3、在新的项目的pom-xml中添加依赖：" class="headerlink" title="3、在新的项目的pom.xml中添加依赖："></a>3、在新的项目的pom.xml中添加依赖：</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后就可以启动项目啦</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\image-20220513001711407.png" alt="image-20220513001711407"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  .   ____          _            __ _ _</span><br><span class="line"> /\\ / ___<span class="string">&#x27;_ __ _ _(_)_ __  __ _ \ \ \ \</span></span><br><span class="line"><span class="string">( ( )\___ | &#x27;</span>_ | <span class="string">&#x27;_| | &#x27;</span>_ \/ _` | \ \ \ \</span><br><span class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</span><br><span class="line">  <span class="string">&#x27;  |____| .__|_| |_|_| |_\__, | / / / /</span></span><br><span class="line"><span class="string"> =========|_|==============|___/=/_/_/_/</span></span><br><span class="line"><span class="string"> :: Spring Boot ::                (v2.6.7)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">2022-05-13 00:17:01.440  INFO 1648 --- [           main] com.robert.HelloWorld001Application      : Starting HelloWorld001Application using Java 1.8.0_331 on Robert with PID 1648 (E:\JavaStudyLocal\java\SpringBoot\HelloWorld-001\target\classes started by 11153 in E:\JavaStudyLocal\java)</span></span><br><span class="line"><span class="string">2022-05-13 00:17:01.443  INFO 1648 --- [           main] com.robert.HelloWorld001Application      : No active profile set, falling back to 1 default profile: &quot;default&quot;</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.307  INFO 1648 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.316  INFO 1648 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.316  INFO 1648 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.62]</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.460  INFO 1648 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.461  INFO 1648 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 968 ms</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.849  INFO 1648 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path &#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">2022-05-13 00:17:02.858  INFO 1648 --- [           main] com.robert.HelloWorld001Application      : Started HelloWorld001Application in 1.971 seconds (JVM running for 3.952)</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="4、这是可以用浏览器访问http-localhost-8080"><a href="#4、这是可以用浏览器访问http-localhost-8080" class="headerlink" title="4、这是可以用浏览器访问http://localhost:8080"></a>4、这是可以用浏览器访问<code>http://localhost:8080</code></h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\image-20220513001913448.png" alt="image-20220513001913448"></p>
+<p>可以看到能正常访问，但是返回一个错误，404的错误。因为我们只是启动了一个简单的网页，没有资源可以访问的。</p>
+<p>就是空白报错页面。</p>
+<h5 id="5、如果想添加一个页面的话，我们可以添加一些代码来实现："><a href="#5、如果想添加一个页面的话，我们可以添加一些代码来实现：" class="headerlink" title="5、如果想添加一个页面的话，我们可以添加一些代码来实现："></a>5、如果想添加一个页面的话，我们可以添加一些代码来实现：</h5><p>先添加一个Controller的package，然后再编写一个控制层的相应hello页面请求的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.robert.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;helloControler&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloController</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;hello&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello World , you get the first SpringBoot program .&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="6、再在浏览器访问：http-localhost-8080-helloControler-hello-您会得到这样一个页面："><a href="#6、再在浏览器访问：http-localhost-8080-helloControler-hello-您会得到这样一个页面：" class="headerlink" title="6、再在浏览器访问：http://localhost:8080/helloControler/hello ,您会得到这样一个页面："></a>6、再在浏览器访问：<code>http://localhost:8080/helloControler/hello</code> ,您会得到这样一个页面：</h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\image-20220513003037697.png" alt="image-20220513003037697"></p>
+<p>恭喜你，第一个spring boot程序已经构建完成，下边让我们开始进一步研究他的使用吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2021/05/25/SpringBoot/" data-id="cl338czwh0002rcighc3e7h8p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2021/08/10/Mybatis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MyBatis
+        
+      </div>
+    </a>
+  
+  
+    <a href="/RobertBlog/2020/04/24/Redis/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Redis</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 15px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/05/12/idea%E4%BD%BF%E7%94%A8%E4%B9%8B%E8%B0%9C/">idea</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">MyBatis和事务</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/08/10/Mybatis/">MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/05/25/SpringBoot/">Spring</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
