@@ -1236,6 +1236,89 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@GetMapping(&quot;/updateUserPassword/&#123;name&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">updateUser</span><span class="params">(<span class="meta">@PathVariable(&quot;name&quot;)</span> String name, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;update user set password=? where name=&quot;</span>+<span class="string">&quot;\&quot;&quot;</span>+name+<span class="string">&quot;\&quot;&quot;</span>;</span><br><span class="line">        String password=<span class="string">&quot;123456&quot;</span>;</span><br><span class="line">        jdbcTemplate.update(sql,password);</span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;redirect:/userQuery/&quot;</span>+name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>则访问：<code>http://localhost:8080:/updateUserPassword/Jack</code>是只会返回一个字符串：redirect:/userQuery/Jack，并不会跳转到网页：<code>http://localhost:8080:/userQuery/Jack</code>上，要想实现跳转，可以通过将一个<code>HttpServletResponse</code>参数添加到处理程序方法中，然后调用<code>response.sendRedirect(</code>redirectURL）；来解决跳转问题：</p>
+<h5 id="数据源对比：https-www-jianshu-com-p-1abb19b6a512"><a href="#数据源对比：https-www-jianshu-com-p-1abb19b6a512" class="headerlink" title="数据源对比：https://www.jianshu.com/p/1abb19b6a512"></a>数据源对比：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1abb19b6a512">https://www.jianshu.com/p/1abb19b6a512</a></h5><p>性能方面 hikariCP&gt;druid&gt;tomcat-jdbc&gt;dbcp&gt;c3p0 。hikariCP的高性能得益于最大限度的避免锁竞争。druid功能最为全面，sql拦截等功能，统计数据较为全面，具有良好的扩展性。综合性能，扩展性等方面，可考虑使用druid或者hikariCP连接池。可开启prepareStatement缓存，对性能会有大概20%的提升。</p>
+<p>使用<code>druid</code>配置后台：</p>
+<p>修改使用druid数据源方法</p>
+<ol>
+<li><p>配置依赖：</p>
+</li>
+<li><p>```xml</p>
+<dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.10</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. springboot的配置文件中添加 `spring.datasource.type=com.alibaba.druid.pool.DruidDataSource` 对应的yaml配置文件如下图：</span><br><span class="line"></span><br><span class="line">```yaml</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    username: root</span><br><span class="line">    password: 159357</span><br><span class="line">    url: jdbc:mysql://localhost:3306/learnjdbc?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    type: com.alibaba.druid.pool.DruidDataSource</span><br></pre></td></tr></table></figure></li>
+<li><p>配置完以上步骤就可以正常使用了，但是我们可以配置一个</p>
+</li>
+</ol>
+<h3 id="5、SpringSecurity"><a href="#5、SpringSecurity" class="headerlink" title="5、SpringSecurity"></a>5、SpringSecurity</h3><p>登录控制，根据权限显示不通的网页</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.remeberMe() <span class="comment">//开始记住密码认证的方法，一般是根据cookie和session来保证</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6、Shiro"><a href="#6、Shiro" class="headerlink" title="6、Shiro"></a>6、Shiro</h3><p>一个权限管理的框架，实现 用户认证、用户授权。可以完成 :<strong>认证</strong>、<strong>授权</strong>、加密、会话管理、与 Web 集成、缓存等。</p>
+<ul>
+<li><p>Shiro 用于中小型项目比较常见,简单易上手,可以支持多种环境</p>
+<p>Shiro 可以不跟任何的框架或者容器绑定，可独立运行</p>
+</li>
+<li><p>Spring Security 一般多用于spring环境,中大型项目,更强大</p>
+<p> Spring Security 则必须要有Spring环境</p>
+</li>
+</ul>
+<p>1、导入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--        shiro--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-spring-boot-web-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        mysql和mybais--&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、配置shiro配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ShiroConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ShiroFilterFactoryBean</span></span><br><span class="line">    <span class="meta">@Bean(name=&quot;shiroFilterFactoryBean&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ShiroFilterFactoryBean <span class="title function_">getShiroFilterFactoryBean</span><span class="params">(<span class="meta">@Qualifier(&quot;defaultWebSecurityManager&quot;)</span> DefaultWebSecurityManager defaultWebSecurityManager)</span>&#123;</span><br><span class="line">        <span class="type">ShiroFilterFactoryBean</span> <span class="variable">shiroFilterFactoryBean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ShiroFilterFactoryBean</span>();</span><br><span class="line">        <span class="comment">//设置安全管理器；</span></span><br><span class="line">        shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);</span><br><span class="line">        <span class="comment">//添加shiro的内置过滤器</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * anon： 无需认证就可以访问</span></span><br><span class="line"><span class="comment">        * authc：必须认证了才能访问</span></span><br><span class="line"><span class="comment">        * user： 必须拥有了记住我 功能才能用</span></span><br><span class="line"><span class="comment">        * perms： 拥有对某个资源的权限才能访问</span></span><br><span class="line"><span class="comment">        * role：拥有某个角色权限才能访问</span></span><br><span class="line"><span class="comment">        * */</span></span><br><span class="line">        HashMap&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//        添加授权拦截 这个必须卸载登录拦截之前。</span></span><br><span class="line">          map.put(<span class="string">&quot;/user/add&quot;</span>,<span class="string">&quot;perms[user:add]&quot;</span>);</span><br><span class="line"></span><br><span class="line">          shiroFilterFactoryBean.setUnauthorizedUrl(<span class="string">&quot;/unauthorized&quot;</span>);</span><br><span class="line">        <span class="comment">//添加登录拦截</span></span><br><span class="line">        map.put(<span class="string">&quot;/user/*&quot;</span>,<span class="string">&quot;authc&quot;</span>);</span><br><span class="line">        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);</span><br><span class="line"></span><br><span class="line">        shiroFilterFactoryBean.setLoginUrl(<span class="string">&quot;/toLogin&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> shiroFilterFactoryBean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//生成DefaultSecurityManager;</span></span><br><span class="line">    <span class="meta">@Bean(name=&quot;defaultWebSecurityManager&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> DefaultWebSecurityManager <span class="title function_">getDefaultWebSecurityManager</span><span class="params">(<span class="meta">@Qualifier(&quot;userRealm&quot;)</span> UserRealm userRealm)</span>&#123;</span><br><span class="line">        <span class="type">DefaultWebSecurityManager</span> <span class="variable">defaultWebSecurityManager</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultWebSecurityManager</span>();</span><br><span class="line">        <span class="comment">//关联UserReamm</span></span><br><span class="line">        defaultWebSecurityManager.setRealm(userRealm);</span><br><span class="line">        <span class="keyword">return</span> defaultWebSecurityManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建Realm对象，需要自定义类</span></span><br><span class="line">    <span class="meta">@Bean(name=&quot;userRealm&quot;)</span></span><br><span class="line">    <span class="keyword">public</span>  UserRealm <span class="title function_">userRealm</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UserRealm</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>编写Reaml类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserRealm</span> <span class="keyword">extends</span> <span class="title class_">AuthorizingRealm</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">     UserService userService;</span><br><span class="line">    <span class="comment">//授权</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> AuthorizationInfo <span class="title function_">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principalCollection)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了=》授权doGetAuthorizationInfo&quot;</span>);</span><br><span class="line">        <span class="type">SimpleAuthorizationInfo</span> <span class="variable">info</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleAuthorizationInfo</span>();</span><br><span class="line">        <span class="comment">//获取登录用户</span></span><br><span class="line">        <span class="type">Subject</span> <span class="variable">subject</span> <span class="operator">=</span> SecurityUtils.getSubject();</span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> (User) subject.getPrincipal();<span class="comment">//拿到User对象</span></span><br><span class="line">        <span class="comment">//如果用户是bob添加授权</span></span><br><span class="line">        <span class="keyword">if</span> (user.getName().equals(<span class="string">&quot;bob&quot;</span>))&#123;</span><br><span class="line">            info.addStringPermission(<span class="string">&quot;user:add&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//认证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> AuthenticationInfo <span class="title function_">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken authenticationToken)</span> <span class="keyword">throws</span> AuthenticationException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了=》授权doGetAuthenticationInfo&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//没有连接数据库得情况下伪造数据。</span></span><br><span class="line"><span class="comment">//        String  name=&quot;Robert&quot;;</span></span><br><span class="line"><span class="comment">//        String password=&quot;123456&quot;;</span></span><br><span class="line">        UsernamePasswordToken userToken=(UsernamePasswordToken) authenticationToken;</span><br><span class="line">        <span class="comment">//连接真正数据库查询数据库</span></span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userService.getUserByName(userToken.getUsername());</span><br><span class="line">        <span class="keyword">if</span> (user==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//可以加密，MD5 MD5盐值加密</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SimpleAuthenticationInfo</span>(user,user.getPassword(),<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">//        return null;</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、编写测试类</p>
+<p>7、Swagger</p>
+<p>前后端分离的情况下，存在一些弊端，就是前后端的变化不能实时更新。</p>
+<p>前期的解决方案：</p>
+<ul>
+<li>前端测试后端接口：postman</li>
+<li>后端提供接口，需要实时更新最新的解决方案。</li>
+</ul>
+<p>Swagger</p>
+<ul>
+<li>RestFull Api文档在线自动生成工具。=》Api文档与API定义同步更新。</li>
+<li>直接运行可以在线测试API接口</li>
+<li>支持多种语言。</li>
+</ul>
+<p>在项目中使用Swagger需要sprinbox</p>
+<p>swagger2</p>
+<p>ui</p>
+<h4 id="使用方法："><a href="#使用方法：" class="headerlink" title="使用方法："></a>使用方法：</h4><ol>
+<li>添加依赖</li>
+<li>编辑swagger配置文件</li>
+<li>配置扫描接口<ol>
+<li>Docket</li>
+</ol>
+</li>
+<li>分组</li>
+<li>实体类配置</li>
+</ol>
+<h3 id="7、RPC"><a href="#7、RPC" class="headerlink" title="7、RPC"></a>7、RPC</h3><p> RPC 框架-远程过程调用协议RPC（Remote Procedure Call Protocol)—–允许像调用本地服务一样调用远程服务。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Spring\v2-bdbecb7c77674f8b15c48f844e8347c1_r.jpg" alt="preview"></p>
+<p>远程调用需要以下几个步骤：</p>
+<ol>
+<li>先解决远程调用的通信问题，可以是客户端和服务端要建立起TCP连接。</li>
+<li><strong>要解决寻址的问题</strong>，也就是说，A服务器上的应用怎么告诉底层的RPC框架，如何连接到B服务器（如主机或IP地址）以及特定的端口，方法的名称名称是什么，这样才能完成调用。比如基于Web服务协议栈的RPC，就要提供一个endpoint URI，或者是从UDDI服务上查找。如果是RMI调用的话，还需要一个RMI Registry来注册服务的地址。</li>
+<li>当A服务器上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如TCP传递到B服务器，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是<strong>序列化</strong>（Serialize）或编组（marshal），通过寻址和传输将序列化的二进制发送给B服务器。</li>
+<li>B服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），恢复为内存中的表达方式，然后找到对应的方法（寻址的一部分）进行本地调用，然后得到返回值。</li>
+<li>返回值还要发送回服务器A上的应用，也要经过序列化的方式发送，服务器A接到后，再反序列化，恢复为内存中的表达方式，交给A服务器上的应用</li>
+</ol>
 
       
     </div>
@@ -1839,6 +1922,210 @@
 
 
   
+    <article id="post-Mongodb集群搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2020/03/26/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2020-03-26T15:30:35.000Z" itemprop="datePublished">2020-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/RobertBlog/2020/03/26/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">MongoDB集群</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="副本集群搭建："><a href="#副本集群搭建：" class="headerlink" title="副本集群搭建："></a>副本集群搭建：</h2><p>标准副本集一般会部署三个成员，即一个 Primary 和两个 Secondary，实现数据的冗余和容错。</p>
+<p><img src="/RobertBlog/.io//868522-20160105162337293-1637878872.png" alt="img"></p>
+<p>注：一个副本集最多有50个成员节点，7个投票节点。</p>
+<h5 id="1、准备环境："><a href="#1、准备环境：" class="headerlink" title="1、准备环境："></a>1、准备环境：</h5><p>CentOS Linux release 7.5</p>
+<p>mongodb 4.4.13</p>
+<h5 id="2、配置文件："><a href="#2、配置文件：" class="headerlink" title="2、配置文件："></a>2、配置文件：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   destination: file</span><br><span class="line">   <span class="comment">#path: &quot;/mongodb/log/mongod.log&quot;	#备份需要日志路径是绝对路径</span></span><br><span class="line">   logAppend: <span class="literal">true</span></span><br><span class="line">storage:</span><br><span class="line">   <span class="comment">#dbPath: &quot;/mongodb/data&quot;	#路径是绝对路径</span></span><br><span class="line">   journal:</span><br><span class="line">      enabled: <span class="literal">true</span></span><br><span class="line">processManagement:</span><br><span class="line">   fork: <span class="literal">true</span></span><br><span class="line">net:</span><br><span class="line">   bindIp: 0.0.0.0</span><br><span class="line">   port: 27017</span><br><span class="line">setParameter:</span><br><span class="line">   enableLocalhostAuthBypass: <span class="literal">false</span> </span><br><span class="line"><span class="comment">#以下参数在没有创建用户之前，不要添加，可以等待用户创建完成之后再创建。</span></span><br><span class="line">security:</span><br><span class="line">  keyFile: <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  clusterAuthMode: <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  authorization: <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile。</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3、生成Key-File，并修改权限。"><a href="#3、生成Key-File，并修改权限。" class="headerlink" title="3、生成Key-File，并修改权限。"></a>3、生成Key-File，并修改权限。</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br><span class="line"><span class="built_in">chmod</span> 600 /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
+
+<h5 id="4、启动数据库进程："><a href="#4、启动数据库进程：" class="headerlink" title="4、启动数据库进程："></a>4、启动数据库进程：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data1 --port 37001 --logpath /mongodb/log/repSet1mongo1.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data2 --port 37002 --logpath /mongodb/log/repSet1mongo2.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data3 --port 37003 --logpath /mongodb/log/repSet1mongo3.<span class="built_in">log</span> --fork</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329140429690.png" alt="image-20220329140429690"></p>
+<h5 id="5、可以将此操作写成一个服务，然后保存到系统中自启动。"><a href="#5、可以将此操作写成一个服务，然后保存到系统中自启动。" class="headerlink" title="5、可以将此操作写成一个服务，然后保存到系统中自启动。"></a>5、可以将此操作写成一个服务，然后保存到系统中自启动。</h5><h5 id="6、新建的集群需要进行初始化操作："><a href="#6、新建的集群需要进行初始化操作：" class="headerlink" title="6、新建的集群需要进行初始化操作："></a>6、新建的集群需要进行初始化操作：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mongos --host ip --port 37001</span><br><span class="line">rs.inintiate() <span class="comment">#初始化集群，并设置当前的secondary节点为主节点</span></span><br><span class="line">rs.status()  <span class="comment">#查询集群的状态。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182724143.png" alt="image-20220329182724143"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182845054.png" alt="image-20220329182845054"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183417635.png" alt="image-20220329183417635"></p>
+<h5 id="7、创建用户：方便开启集群认证。"><a href="#7、创建用户：方便开启集群认证。" class="headerlink" title="7、创建用户：方便开启集群认证。"></a>7、创建用户：方便开启集群认证。</h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183910486.png" alt="image-20220329183910486"></p>
+<h5 id="8、将其他的节点加入集群："><a href="#8、将其他的节点加入集群：" class="headerlink" title="8、将其他的节点加入集群："></a>8、将其他的节点加入集群：</h5><p>主节点执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37002&quot;</span>)</span><br><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37003&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">cfg=&#123;_id:<span class="string">&#x27;repSet2&#x27;</span>,version:1,members:[&#123;_id:0,host:<span class="string">&#x27;10.5.150.140:38001&#x27;</span>&#125;,&#123;_id:1,host:<span class="string">&#x27;10.5.150.140:38002&#x27;</span>&#125;,&#123;_id:2,host:<span class="string">&#x27;10.5.150.140:38003&#x27;</span>,arbiterOnly:<span class="literal">true</span>&#125;]&#125;;</span><br><span class="line">rs.initiate(cfg)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184611038.png" alt="image-20220329184611038"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184727869.png" alt="image-20220329184727869"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184847547.png" alt="image-20220329184847547"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">db.updateUser(</span><br><span class="line"> &quot;admin&quot;,</span><br><span class="line">        &#123;</span><br><span class="line">            roles : </span><br><span class="line">            [</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;dbOwner&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;clusterAdmin&quot;, &quot;db&quot;: &quot;admin&quot;&#125;</span><br><span class="line">             ]</span><br><span class="line">        &#125;</span><br><span class="line">)  </span><br><span class="line"></span><br><span class="line">use admin</span><br><span class="line">db.createUser(&#123; </span><br><span class="line">user: &quot;test&quot;, </span><br><span class="line">pwd: &quot;123456&quot;,</span><br><span class="line">roles: [ </span><br><span class="line">&#123; role: &quot;root&quot;, db: &quot;admin&quot; &#125; ,</span><br><span class="line"> &#123;&quot;role&quot; : &quot;dbOwner&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line"> &#123;&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line"> &#123;&quot;role&quot; : &quot;clusterAdmin&quot;, &quot;db&quot;: &quot;admin&quot;&#125;</span><br><span class="line">] </span><br><span class="line">&#125;</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h5 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h5><p>1、启动报错:</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144116292.png" alt="image-20220328144116292"></p>
+<p>启动参数中已经写了 –fork 参数。</p>
+<p>查看mongod的日志：</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144310682.png" alt="image-20220328144310682"></p>
+<p>查看/var/lib/mongo/文件夹下确实没有key-file文件。</p>
+<p>手动生成文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
+
+<p>2、启动报错：permission on key-file are too open</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145555491.png" alt="image-20220328145555491"></p>
+<p>修改keyfile的权限：chmod 600 key-file。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145832842.png" alt="image-20220328145832842"></p>
+<p>3、启动mongd报错：Cannot assign requested address</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328214143562.png" alt="image-20220328214143562"></p>
+<p>要设置bindIP和现有的ip一致。</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328151832240.png" alt="image-20220328151832240"></p>
+<p>4、配置文件参数：setParameter-enableLocalhostAuthBypass 详解;</p>
+<p>在搭建<code>mongodb</code>副本集的时候需要给副本集开启 keyFile 认证，开了此认证的话就代表着<code>authorizatizon</code> 参数是<code>enabled</code> 的，在之后登录数据库的时候需要通过用户认证才能在数据库中执行操作。</p>
+<p>背景：在搭建集群的时候，配置文件中开启了认证模式。但是最开始搭建集群的时候，集群初始化时是没有用户的，那么怎么才能进入数据库执行添加用户操作呢？注释<code>security</code>是一种方法，但是太麻烦了。</p>
+<p>解决方案：在配置文件中添加<code>setParameter-enableLocalhostAuthBypass：true</code> 此条参数的作用是： localhost exception（本地例外） 允许你在开启安全认证的同时在系统中创建第一个用户。在你开启安全认证之后，你可以使用 localhost exception这个特性去连接到mongo shell，然后在admin数据库下创建第一个账号。该账号必须有创建其他账号的权限，比如有userAdmin或者userAdminAnyDatabase角色的账号</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">setParameter:</span></span><br><span class="line">   <span class="attr">enableLocalhostAuthBypass:</span> <span class="literal">true</span></span><br><span class="line"><span class="comment">#以下参数在没有创建用户之前，不要添加，可以等待用户创建完成之后再创建。</span></span><br><span class="line"><span class="attr">security:</span></span><br><span class="line">  <span class="attr">keyFile:</span> <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  <span class="attr">clusterAuthMode:</span> <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  <span class="attr">authorization:</span> <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile。</span></span><br></pre></td></tr></table></figure>
+
+<p>注意因为连接数据库需要用<code>localhost</code>连接，所以<code>bindIp</code>应设置为 <code>0.0.0.0</code></p>
+<h2 id="分片集搭建"><a href="#分片集搭建" class="headerlink" title="分片集搭建"></a>分片集搭建</h2><p>副本集可以解决主节点发生故障导致数据丢失或不可用的问题，但遇到需要存储海量数据的情况时，副本集机制就束手无策了。副本集中的一台机器可能不足以存储数据，或者说集群不足以提供可接受的读写吞吐量。这就需要用到 MongoDB 的分片（Sharding）技术，这也是 MongoDB 的另外一种集群部署模式。</p>
+<p>分片是指将数据拆分并分散存放在不同机器上的过程。有时也用分区来表示这个概念。将数据分散到不同的机器上，不需要功能强大的大型计算机就可以存储更多的数据，处理更大的负载。</p>
+<p>MongoDB 支持自动分片，可以使数据库架构对应用程序不可见，简化系统管理。对应用程序而言，就如同始终在使用一个单机的 MongoDB 服务器一样</p>
+<h3 id="MongoDB-分片的集群模式"><a href="#MongoDB-分片的集群模式" class="headerlink" title="MongoDB 分片的集群模式"></a>MongoDB 分片的集群模式</h3><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\6-1911191633025H.gif" alt="img"></p>
+<p>构建一个 MongoDB 的分片集群，需要三个重要的组件，分别是分片服务器（Shard Server）、配置服务器（Config Server）和路由服务器（Route Server）。</p>
+<h5 id="Shard-Server"><a href="#Shard-Server" class="headerlink" title="Shard Server"></a>Shard Server</h5><p>每个 Shard Server 都是一个 mongod 数据库实例，用于存储实际的数据块。整个数据库集合分成多个块存储在不同的 Shard Server 中。<br>在实际生产中，一个 Shard Server 可由几台机器组成一个副本集来承担，防止因主节点单点故障导致整个系统崩溃。</p>
+<h5 id="Config-Server"><a href="#Config-Server" class="headerlink" title="Config Server"></a>Config Server</h5><p>这是独立的一个 mongod 进程，保存集群和分片的元数据，在集群启动最开始时建立，保存各个分片包含数据的信息。</p>
+<h5 id="Route-Server"><a href="#Route-Server" class="headerlink" title="Route Server"></a>Route Server</h5><p>这是独立的一个 mongos 进程，Route Server 在集群中可作为路由使用，客户端由此接入，让整个集群看起来像是一个单一的数据库，提供客户端应用程序和分片集群之间的接口。<br>Route Server 本身不保存数据，启动时从 Config Server 加载集群信息到缓存中，并将客户端的请求路由给每个 Shard Server，在各 Shard Server 返回结果后进行聚合并返回客户端。</p>
+<p>在实际生产环境中，副本集和分片是结合起来使用的，可满足实际应用场景中高可用性和高可扩展性的需求。</p>
+<h3 id="搭建过程："><a href="#搭建过程：" class="headerlink" title="搭建过程："></a>搭建过程：</h3><h4 id="1、搭建两套副本集环境，需要配置"><a href="#1、搭建两套副本集环境，需要配置" class="headerlink" title="1、搭建两套副本集环境，需要配置"></a>1、搭建两套副本集环境，需要配置</h4><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511170642156.png" alt="image-20220511170642156"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511170704571.png" alt="image-20220511170704571"></p>
+<p> 需要将集群以分片集方式启动，具体操作办法为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#方式一：mongod --shardsvr 启动数据库</span></span><br><span class="line">mongod --shardsvr -f /mongodb/conf/RepSet1/mongoRepSet.conf</span><br><span class="line"><span class="comment">#方式二：在配置文件中添加：</span></span><br><span class="line">sharding: </span><br><span class="line">   clusterRole:shardsvr</span><br></pre></td></tr></table></figure>
+
+<p>配置文件示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">systemLog:</span></span><br><span class="line">   <span class="attr">destination:</span> <span class="string">file</span></span><br><span class="line">   <span class="comment">#path: &quot;/mongodb/log/mongod.log&quot;	#备份需要日志路径是绝对路径</span></span><br><span class="line">   <span class="attr">logAppend:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">storage:</span></span><br><span class="line">   <span class="comment">#dbPath: &quot;/mongodb/data&quot;	#路径是绝对路径</span></span><br><span class="line">   <span class="attr">journal:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">processManagement:</span></span><br><span class="line">   <span class="attr">fork:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">net:</span></span><br><span class="line">   <span class="attr">bindIp:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">   <span class="attr">port:</span> <span class="number">27017</span></span><br><span class="line"><span class="attr">setParameter:</span></span><br><span class="line">   <span class="attr">enableLocalhostAuthBypass:</span> <span class="literal">false</span> </span><br><span class="line"><span class="attr">security:</span></span><br><span class="line">  <span class="attr">keyFile:</span> <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  <span class="attr">clusterAuthMode:</span> <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  <span class="attr">authorization:</span> <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile</span></span><br><span class="line"><span class="attr">sharding:</span> </span><br><span class="line">   <span class="string">clusterRole:shardsvr</span></span><br></pre></td></tr></table></figure>
+
+<p>创建存放数据文件和日志文件的路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /mongodb/data</span><br><span class="line"><span class="built_in">mkdir</span> -p /mongodb/log</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、配置-Config-Server"><a href="#2、配置-Config-Server" class="headerlink" title="2、配置 Config Server"></a>2、配置 Config Server</h4><p>配置服务器（Config Server）是普通的 mongod 服务器，保存着集群的配置信息：集群中有哪些分片、分片的是哪些集合，以及数据块的分布。</p>
+<p>配置集群其实也是一个MongoDB，可以是副本集也可以是单机，在启动的时候需要进行配置此集群群是 Config Server：具体配置方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#方式一：mongod --shardsvr</span></span><br><span class="line">mongod --shardsvr -f /mongodb/conf/RepSet1/mongoRepSet.conf</span><br><span class="line"><span class="comment">#方式二：在配置文件中添加：</span></span><br><span class="line">sharding: </span><br><span class="line">   clusterRole:configsvr </span><br></pre></td></tr></table></figure>
+
+<p>配置文件示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">systemLog:</span></span><br><span class="line">   <span class="attr">destination:</span> <span class="string">file</span></span><br><span class="line">   <span class="comment">#path: &quot;/mongodb/log/mongod.log&quot;	#备份需要日志路径是绝对路径</span></span><br><span class="line">   <span class="attr">logAppend:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">storage:</span></span><br><span class="line">   <span class="comment">#dbPath: &quot;/mongodb/data&quot;	#路径是绝对路径</span></span><br><span class="line">   <span class="attr">journal:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">processManagement:</span></span><br><span class="line">   <span class="attr">fork:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">net:</span></span><br><span class="line">   <span class="attr">bindIp:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">   <span class="attr">port:</span> <span class="number">39001</span></span><br><span class="line"><span class="attr">setParameter:</span></span><br><span class="line">   <span class="attr">enableLocalhostAuthBypass:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">security:</span></span><br><span class="line">  <span class="attr">keyFile:</span> <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  <span class="attr">clusterAuthMode:</span> <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  <span class="attr">authorization:</span> <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">sharding:</span> </span><br><span class="line">   <span class="attr">clusterRole:</span> <span class="string">configsvr</span> </span><br></pre></td></tr></table></figure>
+
+<p>初始化集群：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cfg=&#123;_id:&#x27;config&#x27;,version:1,members:[&#123;_id:0,host:&#x27;10.5.150.140:28001&#x27;&#125;,&#123;_id:1,host:&#x27;10.5.150.140:28002&#x27;&#125;,&#123;_id:2,host:&#x27;10.5.150.140:28003&#x27;&#125;]&#125;;</span><br><span class="line">rs.initiate(cfg)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220601135930741.png" alt="image-20220601135930741"></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220601140026380.png" alt="image-20220601140026380"></p>
+<p>至此<code>configDB</code>配置完备</p>
+<p>注：使用副本集选项实现了配置信息的冗余存储。配置服务器并不需要太多的空间和资源。配置服务器的 1KB 空间约等于 200MB 真实数据，它保存的只是数据的分布表。配置服务器的工作持久保存集群的公认状态。</p>
+<p>目前位置 我们搭建了三个副本集，其中{38001、38002、38003}、{37001、37002、37003} 两个副本集为<code>shard</code>集群，{28001、28002、28003}为<code>config</code>集群</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220601144624782.png" alt="image-20220601144624782"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.5.150.140:37001</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:37002</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:37003</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:38001</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:38002</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:38003</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:28001</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:28002</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10.5.150.140:28003</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3、配置Route-Server"><a href="#3、配置Route-Server" class="headerlink" title="3、配置Route Server"></a>3、配置<code>Route Server</code></h4><p>在默认情况下，mongos 运行在 27017 端口。注意，并不需要指定数据目录（mongos 自身并不保存数据，它会在启动时从配置服务器加载集群数据）。 mongs进程是非持久化的，确保正确设置了 logpath，以便将 mongos 日志保存到安全的地方。</p>
+<p>可启动任意数量的 mongos 进程，通常的设置是每个应用程序服务器使用一个 mongos 进程（与应用服务器运行在同一台机器上）。每个 mongos 进程必须按照列表顺序，使用相同的配置服务器列表，如 –configdb 后面输入的是一个带有三个服务器列表的 config 的副本集的名称。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongos --configdb config/10.5.150.140:28001,10.5.150.140:28002,10.5.150.140:28003 -logpath /mongodb/log/mongos.log --logappend --fork --keyFile /var/libmongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220602135250380.png" alt="image-20220602135250380"></p>
+<p>至此Mongs进程启动成功。</p>
+<p>将shard的分片集加入数据库中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.runCommand (&#123; addshard : &quot;repSet1/10.5.150.140:37001,10.5.150.140:37002,10.5.150.140:37003&quot;, name : &quot;s1&quot;&#125;);</span><br><span class="line">db.runCommand (&#123; addshard : &quot;repSet2/10.5.150.140:38001,10.5.150.140:38002,10.5.150.140:38003&quot;, name : &quot;s2&quot;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220602144224674.png" alt="image-20220602144224674"></p>
+<p>查询分片集状态：sh.status()</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220602144335839.png" alt="image-20220602144335839"></p>
+<p>问题1、搭建过程出现的权限问题：</p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511180745571.png" alt="image-20220511180745571"></p>
+<p>问题2：configure配置了用户认证，在启动<code>mongs</code>进程的时候未配置<code>keyFile</code></p>
+<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220602135414738.png" alt="image-20220602135414738"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2020/03/26/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" data-id="cl26a2mu9000630uvd19l3fce" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" rel="tag">MongoDB集群</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Mongodb备份" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/RobertBlog/2020/03/20/Mongodb%E5%A4%87%E4%BB%BD/" class="article-date">
@@ -1967,111 +2254,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Mongodb集群搭建" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" class="article-date">
-  <time datetime="2020-03-18T15:30:35.000Z" itemprop="datePublished">2020-03-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">MongoDB</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="副本集群搭建："><a href="#副本集群搭建：" class="headerlink" title="副本集群搭建："></a>副本集群搭建：</h2><p>标准副本集一般会部署三个成员，即一个 Primary 和两个 Secondary，实现数据的冗余和容错。</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\868522-20160105162337293-1637878872.png" alt="img"></p>
-<p>注：一个副本集最多有50个成员节点，7个投票节点。</p>
-<h5 id="1、准备环境："><a href="#1、准备环境：" class="headerlink" title="1、准备环境："></a>1、准备环境：</h5><p>CentOS Linux release 7.5</p>
-<p>mongodb 4.4.13</p>
-<h5 id="2、配置文件："><a href="#2、配置文件：" class="headerlink" title="2、配置文件："></a>2、配置文件：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   destination: file</span><br><span class="line">   <span class="comment">#path: &quot;/mongodb/log/mongod.log&quot;	#备份需要日志路径是绝对路径</span></span><br><span class="line">   logAppend: <span class="literal">true</span></span><br><span class="line">storage:</span><br><span class="line">   <span class="comment">#dbPath: &quot;/mongodb/data&quot;	#路径是绝对路径</span></span><br><span class="line">   journal:</span><br><span class="line">      enabled: <span class="literal">true</span></span><br><span class="line">processManagement:</span><br><span class="line">   fork: <span class="literal">true</span></span><br><span class="line">net:</span><br><span class="line">   bindIp: 0.0.0.0</span><br><span class="line">   port: 27017</span><br><span class="line">setParameter:</span><br><span class="line">   enableLocalhostAuthBypass: <span class="literal">false</span> </span><br><span class="line"><span class="comment">#以下参数在没有创建用户之前，不要添加，可以等待用户创建完成之后再创建。</span></span><br><span class="line">security:</span><br><span class="line">  keyFile: <span class="string">&quot;/var/lib/mongo/mongodb-keyfile&quot;</span> <span class="comment">#指定分片集或副本集成员之间身份验证的key文件存储位置。</span></span><br><span class="line">  clusterAuthMode: <span class="string">&quot;keyFile&quot;</span> <span class="comment">#值keyFile,sendKeyFile,sendX509,x509</span></span><br><span class="line">  authorization: <span class="string">&quot;disabled&quot;</span> <span class="comment">#值：enabled、disabled；打开访问数据库和进行操作的用户角色认证。集群环境下开启了认证参数，就必须配置keyFile。</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/RobertBlog/.io//Users\Robert\AppData\Roaming\Typora\typora-user-images\image-20220331185210828.png" alt="image-20220331185210828"></p>
-<h5 id="3、生成Key-File，并修改权限。"><a href="#3、生成Key-File，并修改权限。" class="headerlink" title="3、生成Key-File，并修改权限。"></a>3、生成Key-File，并修改权限。</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br><span class="line"><span class="built_in">chmod</span> 600 /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
-
-<h5 id="4、启动数据库进程："><a href="#4、启动数据库进程：" class="headerlink" title="4、启动数据库进程："></a>4、启动数据库进程：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data1 --port 37001 --logpath /mongodb/log/repSet1mongo1.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data2 --port 37002 --logpath /mongodb/log/repSet1mongo2.<span class="built_in">log</span> --fork</span><br><span class="line">/mongodb/bin/mongo -f /mongodb/conf/mongodRepSet1.config --dbpath /mongodb/data/RepSet1/data3 --port 37003 --logpath /mongodb/log/repSet1mongo3.<span class="built_in">log</span> --fork</span><br></pre></td></tr></table></figure>
-
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329140429690.png" alt="image-20220329140429690"></p>
-<h5 id="5、可以将此操作写成一个服务，然后保存到系统中自启动。"><a href="#5、可以将此操作写成一个服务，然后保存到系统中自启动。" class="headerlink" title="5、可以将此操作写成一个服务，然后保存到系统中自启动。"></a>5、可以将此操作写成一个服务，然后保存到系统中自启动。</h5><h5 id="6、新建的集群需要进行初始化操作："><a href="#6、新建的集群需要进行初始化操作：" class="headerlink" title="6、新建的集群需要进行初始化操作："></a>6、新建的集群需要进行初始化操作：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mongos --host ip --port 37001</span><br><span class="line">rs.inintiate() <span class="comment">#初始化集群，并设置当前的secondary节点为主节点</span></span><br><span class="line">rs.status()  <span class="comment">#查询集群的状态。</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182724143.png" alt="image-20220329182724143"></p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329182845054.png" alt="image-20220329182845054"></p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183417635.png" alt="image-20220329183417635"></p>
-<h5 id="7、创建用户：方便开启集群认证。"><a href="#7、创建用户：方便开启集群认证。" class="headerlink" title="7、创建用户：方便开启集群认证。"></a>7、创建用户：方便开启集群认证。</h5><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329183910486.png" alt="image-20220329183910486"></p>
-<h5 id="8、将其他的节点加入集群："><a href="#8、将其他的节点加入集群：" class="headerlink" title="8、将其他的节点加入集群："></a>8、将其他的节点加入集群：</h5><p>主节点执行命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37002&quot;</span>)</span><br><span class="line">rs.add(<span class="string">&quot;10.5.150.140:37003&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184611038.png" alt="image-20220329184611038"></p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184727869.png" alt="image-20220329184727869"></p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220329184847547.png" alt="image-20220329184847547"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.updateUser(</span><br><span class="line"> &quot;admin&quot;,</span><br><span class="line">        &#123;</span><br><span class="line">            roles : </span><br><span class="line">            [</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;dbOwner&quot;,&quot;db&quot; : &quot;admin&quot;&#125;,</span><br><span class="line">                  &#123;&quot;role&quot; : &quot;clusterAdmin&quot;, &quot;db&quot;: &quot;admin&quot;&#125;</span><br><span class="line">             ]</span><br><span class="line">        &#125;</span><br><span class="line">)                        </span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h5 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h5><p>1、启动报错:</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144116292.png" alt="image-20220328144116292"></p>
-<p>启动参数中已经写了 –fork 参数。</p>
-<p>查看mongod的日志：</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328144310682.png" alt="image-20220328144310682"></p>
-<p>查看/var/lib/mongo/文件夹下确实没有key-file文件。</p>
-<p>手动生成文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 741 &gt; /var/lib/mongo/mongodb-keyfile</span><br></pre></td></tr></table></figure>
-
-<p>2、启动报错：permission on key-file are too open</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145555491.png" alt="image-20220328145555491"></p>
-<p>修改keyfile的权限：chmod 600 key-file。</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328145832842.png" alt="image-20220328145832842"></p>
-<p>3、启动mongd报错：Cannot assign requested address</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328214143562.png" alt="image-20220328214143562"></p>
-<p>要设置bindIP和现有的ip一致。</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220328151832240.png" alt="image-20220328151832240"></p>
-<h2 id="分片集搭建"><a href="#分片集搭建" class="headerlink" title="分片集搭建"></a>分片集搭建</h2><p>副本集可以解决主节点发生故障导致数据丢失或不可用的问题，但遇到需要存储海量数据的情况时，副本集机制就束手无策了。副本集中的一台机器可能不足以存储数据，或者说集群不足以提供可接受的读写吞吐量。这就需要用到 MongoDB 的分片（Sharding）技术，这也是 MongoDB 的另外一种集群部署模式。</p>
-<p>分片是指将数据拆分并分散存放在不同机器上的过程。有时也用分区来表示这个概念。将数据分散到不同的机器上，不需要功能强大的大型计算机就可以存储更多的数据，处理更大的负载。</p>
-<p>MongoDB 支持自动分片，可以使数据库架构对应用程序不可见，简化系统管理。对应用程序而言，就如同始终在使用一个单机的 MongoDB 服务器一样</p>
-<h3 id="MongoDB-分片的集群模式"><a href="#MongoDB-分片的集群模式" class="headerlink" title="MongoDB 分片的集群模式"></a>MongoDB 分片的集群模式</h3><p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\6-1911191633025H.gif" alt="img"></p>
-<p>构建一个 MongoDB 的分片集群，需要三个重要的组件，分别是分片服务器（Shard Server）、配置服务器（Config Server）和路由服务器（Route Server）。</p>
-<h5 id="Shard-Server"><a href="#Shard-Server" class="headerlink" title="Shard Server"></a>Shard Server</h5><p>每个 Shard Server 都是一个 mongod 数据库实例，用于存储实际的数据块。整个数据库集合分成多个块存储在不同的 Shard Server 中。<br>在实际生产中，一个 Shard Server 可由几台机器组成一个副本集来承担，防止因主节点单点故障导致整个系统崩溃。</p>
-<h5 id="Config-Server"><a href="#Config-Server" class="headerlink" title="Config Server"></a>Config Server</h5><p>这是独立的一个 mongod 进程，保存集群和分片的元数据，在集群启动最开始时建立，保存各个分片包含数据的信息。</p>
-<h5 id="Route-Server"><a href="#Route-Server" class="headerlink" title="Route Server"></a>Route Server</h5><p>这是独立的一个 mongos 进程，Route Server 在集群中可作为路由使用，客户端由此接入，让整个集群看起来像是一个单一的数据库，提供客户端应用程序和分片集群之间的接口。<br>Route Server 本身不保存数据，启动时从 Config Server 加载集群信息到缓存中，并将客户端的请求路由给每个 Shard Server，在各 Shard Server 返回结果后进行聚合并返回客户端。</p>
-<p>在实际生产环境中，副本集和分片是结合起来使用的，可满足实际应用场景中高可用性和高可扩展性的需求。</p>
-<h3 id="搭建过程："><a href="#搭建过程：" class="headerlink" title="搭建过程："></a>搭建过程：</h3><p>1、搭建两套副本集环境。</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511170642156.png" alt="image-20220511170642156"></p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511170704571.png" alt="image-20220511170704571"></p>
-<p>搭建过程出现的权限问题：</p>
-<p><img src="/RobertBlog/.io//JavaStudyLocal\RobertBlog\source_posts\Mongdb搭建\image-20220511180745571.png" alt="image-20220511180745571"></p>
-<p>配置 Config Server</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robert-pf.github.io/RobertBlog/2020/03/18/Mongodb%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" data-id="cl26a2mu9000630uvd19l3fce" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
 
     </footer>
   </div>
@@ -2293,7 +2475,7 @@
 <h5 id="12、数据库的使用–用户篇"><a href="#12、数据库的使用–用户篇" class="headerlink" title="12、数据库的使用–用户篇"></a>12、数据库的使用–用户篇</h5><ul>
 <li>​    设置管理员账户</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(&#123; <span class="keyword">user</span>: &quot;admin&quot;, pwd: &quot;password&quot;, roles: [&#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125;] &#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(&#123; <span class="keyword">user</span>: &quot;test&quot;, pwd: &quot;password&quot;, roles: [&#123; role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; &#125;] &#125;)</span><br></pre></td></tr></table></figure>
 
 <p>mongodb中的用户是基于身份role的，该管理员账户的 role是 userAdminAnyDatabase。 ‘userAdmin’代表用户管理身份，’AnyDatabase’ 代表可以管理任何数据库。</p>
 <p>开启用户认证需要在配置文件中添加参数：</p>
@@ -2367,7 +2549,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" rel="tag">MongoDB集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -2377,7 +2559,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 15px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 20px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">MongoDB集群</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 20px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
