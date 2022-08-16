@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="总共有一下几种IO模型。 同步：发出功能调用时，在没有得到结果之前，该调用就不会反悔，必须一件事情一件事情干。 异步：当异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的不见在完成后，通过状态，通知和回调来通知调用者。 阻塞：阻塞调用是指调用结果返回之前，当前线程会被挂起，函数之后在得到结果之后才会返回。 非阻塞：在调用改函数时，如果不能立刻得到结果，该函数不会阻塞线程，会先返回一个信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Robert Blog">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="总共有一下几种IO模型。 同步：发出功能调用时，在没有得到结果之前，该调用就不会反悔，必须一件事情一件事情干。 异步：当异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的不见在完成后，通过状态，通知和回调来通知调用者。 阻塞：阻塞调用是指调用结果返回之前，当前线程会被挂起，函数之后在得到结果之后才会返回。 非阻塞：在调用改函数时，如果不能立刻得到结果，该函数不会阻塞线程，会先返回一个信">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-17T11:41:50.254Z">
+<meta property="article:modified_time" content="2022-07-18T02:43:33.681Z">
+<meta property="article:author" content="Robert Pang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-IO模型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2022-07-17T11:41:50.254Z" itemprop="datePublished">2022-07-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>总共有一下几种IO模型。</p>
+<p>同步：发出功能调用时，在没有得到结果之前，该调用就不会反悔，必须一件事情一件事情干。</p>
+<p>异步：当异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的不见在完成后，通过状态，通知和回调来通知调用者。</p>
+<p>阻塞：阻塞调用是指调用结果返回之前，当前线程会被挂起，函数之后在得到结果之后才会返回。</p>
+<p>非阻塞：在调用改函数时，如果不能立刻得到结果，该函数不会阻塞线程，会先返回一个信号。</p>
+<h3 id="1、阻塞式IO"><a href="#1、阻塞式IO" class="headerlink" title="1、阻塞式IO"></a>1、阻塞式IO</h3><p>应用程序调用一个IO函数，因为数据还没准备号，导致应用程序阻塞，等待数据准备好才能返回成功。</p>
+<h3 id="2、非阻塞式IO"><a href="#2、非阻塞式IO" class="headerlink" title="2、非阻塞式IO"></a>2、非阻塞式IO</h3><p>通过进程反复调用IO函数，多次系统调用，并马上返回；在数据拷贝过程中，进程是阻塞的。在数据没有拷贝成功时，调用函数会返回错误值，调用进程会不断得调用IO函数，此时进程不会进进入睡眠。</p>
+<p>虽然表面上看非阻塞的方式可以明显的提高CPU的利用率，但是也带了另外一种后果就是系统的线程切换增加。增加的CPU执行时间能不能补偿系统的切换成本需要好好评估。</p>
+<h3 id="3、IO多路复用"><a href="#3、IO多路复用" class="headerlink" title="3、IO多路复用"></a>3、IO多路复用</h3><p>主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听； I/O复用模型会用到select、poll、epoll函数，这几个函数也会使进程阻塞，但是和阻塞I/O所不同的的，这两个函数可以同时阻塞多个I/O操作。而且可以同时对多个读操作，多个写操作的I/O函数进行检测，直到有数据可读或可写时，才真正调用I/O操作函数。</p>
+<h3 id="4、信号驱动IO"><a href="#4、信号驱动IO" class="headerlink" title="4、信号驱动IO"></a>4、信号驱动IO</h3><p>首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。</p>
+<h3 id="5、异步IO"><a href="#5、异步IO" class="headerlink" title="5、异步IO"></a>5、异步IO</h3><p>当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作</p>
+<p>在 Linux 中，通知的方式是 “信号”，分为三种情况：<br>　　①、如果这个进程正在用户态处理其他逻辑，那就强行打断，调用事先注册的信号处理函数，这个函数可以决定何时以及如何处理这个异步任务。由于信号处理函数是突然闯进来的，因此跟中断处理程序一样，有很多事情是不能做的，因此保险起见，一般是把事件 “登记” 一下放进队列，然后返回该进程原来在做的事。<br>　　②、如果这个进程正在内核态处理，例如以同步阻塞方式读写磁盘，那就把这个通知挂起来了，等到内核态的事情忙完了，快要回到用户态的时候，再触发信号通知。<br>　　③、如果这个进程现在被挂起了，例如陷入睡眠，那就把这个进程唤醒，等待CPU调度，触发信号通知。</p>
+<h4 id="select、poll、epoll"><a href="#select、poll、epoll" class="headerlink" title="select、poll、epoll"></a>select、poll、epoll</h4><p>目前支持I/O多路复用的系统调用有  select，pselect，poll，epoll，I/O多路复用就是 通过一种机制，一个进程可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。 但select，pselect，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间。<br>与多进程和多线程技术相比， I/O多路复用技术的最大优势是系统开销小，系统不必创建进程/线程，也不必维护这些进程/线程，从而大大减小了系统的开销。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/" data-id="cl6w6pzhz0000k4ig4dne3j75" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/RobertBlog/2022/07/29/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/RobertBlog/2022/05/12/idea%E4%BD%BF%E7%94%A8%E4%B9%8B%E8%B0%9C/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">idea</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" rel="tag">MongoDB集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 20px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 20px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">MongoDB集群</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 20px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/07/29/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/05/12/idea%E4%BD%BF%E7%94%A8%E4%B9%8B%E8%B0%9C/">idea</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/04/12/%E7%AC%94%E8%AE%B0/">Java 面试题整理笔记</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
