@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>人大金仓数据库搭建 | Robert Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1、人大金仓数据库简介 通用型数据库  KingbaseES：面向事务处理应用，兼顾简单分析应用的企业级关系型数据库。 该产品支持严格的ACID特性、结合多核架构的极致性能、行业最高的安全标准，以及完备的高可用方案，并提供可覆盖迁移、开发及运维管理全使用周期的智能便捷工具。该产品面向事务处理类应用，兼顾各类数据分析类应 用，可用做信息管理系统、业务及生产系统、决策支持系统、全文检索、地理信息系统等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人大金仓数据库搭建">
+<meta property="og:url" content="https://robert-pf.github.io/RobertBlog/2022/08/21/%E4%BA%BA%E5%A4%A7%E9%87%91%E4%BB%93%E6%95%B0%E6%8D%AE%E5%BA%93%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Robert Blog">
+<meta property="og:description" content="1、人大金仓数据库简介 通用型数据库  KingbaseES：面向事务处理应用，兼顾简单分析应用的企业级关系型数据库。 该产品支持严格的ACID特性、结合多核架构的极致性能、行业最高的安全标准，以及完备的高可用方案，并提供可覆盖迁移、开发及运维管理全使用周期的智能便捷工具。该产品面向事务处理类应用，兼顾各类数据分析类应 用，可用做信息管理系统、业务及生产系统、决策支持系统、全文检索、地理信息系统等">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823174854589-16612481359461.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823175107706.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220821161910575-16610699524321.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823182237571-16612501598432.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823195020784.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823195338145-16612556204603.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823201000965-16612566030964.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823222008203-16612644098325.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//20211209-2218b455-e0df-48bc-9112-605db983e3df.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//20211209-f552cb55-32b7-443a-832e-223576c960f2.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//20211209-039319eb-bc85-4de2-8e89-ef8d39dcc684.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824020143552-166127770599610.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824103101364-166130826287711.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824103159600-166130832151912.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824173022352-166133342388813.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220829144245347-16617553671853.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824175400963.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824175949783-166133519126414.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824180347723-166133542934615.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220824180552350.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220829120249714-16617457711312.png">
+<meta property="og:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220829120000407-16617456024501.png">
+<meta property="article:published_time" content="2022-08-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-01T13:10:53.015Z">
+<meta property="article:author" content="Robert Pang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://robert-pf.github.io/RobertBlog/.io//image-20220823174854589-16612481359461.png">
+  
+    <link rel="alternate" href="/RobertBlog/atom.xml" title="Robert Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/RobertBlog/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/RobertBlog/" id="logo">Robert Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/RobertBlog/">Home</a>
+        
+          <a class="main-nav-link" href="/RobertBlog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/RobertBlog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robert-pf.github.io/RobertBlog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-人大金仓数据库搭建使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/RobertBlog/2022/08/21/%E4%BA%BA%E5%A4%A7%E9%87%91%E4%BB%93%E6%95%B0%E6%8D%AE%E5%BA%93%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2022-08-20T16:00:00.000Z" itemprop="datePublished">2022-08-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      人大金仓数据库搭建
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1、人大金仓数据库简介"><a href="#1、人大金仓数据库简介" class="headerlink" title="1、人大金仓数据库简介"></a>1、人大金仓数据库简介</h3><ol>
+<li><p>通用型数据库</p>
+<ul>
+<li>KingbaseES：面向事务处理应用，兼顾简单分析应用的企业级关系型数据库。 该产品支持严格的ACID特性、结合多核架构的极致性能、行业最高的安全标准，以及完备的高可用方案，并提供可覆盖迁移、开发及运维管理全使用周期的智能便捷工具。该产品面向事务处理类应用，兼顾各类数据分析类应 用，可用做信息管理系统、业务及生产系统、决策支持系统、全文检索、地理信息系统等的承载数据库。</li>
+</ul>
+</li>
+<li><p>分析型数据库</p>
+<ul>
+<li>KingbaseAnalyticsDB：分析型数据库系统，产品应大数据时代海量数据分析处理的需求，采用shared-nothing分布式架构，具有高性能，高扩展性能力，承载了人大金仓在大规模并行计算和数据库管理领域最新的研发成果，它定位于数据分析类应用市场，可以处理TB-PB级别的数据，并能集成多种异构数据源进行数据挖掘和分析。</li>
+</ul>
+</li>
+<li><p>分布式数据库</p>
+<ul>
+<li>KSOne：分布式关系型数据库系统。产品具备企业级复杂事务混合负载能力，同时支持跨AZ部署，数据0丢失，支持大规模横向扩展，PB级海量数据存储等企业级数据库特性</li>
+</ul>
+</li>
+</ol>
+<h3 id="2、下载ISO镜像地址和授权文件："><a href="#2、下载ISO镜像地址和授权文件：" class="headerlink" title="2、下载ISO镜像地址和授权文件："></a>2、下载ISO镜像地址和授权文件：</h3><table>
+<thead>
+<tr>
+<th>科目</th>
+<th>标准版</th>
+<th>专业版</th>
+<th>企业版</th>
+<th>开发版</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>授权</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>商业授权</td>
+<td>商业授权</td>
+<td>商业授权</td>
+<td>免费</td>
+</tr>
+</tbody></table>
+<p>​    <a target="_blank" rel="noopener" href="https://www.kingbase.com.cn/rjcxxz/index.htm">https://www.kingbase.com.cn/rjcxxz/index.htm</a></p>
+<p>下载开发授权可以免费使用。</p>
+<h3 id="3、搭建环境要求："><a href="#3、搭建环境要求：" class="headerlink" title="3、搭建环境要求："></a>3、搭建环境要求：</h3><ul>
+<li> 硬件：内存512MB 以上 ， 硬盘10GB 以上空闲空间。</li>
+<li> 软件：Linux</li>
+</ul>
+<h3 id="4、配置内核参数："><a href="#4、配置内核参数：" class="headerlink" title="4、配置内核参数："></a>4、配置内核参数：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fs.aio-max-nr= 1048576 <span class="comment">#</span></span><br><span class="line">fs.file-max= 6815744 </span><br><span class="line">kernel.shmall= 2097152 </span><br><span class="line">kernel.shmmax= 4294967295 </span><br><span class="line">kernel.shmmni= 4096 </span><br><span class="line">kernel.sem= 250 32000 100 128 </span><br><span class="line">net.ipv4.ip_local_port_range= 9000 65500 </span><br><span class="line">net.core.rmem_default= 262144 </span><br><span class="line">net.core.rmem_max= 4194304 </span><br><span class="line">net.core.wmem_default= 262144 </span><br><span class="line">net.core.wmem_max= 1048576</span><br></pre></td></tr></table></figure>
+
+<p>内核参数修改完毕后，重启 Linux 系统，并输入如下命令查看内核参数的修改是否正确：</p>
+<p><img src="/RobertBlog/.io//image-20220823174854589-16612481359461.png" alt="image-20220823174854589"></p>
+<h3 id="5、资源使用参数"><a href="#5、资源使用参数" class="headerlink" title="5、资源使用参数"></a>5、资源使用参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># * 表示所有用户，可只设置 root 和 kingbase 用户</span></span><br><span class="line">* soft nofile 65536</span><br><span class="line"><span class="comment"># 注意：设置 nofile 的 hard limit 不能大于/proc/sys/fs/nr_open，否则注销后将无法正常登陆</span></span><br><span class="line">* hard nofile 65535</span><br><span class="line">* soft <span class="built_in">nproc</span> 65536</span><br><span class="line">* hard <span class="built_in">nproc</span> 65535</span><br><span class="line"><span class="comment"># unlimited 表示无限制</span></span><br><span class="line">* soft core unlimited</span><br><span class="line">* hard core unlimited</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220823175107706.png" alt="image-20220823175107706"></p>
+<h3 id="6、RemoveIPC参数"><a href="#6、RemoveIPC参数" class="headerlink" title="6、RemoveIPC参数"></a>6、RemoveIPC参数</h3><p>RemoveIPC 参数 systemd-logind 服务中引入的一个特性，是当一个用户退出系统后，会删除所有有关的 IPC 对象。该特性由/ etc/systemd/logind.conf 文件中的 RemoveIPC 参数控制。某些操作系统会默认打开，会造成程序信号丢失等问题 （只有 redhat7 及以上和一些特殊的国产 Linux 的版本需要修改，改之前可先查看此项是否为默认 yes)。设置 RemoveIPC=no。设置后重启服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart systemd-logind.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、创建安装用户："><a href="#7、创建安装用户：" class="headerlink" title="7、创建安装用户："></a>7、创建安装用户：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m kingbase</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;eisoo&quot;</span> | passswd kingbase --stdin</span><br></pre></td></tr></table></figure>
+
+<h3 id="8、安装目录、数据存储目录创建："><a href="#8、安装目录、数据存储目录创建：" class="headerlink" title="8、安装目录、数据存储目录创建："></a>8、安装目录、数据存储目录创建：</h3><p>金仓数据库管理系统 KingbaseES 默认的安装目录是/opt/Kingbase/ES/V8。如果不存在，您需要使用 root 用户<br>先创建该目录，并赋予 kingbase 用户对该目录的读写权限，也可以自定义安装路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /kingbase/kdb/data</span><br><span class="line"><span class="built_in">chown</span> kingbase:kingbase -R /kingbase</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、挂载安装ISO镜像文件、上传授权文件至-home-kingbase下。"><a href="#9、挂载安装ISO镜像文件、上传授权文件至-home-kingbase下。" class="headerlink" title="9、挂载安装ISO镜像文件、上传授权文件至/home/kingbase下。"></a>9、挂载安装ISO镜像文件、上传授权文件至<code>/home/kingbase</code>下。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount KingbaseES_V8R6_Lin64_install.iso /mnt</span><br></pre></td></tr></table></figure>
+
+<h3 id="10、安装数据库软件："><a href="#10、安装数据库软件：" class="headerlink" title="10、安装数据库软件："></a>10、安装数据库软件：</h3><p>安装流程：</p>
+<p><img src="/RobertBlog/.io//image-20220821161910575-16610699524321.png" alt="image-20220821161910575"></p>
+<p>共三种安装方式：</p>
+<ol>
+<li>图形化安装 启用图形化界面进行向导式安装。</li>
+<li>命令行安装 使用命令行方式进行向导式安装。</li>
+<li>静默安装 通过编写配置文件，执行命令进行安装，安装过程不需要干预。</li>
+</ol>
+<p>这里采用第三种，需要体检编写配置文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解压授权文件：</span></span><br><span class="line">unzip /license*.zip</span><br><span class="line"><span class="built_in">cp</span>  license_18723_0.dat /home/kingbash/license_18723_0.dat</span><br><span class="line"><span class="built_in">cp</span>   /mnt/setup/silent.cfg /home/kingbase</span><br><span class="line"><span class="built_in">chown</span> kingbase:kingbase /home/kingbase/*</span><br><span class="line"><span class="comment">#切换用户进行配置文件的编写</span></span><br><span class="line">su - kingbase</span><br><span class="line">vi /home/kingbash/silent.cfg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CHOSEN_INSTALL_SET=Full <span class="comment">#1）Full，完全安、2）Client，客户端安装、3）Custom，定制安装</span></span><br><span class="line">KB_LICENSE_PATH=/home/kingbash/license_18723_0.dat <span class="comment">#授权文件的绝对路径</span></span><br><span class="line">USER_INSTALL_DIR=/kingbase/kdb <span class="comment">#数据库安装路径</span></span><br><span class="line">USER_SELECTED_DATA_FOLDER=/kingbase/kdb/data <span class="comment">#数据文件存放目录</span></span><br><span class="line">DB_PORT=54321 <span class="comment">#数据库服务端口，必填，端口取值范围为 1-65535。</span></span><br><span class="line">DB_USER=systemc <span class="comment">#数据库默认用户名</span></span><br><span class="line">DB_PASS=eisoo <span class="comment">#数据库密码</span></span><br><span class="line">DB_PASS2=eisoo </span><br><span class="line">ENCODING_PARAM=UTF8 <span class="comment">#数据库字符集，必填，大小写敏感，否则报错退出安装过程。可选值 1）UTF8 2）GBK 3）GB18030</span></span><br><span class="line">DATABASE_MODE_PARAM=ORACLE <span class="comment">#数据库兼容模式，必填，大小写敏感，否则报错退出安装过程。可选值 1）ORACLE 2）PG</span></span><br><span class="line">CASE_SENSITIVE_PARAM=YES <span class="comment">#数据库是否区分大小写，必填，大小写敏感，否则报错退出安装过程。可选值 1）YES 2）NO</span></span><br><span class="line">BLOCK_SIZE_PARAM=8K <span class="comment">#存储块大小，必填，大小写敏感，否则报错退出安装过程。可选值 1）8k 2）16k 3）32k</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220823182237571-16612501598432.png" alt="image-20220823182237571"></p>
+<p>修改完配置文件后，进入安装程序所在目录，以 kingbase 用户执行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mnt/KingbaseES_V8R6_Lin64*/</span><br><span class="line">/mnt/Setup/setup.sh -i silent -f /home/kingbase/silent.cfg</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220823195020784.png" alt="image-20220823195020784"></p>
+<p><img src="/RobertBlog/.io//image-20220823195338145-16612556204603.png" alt="image-20220823195338145"></p>
+<p>安装失败的的时候可以：</p>
+<p>在 ${安装目录}/install/Logs 下打开文件名如 KingbaseES_V8_ 安装 _*.log 的日志文件排查错误原因。</p>
+<h3 id="11、安装成功："><a href="#11、安装成功：" class="headerlink" title="11、安装成功："></a>11、安装成功：</h3><p><img src="/RobertBlog/.io//image-20220823201000965-16612566030964.png" alt="image-20220823201000965"></p>
+<ul>
+<li>Server：软连接，对应目录存放了服务器二进制文件，链接文件等。<ul>
+<li>  Server/bin：服务器二进制文件，可以在该路径下进行启动服务、连接数据库、物理备份还原、逻辑备份 还原等操作。</li>
+</ul>
+</li>
+<li>ClientTools：软连接，对应目录存放了客户端工具依赖的可执行二进制文件、链接文件等。 <ul>
+<li>ClientTools/ guitools/ KStudio：开发管理工具，能运行在各种平台的图形工具，用于管理和配置 KingbaseES 数据库服务器，管理各种 KingbaseES 数据库对象，进行 KingbaseES 数据库的安全管理，调用 查询分析器执行和测试 SQL 语句。 </li>
+<li>– ClientTools/guitools/DtsTools：数据库迁移工具，可以用于跨平台数据交换和迁移，支持同异构数据源之 间的数据迁移。该目录下存放了迁移工具的相关程序和配置文件。 </li>
+<li>– ClientTools/guitools/DeployTools：集群部署工具，用于远程部署集群节点服务。该目录存放了集群部署 工具相关的程序和配置文件。 注意: ClientTools/guitools/ManagerTools：对象管理工具，功能与开发管理工具一致。在申威平台上使用。 </li>
+</ul>
+</li>
+<li>Interface：软连接，对应目录存放了各类应用程序开发接口程序包。 </li>
+<li>KingbaseHA：软连接，对应目录存放了高可用集群组件相关程序和配置文件。 </li>
+<li>SupTools：软连接，对应目录下存放了巡检工具相关脚本和配置文件。 </li>
+<li>install：软连接，对应目录存放了安装过程中依赖和使用的各类文件。 <ul>
+<li> install/jre：Jre, 存放了 java 工具需要用到的二进制文件。 – install/script：该目录下存放了安装和卸载过程中使用的脚本。 </li>
+<li> install/Logs：日志目录，存放了数据库安装，卸载，修改实例等日志文件。</li>
+<li>install/LICENSE.EN：英文许可协议。</li>
+<li>install/LICENSE.ZH：中文许可协议。 </li>
+</ul>
+</li>
+<li>doc：软连接，对应目录包含各类帮助手册。</li>
+<li>Uninstall：软连接，对应目录包含卸载程序的相关文件。 </li>
+<li>KESRealPro：实际安装目录，下一级为版本号命名的目录，再下一级为 Server、doc、ClientTools、Interface、install、SupTools、Uninstall、license.dat、KingbaseHA，对应上述各软连接的实际目录。 </li>
+<li>data：初始化数据库生成的数据目录。</li>
+</ul>
+<p>启动问题1：</p>
+<p><img src="/RobertBlog/.io//image-20220823222008203-16612644098325.png" alt="image-20220823222008203"></p>
+<p><em><strong>*原因分析*</strong></em></p>
+<p>license文件放置路径错误，导致启动服务是检查不到授权文件。</p>
+<p><em>*<em>*解决*</em>*<em>方法*</em>*</em></p>
+<p>1）将license文件放置在bin路径下，如下图：</p>
+<p><img src="/RobertBlog/.io//20211209-2218b455-e0df-48bc-9112-605db983e3df.png" alt="img"></p>
+<p>2）也可将license文件放在bin路径的上两级路径下，如下图：</p>
+<p><img src="/RobertBlog/.io//20211209-f552cb55-32b7-443a-832e-223576c960f2.png" alt="img"></p>
+<p>以上两种位置任一选择，回到bin路径下，执行：</p>
+<ol>
+<li>./sys_ctl –D 实例路径 start</li>
+</ol>
+<p><em>复制代码</em></p>
+<p><img src="/RobertBlog/.io//20211209-039319eb-bc85-4de2-8e89-ef8d39dcc684.png" alt="img"></p>
+<p>成功启动服务。</p>
+<p><img src="/RobertBlog/.io//image-20220824020143552-166127770599610.png" alt="image-20220824020143552"></p>
+<p>查看数据库服务状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sys_ctl start -D /<span class="variable">$DATA_FILE_DIR</span>/</span><br><span class="line">sys_ctl status -D /<span class="variable">$DATA_FILE_DIR</span>/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220824103101364-166130826287711.png" alt="image-20220824103101364"></p>
+<p><img src="/RobertBlog/.io//image-20220824103159600-166130832151912.png" alt="image-20220824103159600"></p>
+<h3 id="12、使用管理："><a href="#12、使用管理：" class="headerlink" title="12、使用管理："></a>12、使用管理：</h3><p>创建完一个实例后，默认会创建四个库：security、template0、template1、test</p>
+<p><img src="/RobertBlog/.io//image-20220824173022352-166133342388813.png" alt="image-20220824173022352"></p>
+<p>使用Ksql 命令登录数据库：目标数据库的名称、主机名和该服务器的端口号，以及用于连接数据库的用户名。可以通过命令行选项告知Ksql这些参数，分别是<code>-d</code>、<code>-h</code>、<code>-p</code>以及<code>-U</code> 。如果发现一个参数不属于任何选项，它将被解释为数据库名称（如果已经给出数据库名称，就解释为用户名）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ksql -U system  -P 54321 -W eisoo </span><br></pre></td></tr></table></figure>
+
+<h5 id="查看数据版本："><a href="#查看数据版本：" class="headerlink" title="查看数据版本："></a>查看数据版本：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> version();</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/RobertBlog/.io//image-20220829144245347-16617553671853.png" alt="image-20220829144245347"></p>
+<h4 id="12-1、创建数据库"><a href="#12-1、创建数据库" class="headerlink" title="12.1、创建数据库"></a>12.1、创建数据库</h4><p>在KingbaseES中，用户通常可以通过以下三种方式创建一个KES数据库：</p>
+<ul>
+<li>基于图形界面创建一个KES数据库；</li>
+<li>通过命令CREATE DATABASE创建一个KES数据库；</li>
+<li>通过命令createdb创建一个KES数据库。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select datname from sys_database; <span class="comment">#查看数据库，相当于mysql中的show databases</span></span><br><span class="line">\l <span class="comment">#可以看到更加详细的信息</span></span><br><span class="line">create database kingbase <span class="comment">#创建数据库。</span></span><br><span class="line">CREATE DATABASE dbname OWNER rolename; <span class="comment">#创建数据库并分配用户</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220824175400963.png" alt="image-20220824175400963"></p>
+<h4 id="12-2、用户管理"><a href="#12-2、用户管理" class="headerlink" title="12.2、用户管理"></a>12.2、用户管理</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查看所有用户信息</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sys_user;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220824175949783-166133519126414.png" alt="image-20220824175949783"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> username <span class="keyword">with</span> password <span class="string">&#x27;******&#x27;</span>;	#创建用户</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> username <span class="keyword">with</span> password <span class="string">&#x27;******&#x27;</span>;	#修改名username的用户登陆口令</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> username;						#删除用户</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name(database kingbase) owner <span class="keyword">to</span> username;	#一个对象可以通过该对象类型重新分配所有者</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">update</span> <span class="keyword">on</span> table_name <span class="keyword">to</span> username;	# f、使用<span class="keyword">GRANT</span>命令分配权限。</span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">all</span> <span class="keyword">on</span> table_name <span class="keyword">from</span> public;	#撤销表的权限</span><br></pre></td></tr></table></figure>
+
+<p><img src="/RobertBlog/.io//image-20220824180347723-166133542934615.png" alt="image-20220824180347723"><br><img src="/RobertBlog/.io//image-20220824180552350.png" alt="image-20220824180552350"></p>
+<h4 id="12-3、数据库实例体系结构："><a href="#12-3、数据库实例体系结构：" class="headerlink" title="12.3、数据库实例体系结构："></a>12.3、数据库实例体系结构：</h4><h5 id="进程结构"><a href="#进程结构" class="headerlink" title="进程结构"></a>进程结构</h5><p>KingbaseES 实例的结构以及和数据库文件的关系可以表示为：</p>
+<p><img src="/RobertBlog/.io//image-20220829120249714-16617457711312.png" alt="image-20220829120249714"></p>
+<p>数据库服务进程是多进程结构</p>
+<blockquote>
+<p>KingbaseES 数据库服务进程，称该进程为一个“KingbaseES 数据库实例”。 在一个数据目录只能同时启动一个实例，不同的数据目录可以同时以不同的端口，手动启动为不同的实例。</p>
+</blockquote>
+<p>KingbaseES实例采用多进程架构，因此一个实例中会包含多个进程。这些进程按照功能的不同可以分为后台进程和服务进程两类：</p>
+<p><strong>后台进程</strong></p>
+<blockquote>
+<ol>
+<li><p>KingbaseES 主进程</p>
+<p>主进程负责统一管理各服务进程和其他后台进程。 该进程负责启动服务进程和其他后台进程，并且在子进程退出的时候做清理工作。 该进程负责分发来自操作系统的信号到各子进程。系统退出时，主进程负责发送信号通知各子进程退出，然后再停止自己。</p>
+</li>
+<li><p>后台写进程</p>
+<p>在这个进程中，共享缓冲池上的脏页会逐渐定期地写入持久存储(例如HDD、SSD)。</p>
+</li>
+<li><p>检查点进程</p>
+<p>用来执行检查点过程。</p>
+</li>
+<li><p>自动vacuum进程</p>
+<p>会定期地在服务器上执行清理和回收工作。</p>
+</li>
+<li><p>WAL日志写进程</p>
+<p>这个进程周期性地将WAL缓冲区上的WAL数据写入和刷新到持久存储。</p>
+</li>
+<li><p>统计进程</p>
+<p>在此进程中，会收集sys_stat_activity和sys_stat_database等统计信息。</p>
+</li>
+<li><p>归档进程</p>
+<p>归档进程负责将日志文件归档到指定的位置。</p>
+</li>
+<li><p>日志收集进程</p>
+<p>日志收集进程负责将数据库运行中的输出信息写入日志文件。</p>
+</li>
+</ol>
+<p>除以上后台进程外，在特定时机或使用一些特性时会有额外的后台进程，例如：</p>
+<ol>
+<li><p>恢复进程</p>
+<p>实例处于从恢复状态或开启热备份时恢复进程负责重做WAL日志。</p>
+</li>
+<li><p>WAL日志发送、接收进程</p>
+<p>使用KingbaseES RWC集群时，主节点通过WAL日志发送进程发送WAL给备节点上的WAL日志接收进程实现数据复制。</p>
+</li>
+<li><p>kwr、ksh进程</p>
+<p>开启kwr和ksh功能时，对应的kwr、ksh后台进程负责收集和维护负载、会话历史数据。</p>
+</li>
+<li><p>自动作业进程</p>
+<p>开启自动作业功能时，自动作业后台进程实现作业的自动调度。</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>服务进程</strong></p>
+<blockquote>
+<p>KingbaseES使用客户端/服务器的模型。 对于每个客户端的连接，KingbaseES主进程接收到客户端连接后，会为其创建一个新的服务进程。 KingbaseES 用服务进程来处理连接到数据库服务的客户端请求。 该进程负责实际处理客户端的数据库请求，连接断开时退出。</p>
+</blockquote>
+<p><img src="/RobertBlog/.io//image-20220829120000407-16617456024501.png" alt="image-20220829120000407"></p>
+<h5 id="内存结构："><a href="#内存结构：" class="headerlink" title="内存结构："></a>内存结构：</h5><p>KingbaseES 统一管理实例所用的内存资源。配置参数 shared_buffers 决定了数据库实例使用多少内存。当系统启动时，数据库实例向操作系统申请一块大内存（大小由 shared_buffers 决定）作为共享内存。在这之后各个进程对内存资源的使用都在这块内存里操作。</p>
+<p>KingbaseES 对于共享内存的使用主要可以分为以下几部分：</p>
+<ul>
+<li><p>数据页面缓存</p>
+<p>在内存里缓存数据页面，shared_buffers 越大，在内存里保存的数据页面就越多。相同条件下操作数据时进行的 IO 操作更少。</p>
+</li>
+<li><p>日志页面缓存</p>
+<p>日志缓冲区，操作数据时产生的日志都放在这个缓冲区上，由写日志线程和服务线程刷到磁盘。 参数 wal_buffers 设置日志页面缓存大小。</p>
+</li>
+<li><p>排序和连接运算使用的缓存</p>
+<p>服务器对元组进行排序或者连接运算时，需要用到内存缓存数据。如果所需的运算还需更大的空间，KingbaseES 会借助于临时文件完成。 参数 work_mem 设置每个服务进程排序和连接运算使用的缓存大小。</p>
+</li>
+<li><p>锁缓存</p>
+<p>多线程并发操作会用到锁，KingbaseES 从共享内存开辟独立的内存空间用于存放锁信息。 锁缓存的大小由总的共享内存大小决定。</p>
+</li>
+<li><p>临时分配的内存</p>
+<p>服务器在处理数据流程中，用于临时存放数据所使用的内存，也从共享内存里分配。 KingbaseES 对于共享内存的使用通常是可配置的</p>
+</li>
+</ul>
+<h5 id="物理存储结构："><a href="#物理存储结构：" class="headerlink" title="物理存储结构："></a>物理存储结构：</h5><ul>
+<li><p>数据文件：数据文件被组织成一个个页面（Page），页面大小为8k。对数据文件的I/O操作都是以页面为单位。</p>
+<p>数据文件包含数据和对象，例如表、索引、存储过程和视图。</p>
+</li>
+<li><p>控制文件：KingbaseES服务器使用的控制信息，kingbase.opts、kingbase.opts、current_logfiles</p>
+</li>
+<li><p>日志文件：记录数据库的历史操作信息, 包含恢复数据库中的所有事务所需的信息。</p>
+<ul>
+<li>WAL日志 ：预写式日志记录在sys_wal中</li>
+<li>事务日志 ：事务的状态及可见性等信息记录在事务日志文件中，只有通过事务日志信息才能从数据文件中得到有效的数据。因此事务日志对数据一致性是十分重要的。 主要的事务日志文件有sys_xact、sys_csnlog、sys_multixact等。</li>
+<li>在线日志：用户的SQL操作以及数据库的运行中的事件会以文本的形式记录在在线日志中，用于使用户可以了解和分析数据库当前状态，并分析可能产生的异常。 在线日志文件默认记录在sys_log中。</li>
+</ul>
+</li>
+<li><p>配置文件：KingbaseES主服务器的配置主要通过修改配置文件kingbase.conf完成。 由ALTER SYSTEM修改的配置参数会被数据库服务器自动记录在kingbase.auto.conf中。配置文件sys_hba.conf和sys_ident.conf主要用于控制客户端认证。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">项</th>
+<th align="left">类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">SYS_VERSION</td>
+<td align="left">其他</td>
+<td align="left">一个包含KingbaseES主版本号的文件</td>
+</tr>
+<tr>
+<td align="left">base</td>
+<td align="left">数据文件</td>
+<td align="left">包含每个数据库对应的子目录，记录每个数据库内对象的 持久化数据或临时数据。</td>
+</tr>
+<tr>
+<td align="left">current_logfiles</td>
+<td align="left">控制文件</td>
+<td align="left">记录当前被日志收集器写入的日志文件的文件</td>
+</tr>
+<tr>
+<td align="left">global</td>
+<td align="left">数据文件 及控制文件</td>
+<td align="left">包含集簇范围的表的子目录，比如sys_database。 此外，sys_control文件也存储在此目录下，该文件记录着 数据集簇标识符及版本、检查点信息、块大小等信息</td>
+</tr>
+<tr>
+<td align="left">sys_commit_ts</td>
+<td align="left">日志文件</td>
+<td align="left">包含事务提交时间戳数据的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_csnlog</td>
+<td align="left">日志文件</td>
+<td align="left">包含事务提交序列号和子事务状态数据的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_dynshmem</td>
+<td align="left">其他</td>
+<td align="left">包含被动态共享内存子系统所使用的文件的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_logical</td>
+<td align="left">控制文件</td>
+<td align="left">包含用于逻辑复制的状态数据的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_multixact</td>
+<td align="left">日志文件</td>
+<td align="left">包含多事务（multi-t ransaction）状态数据的子目录（用于共享的行锁）</td>
+</tr>
+<tr>
+<td align="left">sys_notify</td>
+<td align="left">日志文件</td>
+<td align="left">包含LISTEN/NOTIFY状态数据的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_replslot</td>
+<td align="left">其他</td>
+<td align="left">包含复制槽数据的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_serial</td>
+<td align="left">日志文件</td>
+<td align="left">包含已提交的可序列化事务信息的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_snapshots</td>
+<td align="left">其他</td>
+<td align="left">包含导出的快照的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_stat</td>
+<td align="left">其他</td>
+<td align="left">包含用于统计子系统的永久文件的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_stat_tmp</td>
+<td align="left">其他</td>
+<td align="left">包含用于统计信息子系统的临时文件的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_tblspc</td>
+<td align="left">其他</td>
+<td align="left">包含指向表空间目录的符号链接的子目录，该符号链接所 指向的表空间目录中存储了所属该表空间的数据文件。</td>
+</tr>
+<tr>
+<td align="left">sys_twophase</td>
+<td align="left">日志文件</td>
+<td align="left">包含用于预备事务状态文件的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_wal</td>
+<td align="left">日志文件</td>
+<td align="left">包含 WAL（预写日志）文件的子目录</td>
+</tr>
+<tr>
+<td align="left">sys_xact</td>
+<td align="left">日志文件</td>
+<td align="left">包含事务提交状态数据的子目录</td>
+</tr>
+<tr>
+<td align="left">kingbase.auto.conf</td>
+<td align="left">配置文件</td>
+<td align="left">一个用于存储由ALTER SYSTEM 设置的配置参数的文件</td>
+</tr>
+<tr>
+<td align="left">kingbase.opts</td>
+<td align="left">控制文件</td>
+<td align="left">一个 记录服务器最后一次启动时使用的命令行参数的文件</td>
+</tr>
+<tr>
+<td align="left">kingbase.pid</td>
+<td align="left">控制文件</td>
+<td align="left">一个锁文件，记录着当前的 kingbase 进程ID（PID）、集簇数据目录路 径、kingbase启动时间戳、端口号、Unix域套接字目 录路径（Windows上为空）、第一个可用的listen_address （IP地址或者*，或者为空表示不在TCP上监听 ）以及共享内存段ID（服务器关闭后该文件不存在）</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robert-pf.github.io/RobertBlog/2022/08/21/%E4%BA%BA%E5%A4%A7%E9%87%91%E4%BB%93%E6%95%B0%E6%8D%AE%E5%BA%93%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8/" data-id="cl9az5t8y0000lgig9eob9gka" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Java-Web/" rel="tag">Java Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/LVM/" rel="tag">LVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" rel="tag">MongoDB集群</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" rel="tag">Web网页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/idea-java/" rel="tag">idea java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/RobertBlog/tags/Java-Spring/" style="font-size: 20px;">Java Spring</a> <a href="/RobertBlog/tags/Java-Web/" style="font-size: 10px;">Java Web</a> <a href="/RobertBlog/tags/LVM/" style="font-size: 20px;">LVM</a> <a href="/RobertBlog/tags/MongoDB/" style="font-size: 20px;">MongoDB</a> <a href="/RobertBlog/tags/MongoDB%E9%9B%86%E7%BE%A4/" style="font-size: 10px;">MongoDB集群</a> <a href="/RobertBlog/tags/MyBatis/" style="font-size: 20px;">MyBatis</a> <a href="/RobertBlog/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/RobertBlog/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/RobertBlog/tags/Web%E7%BD%91%E9%A1%B5/" style="font-size: 10px;">Web网页</a> <a href="/RobertBlog/tags/idea-java/" style="font-size: 10px;">idea java</a> <a href="/RobertBlog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/RobertBlog/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/RobertBlog/2022/08/21/%E4%BA%BA%E5%A4%A7%E9%87%91%E4%BB%93%E6%95%B0%E6%8D%AE%E5%BA%93%E6%90%AD%E5%BB%BA%E4%BD%BF%E7%94%A8/">人大金仓数据库搭建</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/07/17/IO%E6%A8%A1%E5%9E%8B/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/05/12/idea%E4%BD%BF%E7%94%A8%E4%B9%8B%E8%B0%9C/">idea</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2022/03/31/Linux%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/RobertBlog/2021/10/10/Mybatis%E5%92%8C%E4%BA%8B%E5%8A%A1/">MyBatis和事务</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Robert Pang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/RobertBlog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/RobertBlog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/RobertBlog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/RobertBlog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/RobertBlog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
